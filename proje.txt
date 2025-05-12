@@ -1,0 +1,66 @@
+HAVA DURUMU VE MODA UYUMU İLE DOLAP YÖNETİMİ YAPAN MOBİL UYGULAMA
+1. Proje Adı
+Hava Durumu ve Moda Uyumu ile Dolap Yönetimi Yapan Mobil Uygulama
+2. Proje Amacı
+Bu proje, kullanıcıların dolaplarındaki giysileri hava durumu, renk uyumu ve moda trendlerine göre analiz ederek en uygun kombinleri oluşturmasını sağlamaktadır. Kullanıcının cilt tonu, giysi rengi ve mevsimsel koşullar dikkate alınarak kişiselleştirilmiş giyim önerileri sunulacaktır.
+3. Kullanılacak Teknolojiler ve Araçlar
+•	Mobil Geliştirme: Flutter (Dart), Provider/Riverpod/Bloc (Durum Yönetimi), Material Design
+•	Veri Yönetimi: Firebase, PostgreSQL, Hive (Local Storage), Firebase Storage
+•	Makine Öğrenmesi & Görüntü İşleme: TensorFlow Lite, OpenCV, Color Thief, K-Means Clustering
+•	Hava Durumu API Kullanımı: OpenWeatherMap API, WeatherAPI
+•	Backend : FastAPI (Python) veya .NET Core API
+4. Mevcut Sistemler ve İyileştirme Potansiyelleri
+Bu proje, aşağıdaki mevcut sistemleri inceleyerek geliştirilecektir:
+•	Moda ve renk uyumu önerileri sunan uygulamalar
+•	Hava durumuna göre giyim önerisi sunan sistemler
+•	Dijital dolap yönetimi uygulamaları
+Eksiklikler ve geliştirme potansiyelleri analiz edilerek yenilikçi bir sistem tasarlanacaktır.
+5. Beklenen Katkılar
+•	Kullanıcının dolabına eklediği giysileri analiz ederek renk uyumu önerileri sunmak
+•	Kullanıcının cilt tonuna uygun renk kombinasyonları önermek
+•	Hava durumuna göre en uygun kombinleri otomatik olarak önermek
+6. Karşılaşılması Muhtemel Zorluklar
+•	Kullanıcı tarafından girilen giysi verilerinin doğruluğunu sağlamak
+•	Renk uyumu algoritmalarının hassasiyetini optimize etmek
+•	Kullanıcı deneyimini iyileştirmek ve öneri sistemini kişiselleştirmek
+7. Yöntem ve İş Planı
+1.	Veri Toplama: Kullanıcılardan dolaplarındaki giysi verileri toplanacak.
+2.	Makine Öğrenmesi Modeli: Renk uyumu ve hava durumuna uygun kombin önerileri için algoritmalar geliştirilecek.
+3.	Mobil Uygulama Geliştirme: Flutter tabanlı, kullanıcı dostu bir mobil uygulama geliştirilecek.
+4.	Test ve Değerlendirme: Kullanıcı geribildirimleri ile sistem iyileştirilecek.
+8. Sonuç
+Bu proje, bireylerin modayı daha bilinçli ve etkin bir şekilde kullanmalarını sağlayacak yenilikçi ve akıllı bir çözüm sunmayı amaçlamaktadır. Kullanıcıların giyim tercihlerine rehberlik ederek zaman kazandırmaya ve stil sahibi kombinler oluşturmalarına yardımcı olacaktır.
+
+HAVA DURUMU VE MODA UYUMU İLE DOLAP YÖNETİMİ YAPAN MOBİL UYGULAMA
+1. Proje Adı
+Hava Durumu ve Moda Uyumu ile Dolap Yönetimi Yapan Mobil Uygulama
+2. Proje Amacı
+Bu proje, kullanıcıların dolaplarındaki giysileri hava durumu, renk uyumu ve moda trendlerine göre analiz ederek en uygun kombinleri oluşturmasını sağlamaktadır. Kullanıcının cilt tonu, giysi rengi ve mevsimsel koşullar dikkate alınarak kişiselleştirilmiş giyim önerileri sunulacaktır.
+3. Kullanılacak Teknolojiler ve Araçlar
+•	Mobil Geliştirme: Flutter (Dart), Provider/Riverpod/Bloc (Durum Yönetimi), Material Design
+•	Veri Yönetimi: Firebase, PostgreSQL, Hive (Local Storage), Firebase Storage
+•	Makine Öğrenmesi & Görüntü İşleme: TensorFlow Lite, OpenCV, Color Thief, K-Means Clustering
+•	Hava Durumu API Kullanımı: OpenWeatherMap API, WeatherAPI
+•	Backend : FastAPI (Python) veya .NET Core API
+4. Mevcut Sistemler ve İyileştirme Potansiyelleri
+Bu proje, aşağıdaki mevcut sistemleri inceleyerek geliştirilecektir:
+•	Moda ve renk uyumu önerileri sunan uygulamalar
+•	Hava durumuna göre giyim önerisi sunan sistemler
+•	Dijital dolap yönetimi uygulamaları
+Eksiklikler ve geliştirme potansiyelleri analiz edilerek yenilikçi bir sistem tasarlanacaktır.
+5. Beklenen Katkılar
+•	Kullanıcının dolabına eklediği giysileri analiz ederek renk uyumu önerileri sunmak
+•	Kullanıcının cilt tonuna uygun renk kombinasyonları önermek
+•	Hava durumuna göre en uygun kombinleri otomatik olarak önermek
+6. Karşılaşılması Muhtemel Zorluklar
+•	Kullanıcı tarafından girilen giysi verilerinin doğruluğunu sağlamak
+•	Renk uyumu algoritmalarının hassasiyetini optimize etmek
+•	Kullanıcı deneyimini iyileştirmek ve öneri sistemini kişiselleştirmek
+7. Yöntem ve İş Planı
+1.	Veri Toplama: Kullanıcılardan dolaplarındaki giysi verileri toplanacak.
+2.	Makine Öğrenmesi Modeli: Renk uyumu ve hava durumuna uygun kombin önerileri için algoritmalar geliştirilecek.
+3.	Mobil Uygulama Geliştirme: Flutter tabanlı, kullanıcı dostu bir mobil uygulama geliştirilecek.
+4.	Test ve Değerlendirme: Kullanıcı geribildirimleri ile sistem iyileştirilecek.
+8. Sonuç
+Bu proje, bireylerin modayı daha bilinçli ve etkin bir şekilde kullanmalarını sağlayacak yenilikçi ve akıllı bir çözüm sunmayı amaçlamaktadır. Kullanıcıların giyim tercihlerine rehberlik ederek zaman kazandırmaya ve stil sahibi kombinler oluşturmalarına yardımcı olacaktır.
+

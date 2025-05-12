@@ -1,0 +1,381 @@
+# HAVA DURUMU VE MODA UYUMU İLE DOLAP YÖNETİMİ YAPAN MOBİL UYGULAMA
+# GELİŞTİRME DOKÜMANTASYONU
+
+## 1. Giriş
+
+Bu belge, "Hava Durumu ve Moda Uyumu ile Dolap Yönetimi Yapan Mobil Uygulama" projesinin geliştirme sürecini ve ana bileşenlerini açıklamaktadır. Proje, Flutter teknolojisi kullanılarak geliştirilmiş olup, kullanıcıların dolaplarındaki giysileri hava durumu, renk uyumu ve moda trendlerine göre analiz ederek en uygun kombinleri oluşturmalarını sağlamaktadır.
+
+## 2. Proje Yapısı
+
+Uygulama, aşağıdaki mimari prensiplere dayanmaktadır:
+
+- **Domain-Driven Development (DDD)** yaklaşımı ile uygulama mantığını iş süreçlerine göre düzenleme
+- **Feature-first** klasör yapısı ile özellik bazlı modüler geliştirme
+- **Riverpod** state management ile durum yönetimi
+- **Clean Architecture** ile katmanlı mimari (presentation, domain, data katmanları)
+
+Ana klasör yapısı şu şekildedir:
+
+```
+lib/
+├── core/
+│   ├── models/             # Temel model sınıfları
+│   ├── services/           # Ortak servisler
+│   └── utils/              # Yardımcı fonksiyonlar
+├── features/               # Özellik bazlı klasörler
+│   ├── auth/               # Kimlik doğrulama modülü
+│   ├── home/               # Ana sayfa modülü
+│   ├── wardrobe/           # Dolap yönetimi modülü
+│   └── weather/            # Hava durumu modülü
+└── main.dart               # Uygulama başlangıç noktası
+```
+
+## 3. Temel Özellikler ve İşlevler
+
+### 3.1. Kimlik Doğrulama (Authentication)
+- Kullanıcı kayıt ve giriş işlemleri
+- Kullanıcı profil yönetimi
+- Oturum durumu kontrolü
+
+### 3.2. Dolap Yönetimi (Wardrobe)
+- Giysileri ekleme, düzenleme ve silme
+- Giysileri tipine, mevsime ve renge göre filtreleme
+- Kombini oluşturma ve yönetme
+
+### 3.3. Hava Durumu (Weather)
+- Mevcut konum için hava durumu görüntüleme
+- 5 günlük hava durumu tahmini
+- OpenWeatherMap API entegrasyonu
+
+### 3.4. Kombin Önerileri (Outfit Suggestions)
+- Hava durumuna göre uygun kombin önerileri
+- Renk uyumuna göre kombin önerileri
+- Kişiselleştirilmiş stil önerileri
+
+## 4. Geliştirilen Ekranlar ve Bileşenler
+
+### 4.1. Ana Sayfa (HomeScreen)
+- Bottom Navigation Bar ile 4 ana modül arasında geçiş
+- Hava Durumu, Dolaplarım, Kombin Oluştur ve Profil bölümleri
+
+### 4.2. Hava Durumu Ekranı (WeatherScreen)
+- Mevcut hava durumu bilgileri görüntüleme
+- 5 günlük hava durumu tahmini
+- Konum değiştirme fonksiyonu
+
+### 4.3. Dolap Yönetimi Ekranı (WardrobeScreen)
+- Kıyafet listesi görüntüleme ve filtreleme
+- Kıyafet detayları ve düzenleme
+- Filtreleme seçenekleri (tip, mevsim, renk)
+
+### 4.4. Kombin Önerileri Ekranı (OutfitSuggestionView)
+- Hava durumuna uygun kombin önerileri
+- Mevcut hava durumu özeti
+- Kombin oluşturma butonu
+
+### 4.5. Profil Ekranı (UserProfileView)
+- Kullanıcı bilgileri görüntüleme
+- Uygulama ayarları
+- Stil tercihleri ve çıkış yapma
+
+## 5. Veri Modelleri
+
+Uygulamada kullanılan temel veri modelleri:
+
+### 5.1. UserModel
+Kullanıcı bilgilerini temsil eder.
+```dart
+class UserModel {
+  final String id;
+  final String email;
+  final String name;
+  final String? photoUrl;
+  final String? skinTone;
+  final List<String>? stylePreferences;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  // ...
+}
+```
+
+### 5.2. ClothingItemModel
+Giysi öğelerini temsil eder.
+```dart
+class ClothingItemModel {
+  final String id;
+  final String userId;
+  final String name;
+  final ClothingType type;
+  final List<String> colors;
+  final List<Season> seasons;
+  final String? material;
+  final String? brand;
+  final String? imageUrl;
+  // ...
+}
+```
+
+### 5.3. OutfitModel
+Kıyafet kombinlerini temsil eder.
+```dart
+class OutfitModel {
+  final String id;
+  final String userId;
+  final String name;
+  final String? description;
+  final List<String> clothingItemIds;
+  final List<Season> seasons;
+  final List<WeatherCondition> weatherConditions;
+  final Occasion occasion;
+  // ...
+}
+```
+
+### 5.4. WeatherModel
+Hava durumu bilgilerini temsil eder.
+```dart
+class WeatherModel {
+  final double temperature;
+  final double feelsLike;
+  final int humidity;
+  final double windSpeed;
+  final String description;
+  final WeatherCondition condition;
+  final String icon;
+  final DateTime timestamp;
+  final String location;
+  // ...
+}
+```
+
+## 6. Servisler ve Sağlayıcılar (Providers)
+
+### 6.1. ApiService
+OpenWeatherMap API'sinden hava durumu verilerini çeker.
+```dart
+class ApiService {
+  final String baseUrl = 'https://api.openweathermap.org/data/2.5';
+  final String apiKey = 'd3d62521ad68cc0a6a14c6a3b85344df';
+  
+  Future<WeatherModel> getCurrentWeather(String city);
+  Future<WeatherModel> getWeatherByLocation(double lat, double lon);
+  Future<List<WeatherModel>> get5DayForecast(String city);
+  // ...
+}
+```
+
+### 6.2. AuthProvider
+Kimlik doğrulama işlemleri için durum yönetimi sağlar.
+```dart
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  return AuthNotifier();
+});
+
+class AuthNotifier extends StateNotifier<AuthState> {
+  Future<void> signIn({required String email, required String password});
+  Future<void> signUp({required String email, required String password, required String name});
+  Future<void> signOut();
+  // ...
+}
+```
+
+### 6.3. WardrobeProvider
+Dolap yönetimi için durum yönetimi sağlar.
+```dart
+final clothingItemsProvider = StateNotifierProvider<ClothingItemsNotifier, List<ClothingItemModel>>((ref) {
+  return ClothingItemsNotifier();
+});
+
+final outfitsProvider = StateNotifierProvider<OutfitsNotifier, List<OutfitModel>>((ref) {
+  return OutfitsNotifier();
+});
+
+// Filtrelenmiş kıyafetler için provider
+final filteredClothingItemsProvider = Provider.family<List<ClothingItemModel>, ClothingFilter>((ref, filter) {
+  // Filtreleme mantığı
+});
+```
+
+### 6.4. WeatherProvider
+Hava durumu bilgileri için durum yönetimi sağlar.
+```dart
+final currentWeatherProvider = FutureProvider<WeatherModel>((ref) async {
+  final apiService = ref.watch(apiServiceProvider);
+  final location = ref.watch(currentLocationProvider);
+  return await apiService.getCurrentWeather(location);
+});
+
+final forecastProvider = FutureProvider<List<WeatherModel>>((ref) async {
+  // 5 günlük tahmin mantığı
+});
+```
+
+## 7. Makine Öğrenmesi Özellikleri (Uygulanacak)
+
+Uygulamada entegre edilecek makine öğrenmesi özellikleri:
+
+### 7.1. Kıyafet Tanıma ve Sınıflandırma
+- **TensorFlow Lite** kullanarak giysi fotoğraflarını tanıma
+- Giysi tipini otomatik sınıflandırma (üst giyim, alt giyim, dış giyim vb.)
+- Mevsimsel uygunluğu tespit etme
+
+```dart
+class ClothingClassifier {
+  final Interpreter interpreter;
+  
+  Future<Map<String, double>> classifyImage(File imageFile) async {
+    // Görüntü ön işleme ve sınıflandırma mantığı
+    // TensorFlow Lite modeli ile tahmin yapma
+  }
+  
+  Map<String, String> mapClassToType(String className) {
+    // Sınıf adını giysi tipine dönüştürme
+  }
+}
+```
+
+### 7.2. Renk Analizi ve Uyum Önerileri
+- **Color Thief** algoritması ile giysi renklerini çıkarma
+- **K-Means Clustering** ile baskın renkleri tespit etme
+- Renk uyumu kurallarına göre kombin önerileri sunma
+
+```dart
+class ColorAnalysisService {
+  Future<List<Color>> extractDominantColors(Uint8List imageBytes, {int maxColors = 5});
+  
+  List<List<Color>> getColorHarmonies(Color baseColor);
+  
+  List<Color> getColorsForSkinTone(String skinTone);
+  
+  double calculateColorCompatibility(List<Color> outfitColors);
+}
+```
+
+### 7.3. Hava Durumu Tabanlı Kombin Öneri Algoritması
+- Hava durumu parametrelerine göre giysi uygunluğunu hesaplama
+- Kullanıcı tercihlerine göre öğrenme ve kişiselleştirme
+- Collaborative filtering ve content-based filtering yaklaşımlarını birleştirme
+
+```dart
+class OutfitRecommendationEngine {
+  double calculateWeatherCompatibility(OutfitModel outfit, WeatherModel weather);
+  
+  double calculateUserPreferenceScore(OutfitModel outfit, UserModel user);
+  
+  List<OutfitModel> recommendOutfits(
+    List<OutfitModel> allOutfits, 
+    WeatherModel weather, 
+    UserModel user,
+    {int limit = 5}
+  );
+  
+  void updateUserPreferences(UserModel user, OutfitModel selectedOutfit, bool wasLiked);
+}
+```
+
+### 7.4. Stil Analizi ve Trend Tahmini
+- Kullanıcının tercih ettiği stilleri öğrenme
+- Mevsimsel trendleri analiz etme
+- Kişiye özel stil önerileri sunma
+
+```dart
+class StyleAnalysisService {
+  Map<String, double> analyzeUserStylePreferences(List<OutfitModel> likedOutfits);
+  
+  List<String> recommendStylesBasedOnTrends(
+    Map<String, double> userPreferences,
+    Map<String, double> currentTrends
+  );
+  
+  void updateStyleModel(UserFeedback feedback);
+}
+```
+
+## 8. Veri Kaynakları
+
+### 8.1. Yerel Veri Depolama
+- **Hive** veya **SharedPreferences** ile yerel verilerin saklanması
+- Çevrimdışı erişim için önbelleğe alma
+
+### 8.2. Bulut Veri Depolama (Firebase)
+- **Firestore** ile kullanıcı ve giysi verilerinin saklanması
+- **Firebase Storage** ile giysi fotoğraflarının depolanması
+- **Firebase Authentication** ile kullanıcı kimlik doğrulama
+
+### 8.3. Hava Durumu API
+- **OpenWeatherMap API** ile gerçek zamanlı hava durumu verileri
+- Konum tabanlı hava durumu tahminleri
+
+## 9. Gelecek Özellikler ve İyileştirmeler
+
+### 9.1. Sosyal Özellikler
+- Kombini sosyal medyada paylaşma
+- Arkadaş kombinlerini görüntüleme ve beğenme
+- Kombin yarışmaları ve oylamalar
+
+### 9.2. Gelişmiş Makine Öğrenmesi
+- Daha doğru giysi tanıma ve sınıflandırma
+- Kullanıcı davranışlarına göre daha kişiselleştirilmiş öneriler
+- Moda trend analizleri ve tahminleri
+
+### 9.3. Alışveriş Entegrasyonu
+- Eksik giysileri tamamlamak için alışveriş önerileri
+- E-ticaret platformlarıyla entegrasyon
+- Fiyat karşılaştırma ve indirim bildirimleri
+
+## 10. Kullanılan Teknolojiler ve Kütüphaneler
+
+### 10.1. Frontend
+- **Flutter** (Dart) - Çapraz platform uygulama geliştirme
+- **Riverpod** - State management
+- **http** - API istekleri için HTTP istemcisi
+- **Cached Network Image** - Görüntü önbelleğe alma
+
+### 10.2. Backend ve Bulut Hizmetleri
+- **Firebase Authentication** - Kullanıcı kimlik doğrulama
+- **Firestore** - NoSQL veritabanı
+- **Firebase Storage** - Dosya depolama
+
+### 10.3. Makine Öğrenmesi ve Veri İşleme
+- **TensorFlow Lite** - Giysi tanıma ve sınıflandırma
+- **Palette Generator** - Renk analizi
+- **OpenCV** - Görüntü işleme
+
+## 11. Test ve Kalite Güvencesi
+
+### 11.1. Birim Testleri
+- Model ve servis sınıfları için birim testleri
+- Provider mantığı için testler
+
+### 11.2. Widget Testleri
+- UI bileşenlerinin doğru çalıştığını doğrulama
+- Kullanıcı etkileşimlerini simüle etme
+
+### 11.3. Entegrasyon Testleri
+- API entegrasyonlarının doğrulanması
+- Veri akışının test edilmesi
+
+### 11.4. Manuel Testler
+- Kullanıcı deneyimi değerlendirmesi
+- Farklı cihazlarda ve ekran boyutlarında test
+
+## 12. Dağıtım ve Yayınlama
+
+### 12.1. Android
+- Google Play Store üzerinden yayınlama
+- Sürüm kontrolü ve güncellemelerin yönetimi
+
+### 12.2. iOS
+- App Store üzerinden yayınlama
+- TestFlight ile beta testi
+
+## 13. Ek Kaynaklar ve Dokümantasyon
+
+- [Flutter Resmi Dokümantasyon](https://flutter.dev/docs)
+- [Firebase Dokümantasyon](https://firebase.google.com/docs)
+- [TensorFlow Lite Dokümantasyon](https://www.tensorflow.org/lite)
+- [OpenWeatherMap API Dokümantasyon](https://openweathermap.org/api)
+
+---
+
+Bu dokümantasyon, projenin geliştirme sürecinde yapılan çalışmaları ve eklenecek özellikleri belirtmek amacıyla hazırlanmıştır. Proje ilerledikçe ve yeni özellikler eklendikçe güncellenecektir. 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "588205202600",
+    "project_id": "closet-weather-app",
+    "storage_bucket": "closet-weather-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588205202600:android:cce251119fec93a6c8f69d",
+        "android_client_info": {
+          "package_name": "com.weathercloset.closet_weather_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588205202600-u51dm6hiuso9faj3a0q36m8vv5fp92rr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weathercloset.closet_weather_app",
+            "certificate_hash": "3f30003f7e6c479340438b31a2d148888f27965c"
+          }
+        },
+        {
+          "client_id": "588205202600-f7v478nhq4opcrb23r0fmi04obd0o5pd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLACnZ5d-rE_Qi8T7tAzA68RiK-I3y_Ns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588205202600-f7v478nhq4opcrb23r0fmi04obd0o5pd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
