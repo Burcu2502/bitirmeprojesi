@@ -48,56 +48,75 @@ class WeatherDisplay extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      '${weather.temperature.toStringAsFixed(1)}°C',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${weather.temperature.toStringAsFixed(1)}°C',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Hissedilen: ${weather.feelsLike.toStringAsFixed(1)}°C',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        'Hissedilen: ${weather.feelsLike.toStringAsFixed(1)}°C',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [
-                    Text(
-                      weather.description.toUpperCase(),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        weather.description.toUpperCase(),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _getWeatherAdvice(weather),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
+                      const SizedBox(height: 4),
+                      Text(
+                        _getWeatherAdvice(weather),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildWeatherDetail(
-                  context, 
-                  Icons.water_drop_outlined, 
-                  'Nem',
-                  '${weather.humidity}%',
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: _buildWeatherDetail(
+                    context, 
+                    Icons.water_drop_outlined, 
+                    'Nem',
+                    '${weather.humidity}%',
+                  ),
                 ),
-                _buildWeatherDetail(
-                  context, 
-                  Icons.air, 
-                  'Rüzgar',
-                  '${weather.windSpeed} km/s',
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: _buildWeatherDetail(
+                    context, 
+                    Icons.air, 
+                    'Rüzgar',
+                    '${weather.windSpeed} km/s',
+                  ),
                 ),
               ],
             ),
@@ -122,6 +141,8 @@ class WeatherDisplay extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
           ),
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 4),
         Text(
@@ -129,6 +150,8 @@ class WeatherDisplay extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

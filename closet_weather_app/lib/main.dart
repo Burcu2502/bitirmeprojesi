@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'features/auth/presentation/screens/splash_screen.dart';
 
@@ -12,6 +13,16 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
+  // NOT: setPersistence sadece web platformunda çalışır, 
+  // mobil platformlarda (Android/iOS) oturum bilgileri otomatik olarak saklanır
+  
+  // Firebase Auth'ın mevcut oturum durumunu kontrol et
+  final currentUser = FirebaseAuth.instance.currentUser;
+  debugPrint("🔄 Firebase Auth kontrol edildi: ${currentUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
+  if (currentUser != null) {
+    debugPrint("✅ Mevcut kullanıcı bulundu: ${currentUser.uid}, ${currentUser.email}");
+  }
   
   // Firebase App Check'i başlat - Debug modunda çalıştığından hata mesajları görmezden gelinecek
   try {

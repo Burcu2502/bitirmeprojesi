@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/auth_provider.dart';
 import '../../../home/presentation/screens/home_screen.dart';
 import 'login_screen.dart';
@@ -68,13 +69,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
       _isLoading = false;
     });
     
-    final authState = ref.read(authProvider);
+    // Önce Firebase'ten doğrudan kontrol et (bu daha güvenilir)
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    debugPrint("🔄 SplashScreen: Firebase kullanıcı kontrolü: ${firebaseUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
     
-    if (authState.isAuthenticated) {
+    // Provider'daki durumu da kontrol et
+    final authState = ref.read(authProvider);
+    debugPrint("🔄 SplashScreen: AuthProvider kullanıcı kontrolü: ${authState.isAuthenticated ? 'Oturum açık' : 'Oturum kapalı'}");
+    
+    // Eğer Firebase'ten doğrudan kontrol edildiğinde kullanıcı varsa ama provider'da yoksa, provider'ı güncelle
+    if (firebaseUser != null && !authState.isAuthenticated) {
+      debugPrint("⚠️ SplashScreen: Firebase'de kullanıcı var ama Provider'da yok, durumu düzeltiyoruz");
+      // Provider'ı güncelleme burada manuel olarak yapılmıyor, çünkü AuthService içindeki listener bunu otomatik yapacak
+    }
+    
+    // Yönlendirme kararı
+    if (firebaseUser != null || authState.isAuthenticated) {
+      debugPrint("✅ SplashScreen: Kullanıcı oturumu açık, Ana Sayfaya yönlendiriliyor");
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     } else {
+      debugPrint("ℹ️ SplashScreen: Kullanıcı oturumu kapalı, Giriş Sayfasına yönlendiriliyor");
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );

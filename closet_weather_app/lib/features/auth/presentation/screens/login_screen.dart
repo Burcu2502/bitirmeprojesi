@@ -93,9 +93,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await _authService.signInWithGoogle();
 
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
+        // Başarılı giriş sonrası Firebase oturumunu bir kez daha kontrol edelim
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          debugPrint("✅ Google ile giriş başarılı, kullanıcı: ${user.uid}, ${user.email}");
+          
+          // Mobil platformlarda oturum bilgisi otomatik olarak kalıcı saklanır
+          
+          // Ana ekrana yönlendir
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        } else {
+          debugPrint("⚠️ Google giriş aşamasında başarılı olmasına rağmen kullanıcı bulunamadı");
+          // Başarılı mesajı göster
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Giriş başarılı!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          
+          // Ana ekrana yönlendir
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -104,7 +127,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (e.toString().contains('PigeonUserDetails') || 
             e.toString().contains('pigeon-error-handled')) {
           
-          // Kullanıcı zaten giriş yapmış demektir, direkt Ana Ekrana yönlendir
+          // Mobil platformlarda oturum bilgisi otomatik olarak kalıcı saklanır
+          
+          // Kullanıcı zaten giriş yapmış demektir
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            debugPrint("✅ PigeonUserDetails hatası alındı, ama kullanıcı giriş yapmış: ${user.uid}");
+          }
+          
           debugPrint('ℹ️ Pigeon hatası görmezden geliniyor, kullanıcı oturumu açık kabul ediliyor');
           
           // Kullanıcıya başarılı bir mesaj göster
