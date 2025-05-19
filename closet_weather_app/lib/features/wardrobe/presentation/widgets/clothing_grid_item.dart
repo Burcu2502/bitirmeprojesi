@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../../core/models/clothing_item_model.dart';
 
@@ -46,11 +47,7 @@ class ClothingGridItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: item.imageUrl != null
-                    ? Image.network(
-                        item.imageUrl!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(primaryColor),
-                      )
+                    ? _buildImage(item.imageUrl!, primaryColor)
                     : _buildPlaceholder(primaryColor),
               ),
             ),
@@ -134,6 +131,45 @@ class ClothingGridItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Görüntüyü oluştur - URL ya da dosya olabilir
+  Widget _buildImage(String path, Color placeholderColor) {
+    // Eğer path http ile başlıyorsa URL, değilse dosya yolu kabul et
+    if (path.startsWith('http')) {
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          debugPrint("Resim yüklenirken hata: $error");
+          return _buildPlaceholder(placeholderColor);
+        },
+      );
+    } else {
+      // Lokal dosya
+      final file = File(path);
+      return FutureBuilder<bool>(
+        future: file.exists(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          if (snapshot.hasData && snapshot.data == true) {
+            return Image.file(
+              file,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint("Lokal resim yüklenirken hata: $error");
+                return _buildPlaceholder(placeholderColor);
+              },
+            );
+          } else {
+            return _buildPlaceholder(placeholderColor);
+          }
+        },
+      );
+    }
   }
 
   // Varsayılan görsel

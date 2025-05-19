@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../shared/widgets/custom_button.dart';
@@ -39,15 +40,7 @@ class ClothingItemDetailScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: item.imageUrl != null && item.imageUrl!.isNotEmpty
-                      ? Image.network(
-                          item.imageUrl!,
-                          height: 300,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return _buildImagePlaceholder(context);
-                          },
-                        )
+                      ? _buildImage(item.imageUrl!, context)
                       : _buildImagePlaceholder(context),
                 ),
               ),
@@ -294,6 +287,46 @@ class ClothingItemDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildImage(String path, BuildContext context) {
+    if (path.startsWith('http')) {
+      return Image.network(
+        path,
+        height: 300,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          debugPrint("Resim yüklenirken hata: $error");
+          return _buildImagePlaceholder(context);
+        },
+      );
+    } else {
+      final file = File(path);
+      return FutureBuilder<bool>(
+        future: file.exists(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          if (snapshot.hasData && snapshot.data == true) {
+            return Image.file(
+              file,
+              height: 300,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint("Lokal resim yüklenirken hata: $error");
+                return _buildImagePlaceholder(context);
+              },
+            );
+          } else {
+            return _buildImagePlaceholder(context);
+          }
+        },
+      );
+    }
   }
 
   void _showDeleteConfirmationDialog(BuildContext context) {

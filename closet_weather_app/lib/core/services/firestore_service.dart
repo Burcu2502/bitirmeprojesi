@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../models/clothing_item_model.dart';
 import '../models/outfit_model.dart';
 import '../models/user_model.dart';
+import 'package:flutter/foundation.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -44,16 +45,57 @@ class FirestoreService {
   // Kıyafet işlemleri
   Future<String> addClothingItem(ClothingItemModel item) async {
     try {
+      // Debug log ekleyelim
+      debugPrint("💾 FirestoreService - Kıyafet ekleme işlemi başladı: ${item.name}");
+      
+      // Gelen modelde gerekli alanların olup olmadığını kontrol et
+      if (item.userId.isEmpty) {
+        throw Exception('Kullanıcı ID boş olamaz');
+      }
+      
+      if (item.name.isEmpty) {
+        throw Exception('Kıyafet adı boş olamaz');
+      }
+      
+      if (item.colors.isEmpty) {
+        debugPrint("⚠️ Uyarı: Kıyafet renk bilgisi girilmemiş");
+      }
+      
+      if (item.seasons.isEmpty) {
+        debugPrint("⚠️ Uyarı: Kıyafet mevsim bilgisi girilmemiş");
+      }
+      
+      // Firestore belge referansını alıyoruz
       final docRef = _clothingItemsCollection.doc();
+      debugPrint("📄 Doküman referansı oluşturuldu: ${docRef.id}");
+      
+      // Belgeyi Firestore ID'si ile güncelliyoruz
       final updatedItem = item.copyWith(
         id: docRef.id,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-      await docRef.set(updatedItem.toJson());
+      
+      // JSON verisini debug olarak gösterelim
+      final json = updatedItem.toJson();
+      debugPrint("🔄 Firestore'a gönderilecek veri: ${json.toString().substring(0, json.toString().length > 100 ? 100 : json.toString().length)}...");
+      
+      // Firestore'a belgeyi set ediyoruz
+      await docRef.set(json);
+      
+      debugPrint("✅ Kıyafet başarıyla Firestore'a eklendi: ${docRef.id}");
       return docRef.id;
     } catch (e) {
-      throw Exception('Failed to add clothing item: $e');
+      debugPrint("❌ Firestore kıyafet ekleme hatası: $e");
+      if (e.toString().contains('permission-denied')) {
+        throw Exception('Firestore yazma izni reddedildi. Kullanıcı yetkilendirmesi kontrol edilmeli: $e');
+      } else if (e.toString().contains('INVALID_ARGUMENT')) {
+        throw Exception('Geçersiz veri formatı. Firestore verilerini kontrol edin: $e');
+      } else if (e.toString().contains('NOT_FOUND')) {
+        throw Exception('Koleksiyon veya belge bulunamadı: $e');
+      } else {
+        throw Exception('Kıyafet Firestore\'a eklenirken hata oluştu: $e');
+      }
     }
   }
 

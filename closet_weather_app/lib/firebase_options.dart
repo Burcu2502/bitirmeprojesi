@@ -48,6 +48,6 @@ class DefaultFirebaseOptions {
     appId: '1:588205202600:android:cce251119fec93a6c8f69d',
     messagingSenderId: '588205202600',
     projectId: 'closet-weather-app',
-    storageBucket: 'closet-weather-app.firebasestorage.app',
+    storageBucket: 'closet-weather-app.appspot.com',
   );
 } 

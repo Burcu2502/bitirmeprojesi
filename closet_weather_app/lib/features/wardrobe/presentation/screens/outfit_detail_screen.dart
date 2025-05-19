@@ -3,6 +3,7 @@ import '../../../../core/models/outfit_model.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../core/models/weather_model.dart';
 import '../../../../shared/widgets/custom_button.dart';
+import 'dart:io';
 
 class OutfitDetailScreen extends StatelessWidget {
   final OutfitModel outfit;
@@ -215,23 +216,7 @@ class OutfitDetailScreen extends StatelessWidget {
                   leading: item.imageUrl != null && item.imageUrl!.isNotEmpty
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(4),
-                          child: Image.network(
-                            item.imageUrl!,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 50,
-                                height: 50,
-                                color: Colors.grey.shade200,
-                                child: Icon(
-                                  _getClothingTypeIcon(item.type),
-                                  color: Colors.grey.shade600,
-                                ),
-                              );
-                            },
-                          ),
+                          child: _buildItemImage(item.imageUrl!, item.type),
                         )
                       : Container(
                           width: 50,
@@ -274,6 +259,72 @@ class OutfitDetailScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildItemImage(String path, ClothingType type) {
+    if (path.startsWith('http')) {
+      return Image.network(
+        path,
+        width: 50,
+        height: 50,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: 50,
+            height: 50,
+            color: Colors.grey.shade200,
+            child: Icon(
+              _getClothingTypeIcon(type),
+              color: Colors.grey.shade600,
+            ),
+          );
+        },
+      );
+    } else {
+      final file = File(path.replaceFirst('file://', ''));
+      return FutureBuilder<bool>(
+        future: file.exists(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox(
+              width: 50,
+              height: 50,
+              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            );
+          }
+          
+          if (snapshot.hasData && snapshot.data == true) {
+            return Image.file(
+              file,
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.grey.shade200,
+                  child: Icon(
+                    _getClothingTypeIcon(type),
+                    color: Colors.grey.shade600,
+                  ),
+                );
+              },
+            );
+          } else {
+            return Container(
+              width: 50,
+              height: 50,
+              color: Colors.grey.shade200,
+              child: Icon(
+                _getClothingTypeIcon(type),
+                color: Colors.grey.shade600,
+              ),
+            );
+          }
+        },
+      );
+    }
   }
 
   void _showSeasonCompatibilityDialog(BuildContext context) {

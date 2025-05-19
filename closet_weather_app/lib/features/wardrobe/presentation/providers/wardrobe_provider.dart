@@ -1,53 +1,87 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../core/models/outfit_model.dart';
 import '../../../../core/services/color_analysis_service.dart';
+import '../../../../core/services/firestore_service.dart';
+import '../../../../core/services/storage_service.dart';
 
 // ClothingFilter sınıfı - Kıyafet filtreleme için
 class ClothingFilter {
   final List<ClothingType>? types;
   final List<Season>? seasons;
-  final List<String>? colors;
+  final List<String>? colors; // Renk kodları
   final String? searchQuery;
-
+  final String? brand;
+  
   ClothingFilter({
     this.types,
     this.seasons,
     this.colors,
     this.searchQuery,
+    this.brand,
   });
+  
+  ClothingFilter copyWith({
+    List<ClothingType>? types,
+    List<Season>? seasons,
+    List<String>? colors,
+    String? searchQuery,
+    String? brand,
+  }) {
+    return ClothingFilter(
+      types: types ?? this.types,
+      seasons: seasons ?? this.seasons,
+      colors: colors ?? this.colors,
+      searchQuery: searchQuery ?? this.searchQuery,
+      brand: brand ?? this.brand,
+    );
+  }
 }
 
 // Filtrelenmiş kıyafetler için provider
-final filteredClothingItemsProvider = Provider.family<List<ClothingItemModel>, ClothingFilter>((ref, filter) {
-  final items = ref.watch(clothingItemsProvider);
+final filteredClothingItemsProvider = Provider.family<AsyncValue<List<ClothingItemModel>>, ClothingFilter>((ref, filter) {
+  final itemsAsyncValue = ref.watch(clothingItemsProvider);
   
-  if (filter.types == null && filter.seasons == null && 
-      filter.colors == null && (filter.searchQuery == null || filter.searchQuery!.isEmpty)) {
-    return items;
-  }
-  
+  return itemsAsyncValue.when(
+    data: (items) {
+      return AsyncValue.data(_filterItems(items, filter));
+    },
+    loading: () => const AsyncValue.loading(),
+    error: (e, stack) => AsyncValue.error(e, stack),
+  );
+});
+
+List<ClothingItemModel> _filterItems(List<ClothingItemModel> items, ClothingFilter filter) {
   return items.where((item) {
     // Tür filtresi
-    if (filter.types != null && filter.types!.isNotEmpty && !filter.types!.contains(item.type)) {
+    if (filter.types != null && filter.types!.isNotEmpty && 
+        !filter.types!.contains(item.type)) {
       return false;
     }
     
-    // Mevsim filtresi
+    // Sezon filtresi
     if (filter.seasons != null && filter.seasons!.isNotEmpty && 
         !item.seasons.any((season) => filter.seasons!.contains(season))) {
       return false;
     }
     
-    // Renk filtresi
-    if (filter.colors != null && filter.colors!.isNotEmpty && 
-        !item.colors.any((color) => filter.colors!.contains(color))) {
-      return false;
+    // Renk filtresi (hex kodlarını karşılaştır)
+    if (filter.colors != null && filter.colors!.isNotEmpty) {
+      bool hasAnyColor = false;
+      for (final itemColor in item.colors) {
+        if (filter.colors!.contains(itemColor.toLowerCase())) {
+          hasAnyColor = true;
+          break;
+        }
+      }
+      if (!hasAnyColor) return false;
     }
     
-    // Arama sorgusu filtresi
+    // Arama filtresi
     if (filter.searchQuery != null && filter.searchQuery!.isNotEmpty) {
       final query = filter.searchQuery!.toLowerCase();
       if (!item.name.toLowerCase().contains(query) && 
@@ -56,75 +90,96 @@ final filteredClothingItemsProvider = Provider.family<List<ClothingItemModel>, C
       }
     }
     
+    // Marka filtresi
+    if (filter.brand != null && filter.brand!.isNotEmpty) {
+      if (item.brand == null || !item.brand!.toLowerCase().contains(filter.brand!.toLowerCase())) {
+        return false;
+      }
+    }
+    
     return true;
   }).toList();
-});
+}
 
 // Renk analizi servisi provider
-final colorAnalysisServiceProvider = Provider<ColorAnalysisService>((ref) {
+final colorAnalysisProvider = Provider<ColorAnalysisService>((ref) {
   return ColorAnalysisService();
 });
 
 // TODO: Gerçek uygulamada bu provider'lar bir repository ile API'lere bağlanacak
 
 // Kıyafet listesi provider (CRUD işlemleri için notifier kullanılacak)
-final clothingItemsProvider = StateNotifierProvider<ClothingItemsNotifier, List<ClothingItemModel>>((ref) {
-  return ClothingItemsNotifier();
+final clothingItemsProvider = StateNotifierProvider<ClothingItemsNotifier, AsyncValue<List<ClothingItemModel>>>((ref) {
+  final firestoreService = ref.watch(firestoreProvider);
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  
+  return ClothingItemsNotifier(firestoreService, userId);
 });
 
 // Kıyafet listesini yöneten notifier
-class ClothingItemsNotifier extends StateNotifier<List<ClothingItemModel>> {
-  ClothingItemsNotifier() : super([]) {
-    // Başlangıçta demo verileri yükle
-    loadItems();
+class ClothingItemsNotifier extends StateNotifier<AsyncValue<List<ClothingItemModel>>> {
+  final FirestoreService _firestoreService;
+  final String? _userId;
+  
+  ClothingItemsNotifier(this._firestoreService, this._userId) : super(const AsyncValue.loading()) {
+    if (_userId != null) {
+      loadItems();
+    } else {
+      state = const AsyncValue.data([]);
+    }
   }
-
-  void loadItems() {
-    // Gerçek uygulamada: Veritabanından veya API'den yükleme
-    final now = DateTime.now();
-    state = [
-      ClothingItemModel(
-        id: '1',
-        userId: 'user1',
-        name: 'Mavi Tişört',
-        type: ClothingType.tShirt,
-        colors: ['#2196F3'],
-        seasons: [Season.spring, Season.summer],
-        material: 'Pamuk',
-        brand: 'Marka A',
-        imageUrl: null,
-        createdAt: now,
-        updatedAt: now,
-      ),
-      ClothingItemModel(
-        id: '2',
-        userId: 'user1',
-        name: 'Siyah Pantolon',
-        type: ClothingType.pants,
-        colors: ['#000000'],
-        seasons: [Season.fall, Season.winter, Season.spring],
-        material: 'Keten',
-        brand: 'Marka B',
-        imageUrl: null,
-        createdAt: now,
-        updatedAt: now,
-      ),
-    ];
+  
+  Future<void> loadItems() async {
+    try {
+      state = const AsyncValue.loading();
+      if (_userId == null) {
+        state = const AsyncValue.data([]);
+        return;
+      }
+      
+      final items = await _firestoreService.getUserClothingItems(_userId!);
+      state = AsyncValue.data(items);
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
   }
-
-  void addItem(ClothingItemModel item) {
-    state = [...state, item];
+  
+  Future<void> addItem(ClothingItemModel item) async {
+    try {
+      // Yükleme durumunu güncelleyelim
+      final currentItems = state.valueOrNull ?? [];
+      
+      // Geçici olarak optimistik bir güncellemede bulunuyoruz
+      state = AsyncValue.data([...currentItems, item]);
+      
+      // Firestore'a kıyafeti ekliyoruz
+      final itemId = await _firestoreService.addClothingItem(item);
+      
+      // Firebase'den güncel listeyi alalım
+      await loadItems();
+    } catch (e, stackTrace) {
+      // Hata durumunda state'i error'a çeviriyoruz
+      state = AsyncValue.error(e, stackTrace);
+      rethrow;
+    }
   }
-
-  void updateItem(ClothingItemModel item) {
-    state = [
-      for (final existingItem in state)
-        if (existingItem.id == item.id) item else existingItem
-    ];
+  
+  Future<void> updateItem(ClothingItemModel item) async {
+    try {
+      await _firestoreService.updateClothingItem(item);
+      loadItems(); // Listeyi yeniden yükle
+    } catch (e) {
+      rethrow;
+    }
   }
-
-  void deleteItem(String id) {
-    state = state.where((item) => item.id != id).toList();
+  
+  Future<void> deleteItem(String id) async {
+    try {
+      await _firestoreService.deleteClothingItem(id);
+      loadItems(); // Listeyi yeniden yükle
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
@@ -191,15 +246,57 @@ final weatherFilteredOutfitsProvider = Provider<List<OutfitModel>>((ref) {
 // Kombin detayları (kıyafetlerle birlikte) için provider
 final outfitDetailsProvider = Provider.family<OutfitModel, String>((ref, outfitId) {
   final outfits = ref.watch(outfitsProvider);
-  final clothes = ref.watch(clothingItemsProvider);
+  final clothesAsyncValue = ref.watch(clothingItemsProvider);
   
   final outfit = outfits.firstWhere((outfit) => outfit.id == outfitId);
   
   // Kombin ile eşleşen kıyafetleri bul
-  final outfitClothes = clothes.where(
-    (item) => outfit.clothingItemIds.contains(item.id)
-  ).toList();
+  final outfitClothes = clothesAsyncValue.when(
+    data: (items) => items.where(
+      (item) => outfit.clothingItemIds.contains(item.id)
+    ).toList(),
+    loading: () => <ClothingItemModel>[],
+    error: (_, __) => <ClothingItemModel>[],
+  );
   
   // Kombini kıyafetlerle birlikte döndür
   return outfit.copyWith(clothingItems: outfitClothes);
+});
+
+// Outfit provider
+final outfitWithItemsProvider = Provider.family<OutfitModel, String>((ref, outfitId) {
+  // TODO: Firestore'dan outfit verilerini çek
+  final now = DateTime.now();
+  final outfit = OutfitModel(
+    id: outfitId,
+    userId: 'user1',
+    name: 'Günlük Kombin',
+    clothingItemIds: ['1', '2'],
+    seasons: [Season.spring],
+    weatherConditions: [WeatherCondition.sunny, WeatherCondition.mild],
+    occasion: Occasion.casual,
+    createdAt: now,
+    updatedAt: now,
+  );
+  
+  // Kıyafetleri yükle
+  final clothingItemsAsyncValue = ref.watch(clothingItemsProvider);
+  
+  final List<ClothingItemModel> outfitClothes = clothingItemsAsyncValue.when(
+    data: (items) => items.where((item) => outfit.clothingItemIds.contains(item.id)).toList(),
+    loading: () => [],
+    error: (_, __) => [],
+  );
+  
+  // Kombini kıyafetlerle birlikte döndür
+  return outfit.copyWith(clothingItems: outfitClothes);
+});
+
+// Firestore ve Storage servisleri için provider'lar
+final firestoreProvider = Provider<FirestoreService>((ref) {
+  return FirestoreService();
+});
+
+final storageProvider = Provider<StorageService>((ref) {
+  return StorageService();
 }); 

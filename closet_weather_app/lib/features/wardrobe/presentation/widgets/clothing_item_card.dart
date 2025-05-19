@@ -1,159 +1,127 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../presentation/screens/clothing_item_detail_screen.dart';
 
 class ClothingItemCard extends StatelessWidget {
   final ClothingItemModel item;
+  final VoidCallback? onTap;
   final VoidCallback? onDelete;
   
   const ClothingItemCard({
-    super.key,
+    Key? key,
     required this.item,
+    this.onTap,
     this.onDelete,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ClothingItemDetailScreen(item: item),
-          ),
-        );
-      },
+      onTap: onTap,
       child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        clipBehavior: Clip.antiAlias,
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Item image
-            SizedBox(
-              height: 160,
-              width: double.infinity,
-              child: item.imageUrl != null && item.imageUrl!.isNotEmpty
-                  ? Image.network(
-                      item.imageUrl!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return _buildImagePlaceholder();
-                      },
-                    )
-                  : _buildImagePlaceholder(),
+            // Kıyafet resmi veya placeholder
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12),
+                  ),
+                ),
+                child: item.imageUrl != null
+                    ? _buildImage(item.imageUrl!)
+                    : Center(
+                        child: Icon(
+                          _getIconForClothingType(item.type),
+                          size: 48,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+              ),
             ),
             
-            // Item info
+            // Kıyafet detayları
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Type and color indicator
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                      Expanded(
                         child: Text(
-                          _clothingTypeToString(item.type),
-                          style: TextStyle(
-                            fontSize: 12,
+                          item.name,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                            fontSize: 14,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Spacer(),
-                      if (item.colors.isNotEmpty) ...[
-                        for (int i = 0; i < item.colors.length && i < 3; i++)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: Container(
-                              width: 16,
-                              height: 16,
-                              decoration: BoxDecoration(
-                                color: _colorFromHex(item.colors[i]),
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.grey.shade200),
-                              ),
-                            ),
+                      if (onDelete != null)
+                        GestureDetector(
+                          onTap: onDelete,
+                          child: const Icon(
+                            Icons.delete_outline,
+                            size: 20,
+                            color: Colors.red,
                           ),
-                      ],
+                        ),
                     ],
                   ),
-                  
-                  const SizedBox(height: 8),
-                  
-                  // Item name
-                  Text(
-                    item.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  
                   const SizedBox(height: 4),
-                  
-                  // Brand and material
-                  if (item.brand != null || item.material != null)
-                    Text(
-                      [
-                        if (item.brand != null) item.brand,
-                        if (item.material != null) item.material,
-                      ].join(' • '),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                  Text(
+                    _getClothingTypeName(item.type),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 12,
+                        color: Colors.grey,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  
-                  const SizedBox(height: 8),
-                  
-                  // Seasons
-                  if (item.seasons.isNotEmpty)
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_today,
-                          size: 14,
-                          color: Theme.of(context).colorScheme.secondary,
+                      const SizedBox(width: 4),
+                      Text(
+                        _getSeasonsText(item.seasons),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[700],
                         ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            _getSeasonsText(item.seasons),
-                            style: Theme.of(context).textTheme.bodySmall,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  
-                  // Actions
-                  if (onDelete != null)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.delete_outline,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        onPressed: onDelete,
-                        tooltip: 'Sil',
-                        iconSize: 20,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
                       ),
-                    ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 4,
+                    children: item.colors.take(3).map((colorHex) {
+                      final color = Color(int.parse(colorHex.replaceFirst('#', '0xFF')));
+                      return Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
             ),
@@ -163,46 +131,108 @@ class ClothingItemCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImagePlaceholder() {
-    return ColoredBox(
-      color: Colors.grey.shade200,
-      child: Center(
-        child: Icon(
-          _getClothingTypeIcon(item.type),
-          size: 48,
-          color: Colors.grey.shade400,
+  Widget _buildImage(String path) {
+    // URL kontrolü
+    if (path.startsWith('http')) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+        child: Image.network(
+          path,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            debugPrint("Resim yüklenirken hata: $error");
+            return Center(
+              child: Icon(
+                _getIconForClothingType(item.type),
+                size: 48,
+                color: Colors.grey[700],
+              ),
+            );
+          },
         ),
-      ),
-    );
-  }
-
-  String _getSeasonsText(List<Season> seasons) {
-    if (seasons.length >= 4) {
-      return 'Tüm Mevsimler';
+      );
     } else {
-      return seasons.map((s) => _seasonToString(s)).join(', ');
-    }
-  }
-
-  String _seasonToString(Season season) {
-    switch (season) {
-      case Season.spring:
-        return 'İlkbahar';
-      case Season.summer:
-        return 'Yaz';
-      case Season.fall:
-        return 'Sonbahar';
-      case Season.winter:
-        return 'Kış';
-      case Season.all:
-        return 'Tüm Mevsimler';
+      // Yerel dosya kontrolü
+      final file = File(path.replaceFirst('file://', ''));
+      return ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+        child: FutureBuilder<bool>(
+          future: file.exists(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            if (snapshot.hasData && snapshot.data == true) {
+              return Image.file(
+                file,
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  debugPrint("Lokal resim yüklenirken hata: $error");
+                  return Center(
+                    child: Icon(
+                      _getIconForClothingType(item.type),
+                      size: 48,
+                      color: Colors.grey[700],
+                    ),
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Icon(
+                  _getIconForClothingType(item.type),
+                  size: 48,
+                  color: Colors.grey[700],
+                ),
+              );
+            }
+          },
+        ),
+      );
     }
   }
   
-  String _clothingTypeToString(ClothingType type) {
+  IconData _getIconForClothingType(ClothingType type) {
     switch (type) {
       case ClothingType.tShirt:
-        return 'Tişört';
+      case ClothingType.shirt:
+      case ClothingType.blouse:
+        return Icons.checkroom_outlined;
+      case ClothingType.sweater:
+      case ClothingType.jacket:
+      case ClothingType.coat:
+        return Icons.layers_outlined;
+      case ClothingType.jeans:
+      case ClothingType.pants:
+      case ClothingType.shorts:
+      case ClothingType.skirt:
+        return Icons.wallet_outlined;
+      case ClothingType.dress:
+        return Icons.checkroom_outlined;
+      case ClothingType.shoes:
+      case ClothingType.boots:
+        return Icons.snowshoeing_outlined;
+      case ClothingType.accessory:
+        return Icons.watch_outlined;
+      case ClothingType.hat:
+        return Icons.face_outlined;
+      case ClothingType.scarf:
+        return Icons.brightness_low_outlined;
+      case ClothingType.other:
+      default:
+        return Icons.checkroom_outlined;
+    }
+  }
+  
+  String _getClothingTypeName(ClothingType type) {
+    switch (type) {
+      case ClothingType.tShirt:
+        return 'T-Shirt';
       case ClothingType.shirt:
         return 'Gömlek';
       case ClothingType.blouse:
@@ -212,9 +242,9 @@ class ClothingItemCard extends StatelessWidget {
       case ClothingType.jacket:
         return 'Ceket';
       case ClothingType.coat:
-        return 'Mont';
+        return 'Mont/Kaban';
       case ClothingType.jeans:
-        return 'Kot';
+        return 'Kot Pantolon';
       case ClothingType.pants:
         return 'Pantolon';
       case ClothingType.shorts:
@@ -232,44 +262,32 @@ class ClothingItemCard extends StatelessWidget {
       case ClothingType.hat:
         return 'Şapka';
       case ClothingType.scarf:
-        return 'Atkı/Şal';
+        return 'Atkı/Eşarp';
       case ClothingType.other:
         return 'Diğer';
     }
   }
   
-  IconData _getClothingTypeIcon(ClothingType type) {
-    switch (type) {
-      case ClothingType.tShirt:
-      case ClothingType.shirt:
-      case ClothingType.blouse:
-      case ClothingType.sweater:
-        return Icons.checkroom;
-      case ClothingType.jacket:
-      case ClothingType.coat:
-        return Icons.layers;
-      case ClothingType.jeans:
-      case ClothingType.pants:
-      case ClothingType.shorts:
-      case ClothingType.skirt:
-        return Icons.shopping_bag;
-      case ClothingType.dress:
-        return Icons.accessibility_new;
-      case ClothingType.shoes:
-      case ClothingType.boots:
-        return Icons.snowshoeing;
-      case ClothingType.accessory:
-      case ClothingType.hat:
-      case ClothingType.scarf:
-        return Icons.watch;
-      case ClothingType.other:
-      default:
-        return Icons.checkroom;
+  String _getSeasonsText(List<Season> seasons) {
+    if (seasons.contains(Season.all)) {
+      return 'Tüm Sezonlar';
     }
-  }
-  
-  Color _colorFromHex(String hexColor) {
-    final hexCode = hexColor.replaceAll('#', '');
-    return Color(int.parse('FF$hexCode', radix: 16));
+    
+    final seasonNames = seasons.map((s) {
+      switch (s) {
+        case Season.spring:
+          return 'İlkb';
+        case Season.summer:
+          return 'Yaz';
+        case Season.fall:
+          return 'Sonb';
+        case Season.winter:
+          return 'Kış';
+        case Season.all:
+          return 'Tüm';
+      }
+    }).join(', ');
+    
+    return seasonNames;
   }
 } 

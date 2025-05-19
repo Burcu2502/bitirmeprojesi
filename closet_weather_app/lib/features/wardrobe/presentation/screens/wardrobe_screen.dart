@@ -94,7 +94,13 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
           
           // Kıyafet listesi
           Expanded(
-            child: _buildClothingGrid(filteredItems),
+            child: filteredItems.when(
+              data: (items) => _buildClothingGrid(items),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(
+                child: Text('Kıyafetler yüklenirken hata: $error'),
+              ),
+            ),
           ),
         ],
       ),

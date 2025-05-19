@@ -121,17 +121,24 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
         throw Exception('Kullanıcı oturumu bulunamadı');
       }
       
+      // Debug log ekleyelim
+      debugPrint("📸 Resim yükleme başlıyor...");
+      
       // Resmi Firebase Storage'a yükle
       final imageUrl = await _storageService.uploadClothingImage(userId, _imageFile!);
+      
+      debugPrint("✅ Resim yüklendi: $imageUrl");
       
       // Renk kodlarını elde et
       final List<String> colorHexCodes = _detectedColors.map((color) => 
         '#${color.value.toRadixString(16).substring(2, 8)}'
       ).toList();
       
-      // Kıyafet nesnesini oluştur
+      debugPrint("🎭 Kıyafet nesnesi oluşturuluyor...");
+      
+      // Kıyafet nesnesini oluştur - UUID burada üretmek yerine Firestore'un döndürdüğü ID'yi kullanacağız
       final clothingItem = ClothingItemModel(
-        id: const Uuid().v4(),
+        id: const Uuid().v4(), // Bu ID Firestore tarafından değiştirilecek
         userId: userId,
         name: _nameController.text.trim(),
         type: _selectedType,
@@ -144,23 +151,31 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
         updatedAt: DateTime.now(),
       );
       
-      // Firestore'a kaydet
-      await _firestoreService.addClothingItem(clothingItem);
+      debugPrint("💾 Firestore'a kayıt yapılıyor...");
       
-      if (mounted) {
-        Navigator.pop(context, true); // Başarılı olduğunda true döndür
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Kıyafet kaydedilemedi: $e')),
-        );
-      }
-    } finally {
+      // Firestore'a kaydet
+      final itemId = await _firestoreService.addClothingItem(clothingItem);
+      
+      debugPrint("✅ Kıyafet kaydedildi: $itemId");
+      
       if (mounted) {
         setState(() {
           _isLoading = false;
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Kıyafet başarıyla kaydedildi')),
+        );
+        Navigator.pop(context, true); // Başarılı olduğunda true döndür
+      }
+    } catch (e) {
+      debugPrint("❌ Kıyafet kaydedilemedi: $e");
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Kıyafet kaydedilemedi: $e')),
+        );
       }
     }
   }

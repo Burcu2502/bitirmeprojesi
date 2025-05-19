@@ -14,42 +14,71 @@ class OutfitRecommendationService {
     WeatherModel weather,
     {String? skinTone}
   ) {
+    // Kıyafet kontrolü - eğer hiç kıyafet yoksa boş liste döndür
+    if (availableItems.isEmpty) {
+      return [];
+    }
+
     // Hava durumuna uygun kıyafet tiplerini belirle
     final List<ClothingType> suitableTypes = _getSuitableClothingTypes(weather);
     
-    // Hava durumuna uygun mevsimleri belirle
+    // Hava durumuna uygun mevsimleri belirle (Tüm Sezonlar dahil)
     final List<Season> suitableSeasons = _getSuitableSeasonsForWeather(weather);
+    // Her zaman tüm sezonları kabul et
+    if (!suitableSeasons.contains(Season.all)) {
+      suitableSeasons.add(Season.all);
+    }
+    
+    // DEBUG: Mevsimler hakkında log
+    debugPrint("🌍 Hava durumuna uygun mevsimler: $suitableSeasons");
+    
+    // Filtrele ama mevsim uyumsuzluğunda bile en az bir kıyafet seç
     
     // Uygun üst giyim kıyafetlerini seç
-    final uppers = availableItems.where((item) => 
+    var uppers = availableItems.where((item) => 
       suitableTypes.contains(item.type) &&
       _isUpperClothing(item.type) &&
       item.seasons.any((season) => suitableSeasons.contains(season))
     ).toList();
     
+    // Eğer uygun üst giyim yoksa, mevsim filtresini kaldır
+    if (uppers.isEmpty) {
+      uppers = availableItems.where((item) => 
+        _isUpperClothing(item.type)
+      ).toList();
+    }
+    
     // Uygun alt giyim kıyafetlerini seç
-    final lowers = availableItems.where((item) => 
+    var lowers = availableItems.where((item) => 
       suitableTypes.contains(item.type) &&
       _isLowerClothing(item.type) &&
       item.seasons.any((season) => suitableSeasons.contains(season))
     ).toList();
     
+    // Eğer uygun alt giyim yoksa, mevsim filtresini kaldır
+    if (lowers.isEmpty) {
+      lowers = availableItems.where((item) => 
+        _isLowerClothing(item.type)
+      ).toList();
+    }
+    
     // Uygun ayakkabıları seç
     final shoes = availableItems.where((item) => 
-      suitableTypes.contains(item.type) &&
-      (item.type == ClothingType.shoes || item.type == ClothingType.boots) &&
-      item.seasons.any((season) => suitableSeasons.contains(season))
+      (item.type == ClothingType.shoes || item.type == ClothingType.boots)
     ).toList();
     
     // Uygun dış giyimleri seç
     final outwear = availableItems.where((item) => 
-      suitableTypes.contains(item.type) &&
-      _isOuterwear(item.type) &&
-      item.seasons.any((season) => suitableSeasons.contains(season))
+      _isOuterwear(item.type)
     ).toList();
+    
+    // Bulunan kıyafetleri logla
+    debugPrint("👚 Bulunan üst giyim sayısı: ${uppers.length}");
+    debugPrint("👖 Bulunan alt giyim sayısı: ${lowers.length}");
     
     // Eğer yeterli kıyafet yoksa boş liste döndür
     if (uppers.isEmpty || lowers.isEmpty) {
+      debugPrint("⚠️ Yeterli kıyafet bulunamadı, kombin oluşturulamadı");
       return [];
     }
     
@@ -57,33 +86,27 @@ class OutfitRecommendationService {
     List<ClothingItemModel> recommendation = [];
     
     // Üst giyim seç
-    final upper = _selectBestUpperForWeather(uppers, weather);
+    final upper = uppers.isNotEmpty ? uppers.first : null;
     if (upper != null) {
       recommendation.add(upper);
     }
     
-    // Üst giyime en uygun alt giyimi seç
-    if (upper != null && lowers.isNotEmpty) {
-      final lower = _selectMatchingLower(upper, lowers, skinTone);
-      if (lower != null) {
-        recommendation.add(lower);
-      }
+    // Alt giyim seç
+    final lower = lowers.isNotEmpty ? lowers.first : null;
+    if (lower != null) {
+      recommendation.add(lower);
     }
     
     // Hava durumuna göre dış giyim ekle
     if (outwear.isNotEmpty && _needsOuterwear(weather)) {
-      final outerwearItem = _selectMatchingOuterwear(recommendation, outwear);
-      if (outerwearItem != null) {
-        recommendation.add(outerwearItem);
-      }
+      final outerwearItem = outwear.first;
+      recommendation.add(outerwearItem);
     }
     
     // Ayakkabı ekle
     if (shoes.isNotEmpty) {
-      final shoe = _selectMatchingShoes(recommendation, shoes);
-      if (shoe != null) {
-        recommendation.add(shoe);
-      }
+      final shoe = shoes.first;
+      recommendation.add(shoe);
     }
     
     return recommendation;

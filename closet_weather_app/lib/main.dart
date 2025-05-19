@@ -9,34 +9,41 @@ import 'features/auth/presentation/screens/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Firebase'i başlat
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  
-  // NOT: setPersistence sadece web platformunda çalışır, 
-  // mobil platformlarda (Android/iOS) oturum bilgileri otomatik olarak saklanır
-  
-  // Firebase Auth'ın mevcut oturum durumunu kontrol et
-  final currentUser = FirebaseAuth.instance.currentUser;
-  debugPrint("🔄 Firebase Auth kontrol edildi: ${currentUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
-  if (currentUser != null) {
-    debugPrint("✅ Mevcut kullanıcı bulundu: ${currentUser.uid}, ${currentUser.email}");
-  }
-  
-  // Firebase App Check'i başlat - Debug modunda çalıştığından hata mesajları görmezden gelinecek
+  // Firebase'i başlat - çift başlatma hatasını önle
   try {
-    await FirebaseAppCheck.instance.activate(
-      // Debug provider'ı ilk sıraya alarak öncelik veriyoruz
-      androidProvider: AndroidProvider.debug,
-      appleProvider: AppleProvider.debug,
-      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    );
-    debugPrint("✅ Firebase App Check başarıyla etkinleştirildi");
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      debugPrint("✅ Firebase başarıyla başlatıldı");
+    } else {
+      Firebase.app(); // Zaten başlatılmışsa mevcut uygulamayı kullan
+      debugPrint("ℹ️ Firebase zaten başlatılmış, mevcut örnek kullanılıyor");
+    }
+    
+    // Firebase Auth'ın mevcut oturum durumunu kontrol et
+    final currentUser = FirebaseAuth.instance.currentUser;
+    debugPrint("🔄 Firebase Auth kontrol edildi: ${currentUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
+    if (currentUser != null) {
+      debugPrint("✅ Mevcut kullanıcı bulundu: ${currentUser.uid}, ${currentUser.email}");
+    }
+    
+    // Firebase App Check'i başlat - Debug modunda çalıştığından hata mesajları görmezden gelinecek
+    try {
+      await FirebaseAppCheck.instance.activate(
+        // Debug provider'ı ilk sıraya alarak öncelik veriyoruz
+        androidProvider: AndroidProvider.debug,
+        appleProvider: AppleProvider.debug,
+        webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+      );
+      debugPrint("✅ Firebase App Check başarıyla etkinleştirildi");
+    } catch (e) {
+      // Geliştirme ortamında App Check hataları kritik değil, devam edebiliriz
+      debugPrint("⚠️ Firebase App Check etkinleştirilemedi: $e");
+      debugPrint("ℹ️ Geliştirme ortamında bu hata görmezden gelinebilir");
+    }
   } catch (e) {
-    // Geliştirme ortamında App Check hataları kritik değil, devam edebiliriz
-    debugPrint("⚠️ Firebase App Check etkinleştirilemedi: $e");
-    debugPrint("ℹ️ Geliştirme ortamında bu hata görmezden gelinebilir");
+    debugPrint("❌ Firebase başlatılırken hata oluştu: $e");
   }
   
   runApp(
@@ -73,3 +80,4 @@ class ClosetWeatherApp extends ConsumerWidget {
     );
   }
 }
+                                      

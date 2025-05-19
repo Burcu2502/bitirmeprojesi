@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/models/outfit_model.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../presentation/screens/outfit_detail_screen.dart';
+import 'dart:io';
 
 class OutfitCard extends StatelessWidget {
   final OutfitModel outfit;
@@ -143,25 +144,62 @@ class OutfitCard extends StatelessWidget {
     return Row(
       children: displayItems.map((item) {
         return Expanded(
-          child: Image.network(
-            item.imageUrl!,
-            fit: BoxFit.cover,
-            height: 150,
-            errorBuilder: (context, error, stackTrace) {
-              return ColoredBox(
-                color: Colors.grey.shade200,
-                child: Center(
-                  child: Icon(
-                    _getClothingTypeIcon(item.type),
-                    size: 30,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              );
-            },
-          ),
+          child: _buildItemImage(item),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildItemImage(ClothingItemModel item) {
+    final String path = item.imageUrl!;
+    
+    if (path.startsWith('http')) {
+      // URL resmi
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        height: 150,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildImageErrorPlaceholder(item.type);
+        },
+      );
+    } else {
+      // Yerel dosya
+      final file = File(path.replaceFirst('file://', ''));
+      return FutureBuilder<bool>(
+        future: file.exists(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          if (snapshot.hasData && snapshot.data == true) {
+            return Image.file(
+              file,
+              fit: BoxFit.cover,
+              height: 150,
+              errorBuilder: (context, error, stackTrace) {
+                return _buildImageErrorPlaceholder(item.type);
+              },
+            );
+          } else {
+            return _buildImageErrorPlaceholder(item.type);
+          }
+        },
+      );
+    }
+  }
+
+  Widget _buildImageErrorPlaceholder(ClothingType type) {
+    return ColoredBox(
+      color: Colors.grey.shade200,
+      child: Center(
+        child: Icon(
+          _getClothingTypeIcon(type),
+          size: 30,
+          color: Colors.grey.shade600,
+        ),
+      ),
     );
   }
 
