@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/user_model.dart';
 import 'firestore_service.dart';
 
@@ -89,36 +91,95 @@ class AuthService {
       debugPrint("👤 Google kullanıcı ID: ${googleUser.id}");
       
       // Google ile kimlik doğrulama detaylarını al
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      debugPrint("✅ Google authentication başarılı, idToken alındı: ${googleAuth.idToken != null}");
+      debugPrint("✅ Google accessToken alındı: ${googleAuth.accessToken != null}");
+      
+      // Firebase ile giriş için kimlik bilgisi oluştur
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      
+      debugPrint("🔄 Firebase credential oluşturuldu, Firebase'e giriş yapılıyor...");
+      
+      // Firebase ile giriş yap
       try {
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-        debugPrint("✅ Google authentication başarılı, idToken alındı: ${googleAuth.idToken != null}");
-        debugPrint("✅ Google accessToken alındı: ${googleAuth.accessToken != null}");
+        // PigeonUserDetails hatasını bypass etmek için, direkt erişim sağlayalım
+        // Problem, signInWithCredential metodunda
         
-        // Firebase ile giriş için kimlik bilgisi oluştur
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
+        // ÇÖZÜM: Kullanıcı zaten giriş yapmış mı kontrol edelim
+        User? currentUser = _auth.currentUser;
+        if (currentUser != null) {
+          debugPrint("✅ Kullanıcı zaten giriş yapmış: ${currentUser.uid}");
+          
+          // Firestore'dan kullanıcı bilgilerini al
+          final userData = await _firestoreService.getUser(currentUser.uid);
+          
+          if (userData == null) {
+            // Kullanıcı Firestore'da yoksa oluştur
+            final newUser = UserModel(
+              id: currentUser.uid,
+              email: googleUser.email,
+              name: googleUser.displayName ?? 'Google Kullanıcısı',
+              photoUrl: googleUser.photoUrl,
+              skinTone: null,
+              stylePreferences: [],
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            );
+            
+            await _firestoreService.createUser(newUser);
+          }
+          
+          // Kullanıcı zaten giriş yapmış, o zaman direkt hata fırlatalım
+          _throwPigeonHandledError(currentUser);
+        }
         
-        debugPrint("🔄 Firebase credential oluşturuldu, Firebase'e giriş yapılıyor...");
-        
-        // Firebase ile giriş yap
+        // Kullanıcı giriş yapmamışsa, credential ile giriş yapalım
         try {
           final userCredential = await _auth.signInWithCredential(credential);
           debugPrint("✅ Firebase giriş başarılı: ${userCredential.user?.uid}");
           return userCredential;
-        } catch (firebaseError) {
-          debugPrint("❌ Firebase giriş hatası: $firebaseError");
-          throw Exception('Firebase giriş hatası: $firebaseError');
+        } catch (e) {
+          // PigeonUserDetails hatası alınırsa, firebaseAuth instance'ı sıfırlayarak tekrar deneyelim
+          if (e.toString().contains("PigeonUserDetails")) {
+            debugPrint("⚠️ PigeonUserDetails hatası tespit edildi, alternatif yöntem deneniyor");
+            
+            // Kullanıcı giriş yapmış mı tekrar kontrol edelim
+            currentUser = _auth.currentUser;
+            if (currentUser != null) {
+              debugPrint("✅ Hata sonrası kullanıcı oturumu tespit edildi: ${currentUser.uid}");
+              
+              // Özel hata fırlat
+              _throwPigeonHandledError(currentUser);
+            }
+            
+            throw Exception("Firebase Authentication hatası: PigeonUserDetails hatası sonrası kullanıcı bulunamadı");
+          }
+          
+          throw e;
         }
-      } catch (authError) {
-        debugPrint("❌ Google authentication hatası: $authError");
-        throw Exception('Google kimlik doğrulama hatası: $authError');
+      } catch (e) {
+        debugPrint("❌ Firebase giriş hatası: $e");
+        throw Exception('Firebase giriş hatası: $e');
       }
     } catch (e) {
       debugPrint("❌ Google ile giriş yaparken genel hata: $e");
       throw Exception('Google ile giriş yaparken bir hata oluştu: $e');
     }
+  }
+  
+  // Helper method: Pigeon hatası için özel bir hata fırlat
+  // Bu hata yukarıda AuthNotifier tarafından ele alınacak
+  void _throwPigeonHandledError(User user) {
+    debugPrint("🔄 Pigeon hatasını bypass ediyoruz. Kullanıcı: ${user.uid}");
+    
+    // Özel bir hata fırlat
+    throw FirebaseAuthException(
+      code: 'pigeon-error-handled',
+      message: 'Pigeon hatası nedeniyle UserCredential oluşturulamıyor, ancak kullanıcı oturumu açık: ${user.uid}'
+    );
   }
 
   // Kullanıcının Firestore'da olup olmadığını kontrol et

@@ -13,12 +13,20 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  // Firebase App Check'i başlat
-  await FirebaseAppCheck.instance.activate(
-    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest,
-  );
+  // Firebase App Check'i başlat - Debug modunda çalıştığından hata mesajları görmezden gelinecek
+  try {
+    await FirebaseAppCheck.instance.activate(
+      // Debug provider'ı ilk sıraya alarak öncelik veriyoruz
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.debug,
+      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    );
+    debugPrint("✅ Firebase App Check başarıyla etkinleştirildi");
+  } catch (e) {
+    // Geliştirme ortamında App Check hataları kritik değil, devam edebiliriz
+    debugPrint("⚠️ Firebase App Check etkinleştirilemedi: $e");
+    debugPrint("ℹ️ Geliştirme ortamında bu hata görmezden gelinebilir");
+  }
   
   runApp(
     const ProviderScope(
