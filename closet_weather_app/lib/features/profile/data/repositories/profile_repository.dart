@@ -182,7 +182,15 @@ class ProfileRepository {
         password: currentPassword,
       );
       
-      await currentUser.reauthenticateWithCredential(credential);
+      try {
+        await currentUser.reauthenticateWithCredential(credential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-credential' || e.code == 'wrong-password') {
+          debugPrint('❌ Mevcut şifre doğrulanamadı: ${e.code}');
+          return false;
+        }
+        rethrow; // Diğer hataları yeniden fırlat
+      }
       
       // Yeni parolayı ayarla
       await currentUser.updatePassword(newPassword);
@@ -211,7 +219,15 @@ class ProfileRepository {
         password: password,
       );
       
-      await currentUser.reauthenticateWithCredential(credential);
+      try {
+        await currentUser.reauthenticateWithCredential(credential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-credential' || e.code == 'wrong-password') {
+          debugPrint('❌ Mevcut şifre doğrulanamadı: ${e.code}');
+          return false;
+        }
+        rethrow; // Diğer hataları yeniden fırlat
+      }
       
       // Firestore'dan kullanıcı verilerini sil
       await _firestore.collection('users').doc(currentUser.uid).delete();

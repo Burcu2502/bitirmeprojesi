@@ -57,7 +57,8 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
     
     await showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
+      barrierDismissible: false, // Dialog dışına tıklayarak kapatmayı engelle
+      builder: (dialogContext) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
           title: const Text('Şifreyi Değiştir'),
           content: SingleChildScrollView(
@@ -112,7 +113,12 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      // Modalı kapat, doğrudan dialogContext kullan
+                      Navigator.of(dialogContext).pop();
+                    },
               child: const Text('İptal'),
             ),
             ElevatedButton(
@@ -158,8 +164,8 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
                         );
                         
                         if (success) {
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
+                          if (dialogContext.mounted) {
+                            Navigator.of(dialogContext).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Şifreniz başarıyla değiştirildi'),
@@ -176,7 +182,11 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
                       } catch (e) {
                         setState(() {
                           isLoading = false;
-                          errorText = 'Hata: $e';
+                          if (e.toString().contains('invalid-credential') || e.toString().contains('wrong-password')) {
+                            errorText = 'Mevcut şifreniz doğru değil.';
+                          } else {
+                            errorText = 'Hata: $e';
+                          }
                         });
                       }
                     },
@@ -207,7 +217,8 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
     
     await showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
+      barrierDismissible: false, // Dialog dışına tıklayarak kapatmayı engelle
+      builder: (dialogContext) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
           title: const Text('Hesabı Sil'),
           content: SingleChildScrollView(
@@ -250,7 +261,12 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      // Modalı kapat, doğrudan dialogContext kullan
+                      Navigator.of(dialogContext).pop();
+                    },
               child: const Text('İptal'),
             ),
             ElevatedButton(
@@ -275,8 +291,8 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
                         );
                         
                         if (success) {
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
+                          if (dialogContext.mounted) {
+                            Navigator.of(dialogContext).pop();
                             // Ana ekrana yönlendir
                             Navigator.of(context).popUntil((route) => route.isFirst);
                           }
@@ -289,7 +305,11 @@ class _ProfileSecurityState extends ConsumerState<ProfileSecurity> {
                       } catch (e) {
                         setState(() {
                           isLoading = false;
-                          errorText = 'Hata: $e';
+                          if (e.toString().contains('invalid-credential') || e.toString().contains('wrong-password')) {
+                            errorText = 'Şifreniz doğru değil.';
+                          } else {
+                            errorText = 'Hata: $e';
+                          }
                         });
                       }
                     },

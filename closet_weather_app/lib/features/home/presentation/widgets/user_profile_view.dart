@@ -10,6 +10,16 @@ class UserProfileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final userData = authState.userData;
+    
+    // Fotoğraf URL'sini güvenli bir şekilde kontrol et
+    String? photoUrl;
+    
+    try {
+      photoUrl = userData?.photoUrl;
+    } catch (e) {
+      debugPrint('❌ Fotoğraf URL alınırken hata: $e');
+      photoUrl = null;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -22,10 +32,10 @@ class UserProfileView extends ConsumerWidget {
           CircleAvatar(
             radius: 50,
             backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-            backgroundImage: userData?.photoUrl != null
-                ? NetworkImage(userData!.photoUrl!)
+            backgroundImage: photoUrl != null && photoUrl.isNotEmpty
+                ? NetworkImage(photoUrl)
                 : null,
-            child: userData?.photoUrl == null
+            child: photoUrl == null || photoUrl.isEmpty
                 ? Icon(
                     Icons.person,
                     size: 50,
@@ -116,7 +126,18 @@ class UserProfileView extends ConsumerWidget {
               icon: const Icon(Icons.logout),
               label: const Text('Çıkış Yap'),
               onPressed: () async {
-                await ref.read(authProvider.notifier).signOut();
+                try {
+                  await ref.read(authProvider.notifier).signOut();
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Çıkış yapılırken hata oluştu: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
               },
             ),
           ),

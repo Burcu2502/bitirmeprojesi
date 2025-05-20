@@ -28,13 +28,11 @@ void main() async {
       debugPrint("✅ Mevcut kullanıcı bulundu: ${currentUser.uid}, ${currentUser.email}");
     }
     
-    // Firebase App Check'i başlat - Debug modunda çalıştığından hata mesajları görmezden gelinecek
+    // Firebase App Check'i başlat - Debug modunda çalıştırıyoruz
     try {
       await FirebaseAppCheck.instance.activate(
-        // Debug provider'ı ilk sıraya alarak öncelik veriyoruz
         androidProvider: AndroidProvider.debug,
         appleProvider: AppleProvider.debug,
-        webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
       );
       debugPrint("✅ Firebase App Check başarıyla etkinleştirildi");
     } catch (e) {

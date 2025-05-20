@@ -66,6 +66,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           case 'user-disabled':
             _errorMessage = 'Bu kullanıcı hesabı devre dışı bırakılmış.';
             break;
+          case 'invalid-credential':
+            _errorMessage = 'Geçersiz kimlik bilgileri. Lütfen e-posta ve şifrenizi kontrol edin.';
+            break;
           default:
             _errorMessage = 'Giriş yaparken bir hata oluştu: ${e.message}';
         }
