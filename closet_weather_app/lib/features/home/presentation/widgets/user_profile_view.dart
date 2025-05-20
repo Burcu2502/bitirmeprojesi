@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
+import '../../../profile/presentation/screens/style_preferences_screen.dart';
 
 class UserProfileView extends ConsumerWidget {
   const UserProfileView({Key? key}) : super(key: key);
@@ -81,10 +82,10 @@ class UserProfileView extends ConsumerWidget {
             icon: Icons.style_outlined,
             title: 'Stil Tercihlerim',
             onTap: () {
-              // Stil tercihleri sayfasına git
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Bu özellik henüz hazır değil'),
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => const StylePreferencesScreen(),
                 ),
               );
             },

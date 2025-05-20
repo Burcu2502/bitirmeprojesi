@@ -136,6 +136,48 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       return false;
     }
   }
+  
+  // Tercihleri güncelle
+  Future<bool> updatePreferences(Map<String, dynamic> preferences) async {
+    if (state.profile == null) {
+      debugPrint('❌ Güncellenecek profil bulunamadı');
+      return false;
+    }
+    
+    state = state.copyWith(status: ProfileStatus.loading);
+    
+    try {
+      final updatedProfile = state.profile!.copyWith(
+        preferences: preferences,
+        updatedAt: DateTime.now(),
+      );
+      
+      final success = await _repository.saveProfile(updatedProfile);
+      
+      if (success) {
+        state = state.copyWith(
+          status: ProfileStatus.loaded,
+          profile: updatedProfile,
+        );
+        debugPrint('✅ Profil tercihleri güncellendi');
+        return true;
+      } else {
+        state = state.copyWith(
+          status: ProfileStatus.error,
+          errorMessage: 'Profil tercihleri güncellenemedi',
+        );
+        debugPrint('❌ Profil tercihleri güncellenemedi');
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        status: ProfileStatus.error,
+        errorMessage: 'Profil tercihleri güncellenirken hata oluştu: $e',
+      );
+      debugPrint('❌ Profil tercihleri güncelleme hatası: $e');
+      return false;
+    }
+  }
 
   // Profil fotoğrafını güncelle
   Future<bool> updateProfilePhoto(String photoURL) async {
