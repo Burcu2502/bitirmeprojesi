@@ -11,24 +11,25 @@ class StylePreferencesScreen extends ConsumerStatefulWidget {
 }
 
 class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen> {
-  final List<String> availableStyles = [
-    'Casual',
-    'Formal',
-    'Sporty',
-    'Minimalist',
-    'Romantic',
-    'Vintage',
-    'Bohemian',
-    'Classic',
-    'Streetwear',
-    'Elegant',
-    'Retro',
-    'Business Casual',
-    'Smart',
-    'Preppy',
-    'Grunge',
-    'Gothic',
-    'Rock',
+  // Stillerin çevirileri için anahtar listesi
+  final List<String> availableStyleKeys = [
+    'casual',
+    'formal',
+    'sporty',
+    'minimalist',
+    'romantic',
+    'vintage',
+    'bohemian',
+    'classic',
+    'streetwear',
+    'elegant',
+    'retro',
+    'businessCasual',
+    'smart',
+    'preppy',
+    'grunge',
+    'gothic',
+    'rock',
   ];
   
   Set<String> selectedStyles = {};
@@ -54,83 +55,91 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Başlık ve Açıklama
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'stylePreferences.myStylePreferences'.tr(),
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'stylePreferences.selectStyles'.tr(),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    itemCount: availableStyles.length,
-                    itemBuilder: (context, index) {
-                      final style = availableStyles[index];
-                      final isSelected = selectedStyles.contains(style);
-                      
-                      return _buildStyleTile(style, isSelected);
-                    },
-                  ),
-                ),
-                
-                // Seçilen stil bilgisi
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'stylePreferences.selectedCount'.tr() + ' ${selectedStyles.length}/${availableStyles.length}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(height: 8),
+                      // Seçim bilgisi
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Alt kısımdaki kaydet butonu
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _isSaving ? null : _savePreferences,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        child: Text(
+                          'stylePreferences.selectedCount'.tr() + ' ${selectedStyles.length}/${availableStyleKeys.length}',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
-                          child: _isSaving
-                              ? const SizedBox(
-                                  width: 20, 
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : Text(
-                                  'stylePreferences.save'.tr(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
                         ),
                       ),
                     ],
+                  ),
+                ),
+                
+                // Stil listesi
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      itemCount: availableStyleKeys.length,
+                      itemBuilder: (context, index) {
+                        final styleKey = availableStyleKeys[index];
+                        final isSelected = selectedStyles.contains(styleKey);
+                        
+                        return _buildStyleTile(styleKey, isSelected);
+                      },
+                    ),
+                  ),
+                ),
+                
+                // Kaydet butonu
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isSaving ? null : _savePreferences,
+                      child: _isSaving
+                          ? SizedBox(
+                              width: 24, 
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            )
+                          : Text(
+                              'stylePreferences.save'.tr(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
                   ),
                 ),
               ],
@@ -163,21 +172,59 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
     }
   }
   
-  Widget _buildStyleTile(String style, bool isSelected) {
-    return ListTile(
-      title: Text(style),
-      trailing: isSelected
-          ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
-          : const Icon(Icons.circle_outlined, color: Colors.grey),
-      onTap: () {
-        setState(() {
-          if (isSelected) {
-            selectedStyles.remove(style);
-          } else {
-            selectedStyles.add(style);
-          }
-        });
-      },
+  // Stil anahtarından görünen metin oluştur
+  String _getTranslatedStyleName(String styleKey) {
+    // Çeviri anahtarını oluştur
+    final translationKey = 'styles.$styleKey';
+    
+    // Çeviriyi kontrol et
+    if (translationKey.tr() != translationKey) {
+      // Çeviri varsa kullan
+      return translationKey.tr();
+    } else {
+      // Çeviri yoksa, anahtarı büyük harfle başlat
+      return styleKey.substring(0, 1).toUpperCase() + styleKey.substring(1);
+    }
+  }
+  
+  Widget _buildStyleTile(String styleKey, bool isSelected) {
+    final styleName = _getTranslatedStyleName(styleKey);
+    
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      child: Card(
+        elevation: 0,
+        color: isSelected 
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: ListTile(
+          title: Text(
+            styleName,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              color: isSelected 
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          trailing: isSelected
+              ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
+              : Icon(Icons.circle_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5)),
+          onTap: () {
+            setState(() {
+              if (isSelected) {
+                selectedStyles.remove(styleKey);
+              } else {
+                selectedStyles.add(styleKey);
+              }
+            });
+          },
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        ),
+      ),
     );
   }
   
@@ -210,7 +257,11 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('general.success'.tr()),
-              backgroundColor: Colors.green,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           );
           Navigator.pop(context);
@@ -218,7 +269,11 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('general.error'.tr()),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           );
         }
@@ -228,7 +283,11 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${tr('general.error')}: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }

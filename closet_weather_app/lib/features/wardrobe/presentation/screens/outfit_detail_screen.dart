@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/outfit_model.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../core/models/weather_model.dart';
 import '../../../../shared/widgets/custom_button.dart';
+import '../providers/wardrobe_provider.dart';
 import 'dart:io';
 
-class OutfitDetailScreen extends StatelessWidget {
+class OutfitDetailScreen extends ConsumerWidget {
   final OutfitModel outfit;
   final List<ClothingItemModel> clothingItems;
   
@@ -16,7 +18,7 @@ class OutfitDetailScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(outfit.name),
@@ -382,13 +384,31 @@ class OutfitDetailScreen extends StatelessWidget {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            onPressed: () {
-              // TODO: Implement delete functionality
-              Navigator.of(context).pop();
-              Navigator.of(context).pop(); // Navigate back after delete
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Kombin silindi')),
-              );
+            onPressed: () async {
+              try {
+                // Kombini sil
+                final outfitsNotifier = ProviderScope.containerOf(context).read(outfitsProvider.notifier);
+                await outfitsNotifier.deleteOutfit(outfit.id);
+                
+                // Dialogları kapat
+                if (context.mounted) Navigator.of(context).pop();
+                if (context.mounted) Navigator.of(context).pop(); // Outfit detail ekranından çık
+                
+                // Bildirim göster
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Kombin başarıyla silindi')),
+                  );
+                }
+              } catch (e) {
+                // Hata durumunda
+                if (context.mounted) Navigator.of(context).pop();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Kombin silinirken hata oluştu: $e')),
+                  );
+                }
+              }
             },
             child: const Text('Sil'),
           ),

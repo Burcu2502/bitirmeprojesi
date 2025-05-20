@@ -175,7 +175,7 @@ class ClothingItemsNotifier extends StateNotifier<AsyncValue<List<ClothingItemMo
   
   Future<void> deleteItem(String id) async {
     try {
-      await _firestoreService.deleteClothingItem(id);
+      await _firestoreService.deleteClothingItem(_userId!, id);
       loadItems(); // Listeyi yeniden yükle
     } catch (e) {
       rethrow;
@@ -185,48 +185,71 @@ class ClothingItemsNotifier extends StateNotifier<AsyncValue<List<ClothingItemMo
 
 // Kombin listesi provider
 final outfitsProvider = StateNotifierProvider<OutfitsNotifier, List<OutfitModel>>((ref) {
-  return OutfitsNotifier();
+  final firestoreService = ref.watch(firestoreProvider);
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  
+  return OutfitsNotifier(firestoreService, userId);
 });
 
 // Kombin listesini yöneten notifier
 class OutfitsNotifier extends StateNotifier<List<OutfitModel>> {
-  OutfitsNotifier() : super([]) {
-    // Başlangıçta demo verileri yükle
+  final FirestoreService _firestoreService;
+  final String? _userId;
+  
+  OutfitsNotifier(this._firestoreService, this._userId) : super([]) {
+    // Başlangıçta verileri yükle
     loadOutfits();
   }
 
-  void loadOutfits() {
-    // Gerçek uygulamada: Veritabanından veya API'den yükleme
-    final now = DateTime.now();
-    state = [
-      OutfitModel(
-        id: '1',
-        userId: 'user1',
-        name: 'Günlük Kombin',
-        description: 'Rahat günlük kullanım için',
-        clothingItemIds: ['1', '2'],
-        seasons: [Season.spring, Season.summer],
-        weatherConditions: [WeatherCondition.sunny, WeatherCondition.partlyCloudy],
-        occasion: Occasion.casual,
-        createdAt: now,
-        updatedAt: now,
-      ),
-    ];
+  Future<void> loadOutfits() async {
+    if (_userId == null) {
+      state = [];
+      return;
+    }
+    
+    try {
+      final outfits = await _firestoreService.getUserOutfits(_userId!);
+      state = outfits;
+    } catch (e) {
+      debugPrint("❌ Kombin yükleme hatası: $e");
+      state = [];
+    }
   }
 
-  void addOutfit(OutfitModel outfit) {
-    state = [...state, outfit];
+  Future<void> addOutfit(OutfitModel outfit) async {
+    if (_userId == null) return;
+    
+    try {
+      await _firestoreService.addOutfit(outfit);
+      loadOutfits(); // Listeyi yeniden yükle
+    } catch (e) {
+      debugPrint("❌ Kombin ekleme hatası: $e");
+      rethrow;
+    }
   }
 
-  void updateOutfit(OutfitModel outfit) {
-    state = [
-      for (final existingOutfit in state)
-        if (existingOutfit.id == outfit.id) outfit else existingOutfit
-    ];
+  Future<void> updateOutfit(OutfitModel outfit) async {
+    if (_userId == null) return;
+    
+    try {
+      await _firestoreService.updateOutfit(outfit);
+      loadOutfits(); // Listeyi yeniden yükle
+    } catch (e) {
+      debugPrint("❌ Kombin güncelleme hatası: $e");
+      rethrow;
+    }
   }
 
-  void deleteOutfit(String id) {
-    state = state.where((outfit) => outfit.id != id).toList();
+  Future<void> deleteOutfit(String id) async {
+    if (_userId == null) return;
+    
+    try {
+      await _firestoreService.deleteOutfit(_userId!, id);
+      loadOutfits(); // Listeyi yeniden yükle
+    } catch (e) {
+      debugPrint("❌ Kombin silme hatası: $e");
+      rethrow;
+    }
   }
 }
 

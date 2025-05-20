@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/providers/theme_provider.dart' as app_theme;
+import '../../../../shared/theme/app_theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -50,12 +51,13 @@ class SettingsScreen extends ConsumerWidget {
   
   Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 12.0, left: 4.0),
       child: Text(
         title.tr(),
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Theme.of(context).colorScheme.primary,
+          letterSpacing: 0.5,
         ),
       ),
     );
@@ -64,9 +66,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget _buildThemeOption(BuildContext context, WidgetRef ref, app_theme.ThemeMode currentTheme) {
     return Card(
       elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.surfaceVariant,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,20 +77,38 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             // Karanlık Mod
             SwitchListTile(
-              title: Text('settings.darkMode'.tr()),
-              subtitle: Text('settings.darkModeDesc'.tr()),
+              title: Text(
+                'settings.darkMode'.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                'settings.darkModeDesc'.tr(),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
+                ),
+              ),
               value: currentTheme == app_theme.ThemeMode.dark,
-              secondary: Icon(
-                currentTheme == app_theme.ThemeMode.dark 
-                    ? Icons.dark_mode 
-                    : Icons.light_mode,
-                color: Theme.of(context).colorScheme.primary,
+              secondary: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  currentTheme == app_theme.ThemeMode.dark 
+                      ? Icons.dark_mode 
+                      : Icons.light_mode,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
               onChanged: (value) {
                 ref.read(app_theme.themeProvider.notifier).setThemeMode(
                   value ? app_theme.ThemeMode.dark : app_theme.ThemeMode.light
                 );
               },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
           ],
         ),
@@ -100,7 +120,6 @@ class SettingsScreen extends ConsumerWidget {
     // Mevcut dili al
     final currentLocale = context.locale;
     final languageCode = currentLocale.languageCode;
-    final countryCode = currentLocale.countryCode;
     
     String currentLanguage = 'Türkçe';
     if (languageCode == 'en') {
@@ -109,9 +128,9 @@ class SettingsScreen extends ConsumerWidget {
     
     return Card(
       elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.surfaceVariant,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -119,12 +138,34 @@ class SettingsScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text('settings.appLanguage'.tr()),
-              subtitle: Text('${tr('settings.currentLang')} $currentLanguage'),
-              trailing: const Icon(Icons.language),
+              title: Text(
+                'settings.appLanguage'.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                '${tr('settings.currentLang')} $currentLanguage',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
+                ),
+              ),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.language,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 18),
               onTap: () {
                 _showLanguageSelectDialog(context);
               },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
           ],
         ),
@@ -135,9 +176,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget _buildNotificationOption(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.surfaceVariant,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -146,12 +187,29 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             // Bildirimler
             SwitchListTile(
-              title: Text('settings.enableNotifs'.tr()),
-              subtitle: Text('settings.notifsDesc'.tr()),
+              title: Text(
+                'settings.enableNotifs'.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                'settings.notifsDesc'.tr(),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
+                ),
+              ),
               value: false, // Şimdilik kapalı
-              secondary: Icon(
-                Icons.notifications,
-                color: Theme.of(context).colorScheme.primary,
+              secondary: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.notifications,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ),
               onChanged: (value) {
                 // Bildirim izinlerini yönet - şimdilik dummy
@@ -159,9 +217,14 @@ class SettingsScreen extends ConsumerWidget {
                   SnackBar(
                     content: Text('general.featureNotAvailable'.tr()),
                     duration: const Duration(seconds: 2),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 );
               },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
           ],
         ),
@@ -172,43 +235,109 @@ class SettingsScreen extends ConsumerWidget {
   Widget _buildAboutOption(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.surfaceVariant,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              title: Text('settings.version'.tr()),
+              title: Text(
+                'settings.version'.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               subtitle: const Text('1.0.0'),
-              trailing: const Icon(Icons.info_outline),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.info_outline,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             ),
-            const Divider(),
+            Divider(
+              indent: 24,
+              endIndent: 24,
+              color: Theme.of(context).dividerTheme.color,
+            ),
             ListTile(
-              title: Text('settings.privacy'.tr()),
+              title: Text(
+                'settings.privacy'.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.shield_outlined,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 18),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('settings.privacyNotReady'.tr()),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 );
               },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             ),
-            const Divider(),
+            Divider(
+              indent: 24,
+              endIndent: 24,
+              color: Theme.of(context).dividerTheme.color,
+            ),
             ListTile(
-              title: Text('settings.terms'.tr()),
+              title: Text(
+                'settings.terms'.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.description_outlined,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 18),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('settings.termsNotReady'.tr()),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 );
               },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             ),
           ],
         ),
@@ -235,6 +364,7 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.pop(context);
                   },
                 ),
+                contentPadding: EdgeInsets.zero,
               ),
               ListTile(
                 title: const Text('English'),
@@ -246,6 +376,7 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.pop(context);
                   },
                 ),
+                contentPadding: EdgeInsets.zero,
               ),
             ],
           ),
@@ -255,6 +386,9 @@ class SettingsScreen extends ConsumerWidget {
               child: Text('general.cancel'.tr()),
             ),
           ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         );
       },
     );

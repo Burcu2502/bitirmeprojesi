@@ -10,8 +10,13 @@ class FirestoreService {
   
   // Koleksiyon referansları
   CollectionReference get _usersCollection => _firestore.collection('users');
-  CollectionReference get _clothingItemsCollection => _firestore.collection('clothing_items');
-  CollectionReference get _outfitsCollection => _firestore.collection('outfits');
+  
+  // Alt koleksiyon referansları için yardımcı metotlar
+  CollectionReference _clothingItemsCollection(String userId) => 
+      _usersCollection.doc(userId).collection('clothing_items');
+  
+  CollectionReference _outfitsCollection(String userId) => 
+      _usersCollection.doc(userId).collection('outfits');
 
   // Kullanıcı işlemleri
   Future<void> createUser(UserModel user) async {
@@ -65,8 +70,8 @@ class FirestoreService {
         debugPrint("⚠️ Uyarı: Kıyafet mevsim bilgisi girilmemiş");
       }
       
-      // Firestore belge referansını alıyoruz
-      final docRef = _clothingItemsCollection.doc();
+      // Alt koleksiyon referansını alıyoruz
+      final docRef = _clothingItemsCollection(item.userId).doc();
       debugPrint("📄 Doküman referansı oluşturuldu: ${docRef.id}");
       
       // Belgeyi Firestore ID'si ile güncelliyoruz
@@ -101,9 +106,7 @@ class FirestoreService {
 
   Future<List<ClothingItemModel>> getUserClothingItems(String userId) async {
     try {
-      final snapshot = await _clothingItemsCollection
-          .where('user_id', isEqualTo: userId)
-          .get();
+      final snapshot = await _clothingItemsCollection(userId).get();
           
       return snapshot.docs
           .map((doc) => ClothingItemModel.fromJson(doc.data() as Map<String, dynamic>))
@@ -116,15 +119,15 @@ class FirestoreService {
   Future<void> updateClothingItem(ClothingItemModel item) async {
     try {
       final updatedItem = item.copyWith(updatedAt: DateTime.now());
-      await _clothingItemsCollection.doc(item.id).update(updatedItem.toJson());
+      await _clothingItemsCollection(item.userId).doc(item.id).update(updatedItem.toJson());
     } catch (e) {
       throw Exception('Failed to update clothing item: $e');
     }
   }
 
-  Future<void> deleteClothingItem(String id) async {
+  Future<void> deleteClothingItem(String userId, String itemId) async {
     try {
-      await _clothingItemsCollection.doc(id).delete();
+      await _clothingItemsCollection(userId).doc(itemId).delete();
     } catch (e) {
       throw Exception('Failed to delete clothing item: $e');
     }
@@ -133,7 +136,7 @@ class FirestoreService {
   // Kombin işlemleri
   Future<String> addOutfit(OutfitModel outfit) async {
     try {
-      final docRef = _outfitsCollection.doc();
+      final docRef = _outfitsCollection(outfit.userId).doc();
       final updatedOutfit = outfit.copyWith(
         id: docRef.id,
         createdAt: DateTime.now(),
@@ -148,9 +151,7 @@ class FirestoreService {
 
   Future<List<OutfitModel>> getUserOutfits(String userId) async {
     try {
-      final snapshot = await _outfitsCollection
-          .where('user_id', isEqualTo: userId)
-          .get();
+      final snapshot = await _outfitsCollection(userId).get();
           
       return snapshot.docs
           .map((doc) => OutfitModel.fromJson(doc.data() as Map<String, dynamic>))
@@ -163,15 +164,15 @@ class FirestoreService {
   Future<void> updateOutfit(OutfitModel outfit) async {
     try {
       final updatedOutfit = outfit.copyWith(updatedAt: DateTime.now());
-      await _outfitsCollection.doc(outfit.id).update(updatedOutfit.toJson());
+      await _outfitsCollection(outfit.userId).doc(outfit.id).update(updatedOutfit.toJson());
     } catch (e) {
       throw Exception('Failed to update outfit: $e');
     }
   }
 
-  Future<void> deleteOutfit(String id) async {
+  Future<void> deleteOutfit(String userId, String outfitId) async {
     try {
-      await _outfitsCollection.doc(id).delete();
+      await _outfitsCollection(userId).doc(outfitId).delete();
     } catch (e) {
       throw Exception('Failed to delete outfit: $e');
     }

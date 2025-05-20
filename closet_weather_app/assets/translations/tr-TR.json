@@ -63,6 +63,26 @@
     "save": "Kaydet"
   },
   
+  "styles": {
+    "casual": "Günlük",
+    "formal": "Resmi",
+    "sporty": "Sportif",
+    "minimalist": "Minimalist",
+    "romantic": "Romantik",
+    "vintage": "Vintage",
+    "bohemian": "Bohem",
+    "classic": "Klasik",
+    "streetwear": "Sokak Giyimi",
+    "elegant": "Zarif",
+    "retro": "Retro",
+    "businessCasual": "İş Casual",
+    "smart": "Şık Casual",
+    "preppy": "Amerikan Kolejli",
+    "grunge": "Grunge",
+    "gothic": "Gotik",
+    "rock": "Rock"
+  },
+  
   "weather": {
     "weather": "Hava Durumu",
     "forecast": "Tahmin",

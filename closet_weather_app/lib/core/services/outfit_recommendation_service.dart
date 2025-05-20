@@ -14,13 +14,21 @@ class OutfitRecommendationService {
     WeatherModel weather,
     {String? skinTone}
   ) {
+    // Debug başlangıcı
+    debugPrint("💡 Kombin önerisi oluşturuluyor...");
+    debugPrint("🌡️ Hava durumu: ${weather.temperature}°C, ${weather.condition}, ${weather.description}");
+    
     // Kıyafet kontrolü - eğer hiç kıyafet yoksa boş liste döndür
     if (availableItems.isEmpty) {
+      debugPrint("⚠️ Hiç kıyafet bulunamadı");
       return [];
     }
 
+    debugPrint("👕 Toplam kıyafet sayısı: ${availableItems.length}");
+
     // Hava durumuna uygun kıyafet tiplerini belirle
     final List<ClothingType> suitableTypes = _getSuitableClothingTypes(weather);
+    debugPrint("📋 Uygun kıyafet tipleri: $suitableTypes");
     
     // Hava durumuna uygun mevsimleri belirle (Tüm Sezonlar dahil)
     final List<Season> suitableSeasons = _getSuitableSeasonsForWeather(weather);
@@ -32,84 +40,142 @@ class OutfitRecommendationService {
     // DEBUG: Mevsimler hakkında log
     debugPrint("🌍 Hava durumuna uygun mevsimler: $suitableSeasons");
     
-    // Filtrele ama mevsim uyumsuzluğunda bile en az bir kıyafet seç
-    
-    // Uygun üst giyim kıyafetlerini seç
-    var uppers = availableItems.where((item) => 
-      suitableTypes.contains(item.type) &&
-      _isUpperClothing(item.type) &&
-      item.seasons.any((season) => suitableSeasons.contains(season))
-    ).toList();
-    
-    // Eğer uygun üst giyim yoksa, mevsim filtresini kaldır
-    if (uppers.isEmpty) {
-      uppers = availableItems.where((item) => 
+    try {
+      // Uygun üst giyim kıyafetlerini filtrele
+      var uppers = availableItems.where((item) => 
         _isUpperClothing(item.type)
       ).toList();
-    }
-    
-    // Uygun alt giyim kıyafetlerini seç
-    var lowers = availableItems.where((item) => 
-      suitableTypes.contains(item.type) &&
-      _isLowerClothing(item.type) &&
-      item.seasons.any((season) => suitableSeasons.contains(season))
-    ).toList();
-    
-    // Eğer uygun alt giyim yoksa, mevsim filtresini kaldır
-    if (lowers.isEmpty) {
-      lowers = availableItems.where((item) => 
+      
+      // Sezon ve tipe göre sırala
+      uppers.sort((a, b) {
+        // Önce uygun mevsimde olanları tercih et
+        bool aHasMatchingSeason = a.seasons.any((s) => suitableSeasons.contains(s));
+        bool bHasMatchingSeason = b.seasons.any((s) => suitableSeasons.contains(s));
+        
+        if (aHasMatchingSeason && !bHasMatchingSeason) return -1;
+        if (!aHasMatchingSeason && bHasMatchingSeason) return 1;
+        
+        // Sonra uygun tipe göre sırala
+        bool aHasMatchingType = suitableTypes.contains(a.type);
+        bool bHasMatchingType = suitableTypes.contains(b.type);
+        
+        if (aHasMatchingType && !bHasMatchingType) return -1;
+        if (!aHasMatchingType && bHasMatchingType) return 1;
+        
+        return 0;
+      });
+      
+      debugPrint("👚 Filtrelenmiş üst giyim sayısı: ${uppers.length}");
+      
+      // Uygun alt giyim kıyafetlerini filtrele
+      var lowers = availableItems.where((item) => 
         _isLowerClothing(item.type)
       ).toList();
-    }
-    
-    // Uygun ayakkabıları seç
-    final shoes = availableItems.where((item) => 
-      (item.type == ClothingType.shoes || item.type == ClothingType.boots)
-    ).toList();
-    
-    // Uygun dış giyimleri seç
-    final outwear = availableItems.where((item) => 
-      _isOuterwear(item.type)
-    ).toList();
-    
-    // Bulunan kıyafetleri logla
-    debugPrint("👚 Bulunan üst giyim sayısı: ${uppers.length}");
-    debugPrint("👖 Bulunan alt giyim sayısı: ${lowers.length}");
-    
-    // Eğer yeterli kıyafet yoksa boş liste döndür
-    if (uppers.isEmpty || lowers.isEmpty) {
-      debugPrint("⚠️ Yeterli kıyafet bulunamadı, kombin oluşturulamadı");
+      
+      // Sezon ve tipe göre sırala
+      lowers.sort((a, b) {
+        // Önce uygun mevsimde olanları tercih et
+        bool aHasMatchingSeason = a.seasons.any((s) => suitableSeasons.contains(s));
+        bool bHasMatchingSeason = b.seasons.any((s) => suitableSeasons.contains(s));
+        
+        if (aHasMatchingSeason && !bHasMatchingSeason) return -1;
+        if (!aHasMatchingSeason && bHasMatchingSeason) return 1;
+        
+        // Sonra uygun tipe göre sırala
+        bool aHasMatchingType = suitableTypes.contains(a.type);
+        bool bHasMatchingType = suitableTypes.contains(b.type);
+        
+        if (aHasMatchingType && !bHasMatchingType) return -1;
+        if (!aHasMatchingType && bHasMatchingType) return 1;
+        
+        return 0;
+      });
+      
+      debugPrint("👖 Filtrelenmiş alt giyim sayısı: ${lowers.length}");
+      
+      // Uygun ayakkabıları filtrele
+      var shoes = availableItems.where((item) => 
+        (item.type == ClothingType.shoes || item.type == ClothingType.boots)
+      ).toList();
+      
+      // Sezon ve tipe göre sırala
+      shoes.sort((a, b) {
+        // Önce uygun mevsimde olanları tercih et
+        bool aHasMatchingSeason = a.seasons.any((s) => suitableSeasons.contains(s));
+        bool bHasMatchingSeason = b.seasons.any((s) => suitableSeasons.contains(s));
+        
+        if (aHasMatchingSeason && !bHasMatchingSeason) return -1;
+        if (!aHasMatchingSeason && bHasMatchingSeason) return 1;
+        
+        // Sonra bot mu ayakkabı mı diye sırala
+        if (weather.temperature < 15 && a.type == ClothingType.boots) return -1;
+        if (weather.temperature < 15 && b.type == ClothingType.boots) return 1;
+        
+        return 0;
+      });
+      
+      debugPrint("👞 Filtrelenmiş ayakkabı sayısı: ${shoes.length}");
+      
+      // Uygun dış giyimleri filtrele
+      var outwear = availableItems.where((item) => 
+        _isOuterwear(item.type)
+      ).toList();
+      
+      // Sıcaklık ve mevsime göre sırala
+      outwear.sort((a, b) {
+        // Önce uygun mevsimde olanları tercih et
+        bool aHasMatchingSeason = a.seasons.any((s) => suitableSeasons.contains(s));
+        bool bHasMatchingSeason = b.seasons.any((s) => suitableSeasons.contains(s));
+        
+        if (aHasMatchingSeason && !bHasMatchingSeason) return -1;
+        if (!aHasMatchingSeason && bHasMatchingSeason) return 1;
+        
+        return 0;
+      });
+      
+      // Eğer yeterli kıyafet yoksa boş liste döndür
+      if (uppers.isEmpty && lowers.isEmpty) {
+        debugPrint("⚠️ Yeterli kıyafet bulunamadı, kombin oluşturulamadı");
+        return [];
+      }
+      
+      // Renk uyumuna göre kombin oluştur
+      List<ClothingItemModel> recommendation = [];
+      
+      // Üst giyim ekle
+      if (uppers.isNotEmpty) {
+        recommendation.add(uppers.first);
+        debugPrint("👚 Üst giyim eklendi: ${uppers.first.name} (${uppers.first.id})");
+      }
+      
+      // Alt giyim ekle
+      if (lowers.isNotEmpty) {
+        recommendation.add(lowers.first);
+        debugPrint("👖 Alt giyim eklendi: ${lowers.first.name} (${lowers.first.id})");
+      }
+      
+      // Hava durumuna göre dış giyim ekle
+      if (outwear.isNotEmpty && _needsOuterwear(weather)) {
+        recommendation.add(outwear.first);
+        debugPrint("🧥 Dış giyim eklendi: ${outwear.first.name} (${outwear.first.id})");
+      }
+      
+      // Ayakkabı ekle
+      if (shoes.isNotEmpty) {
+        recommendation.add(shoes.first);
+        debugPrint("👞 Ayakkabı eklendi: ${shoes.first.name} (${shoes.first.id})");
+      }
+      
+      debugPrint("✅ Kombin önerisi tamamlandı, ${recommendation.length} parça");
+      for (var item in recommendation) {
+        debugPrint("  - ${item.name} (${item.type})");
+      }
+      
+      return recommendation;
+    } catch (e) {
+      debugPrint("❌ Kombin önerisinde hata: $e");
       return [];
     }
-    
-    // Renk uyumuna göre sırala
-    List<ClothingItemModel> recommendation = [];
-    
-    // Üst giyim seç
-    final upper = uppers.isNotEmpty ? uppers.first : null;
-    if (upper != null) {
-      recommendation.add(upper);
-    }
-    
-    // Alt giyim seç
-    final lower = lowers.isNotEmpty ? lowers.first : null;
-    if (lower != null) {
-      recommendation.add(lower);
-    }
-    
-    // Hava durumuna göre dış giyim ekle
-    if (outwear.isNotEmpty && _needsOuterwear(weather)) {
-      final outerwearItem = outwear.first;
-      recommendation.add(outerwearItem);
-    }
-    
-    // Ayakkabı ekle
-    if (shoes.isNotEmpty) {
-      final shoe = shoes.first;
-      recommendation.add(shoe);
-    }
-    
-    return recommendation;
   }
   
   // Üst giyimi hava durumuna göre seç
@@ -286,57 +352,105 @@ class OutfitRecommendationService {
     return sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
   }
   
+  // Bir kıyafet türünün üst giyim olup olmadığını kontrol et
+  bool _isUpperClothing(ClothingType type) {
+    return [
+      ClothingType.tShirt,
+      ClothingType.shirt,
+      ClothingType.blouse,
+      ClothingType.sweater,
+    ].contains(type);
+  }
+  
+  // Bir kıyafet türünün alt giyim olup olmadığını kontrol et
+  bool _isLowerClothing(ClothingType type) {
+    return [
+      ClothingType.jeans,
+      ClothingType.pants,
+      ClothingType.shorts,
+      ClothingType.skirt,
+      ClothingType.dress, // Elbise hem üst hem alt giyim sayılabilir
+    ].contains(type);
+  }
+  
+  // Bir kıyafet türünün dış giyim olup olmadığını kontrol et
+  bool _isOuterwear(ClothingType type) {
+    return [
+      ClothingType.jacket,
+      ClothingType.coat,
+    ].contains(type);
+  }
+  
+  // Hava durumuna göre dış giyim gerekip gerekmediğini kontrol et
+  bool _needsOuterwear(WeatherModel weather) {
+    // Dış giyim gerektiren hava koşulları
+    if ([
+      WeatherCondition.rainy,
+      WeatherCondition.snowy,
+      WeatherCondition.stormy,
+      WeatherCondition.windy,
+      WeatherCondition.foggy,
+      WeatherCondition.cold,
+    ].contains(weather.condition)) {
+      return true;
+    }
+    
+    // Sıcaklık kontrolü
+    return weather.temperature < 15.0; // 15 derecenin altında dış giyim gerekir
+  }
+  
   // Hava durumuna göre uygun kıyafet tiplerini belirle
   List<ClothingType> _getSuitableClothingTypes(WeatherModel weather) {
-    final temperature = weather.temperature;
     final condition = weather.condition;
+    final temperature = weather.temperature;
     
     List<ClothingType> types = [];
     
-    // Sıcaklığa göre üst giyim
-    if (temperature < 5) {
-      types.addAll([ClothingType.sweater]);
-    } else if (temperature < 15) {
-      types.addAll([ClothingType.sweater, ClothingType.shirt]);
-    } else if (temperature < 25) {
-      types.addAll([ClothingType.shirt, ClothingType.tShirt]);
+    // Temel üst giyim
+    if (temperature < 10) {
+      types.add(ClothingType.sweater);
+    } else if (temperature < 20) {
+      types.addAll([ClothingType.shirt, ClothingType.blouse, ClothingType.sweater]);
     } else {
-      types.addAll([ClothingType.tShirt, ClothingType.shirt]);
+      types.addAll([ClothingType.tShirt, ClothingType.shirt, ClothingType.blouse]);
     }
     
-    // Sıcaklığa göre alt giyim
-    if (temperature < 10) {
-      types.addAll([ClothingType.pants, ClothingType.jeans]);
-    } else if (temperature < 20) {
-      types.addAll([ClothingType.pants, ClothingType.jeans, ClothingType.skirt]);
+    // Temel alt giyim
+    if (temperature < 15) {
+      types.addAll([ClothingType.jeans, ClothingType.pants]);
+    } else if (temperature < 25) {
+      types.addAll([ClothingType.jeans, ClothingType.pants, ClothingType.skirt]);
     } else {
-      types.addAll([ClothingType.shorts, ClothingType.skirt, ClothingType.pants]);
+      types.addAll([ClothingType.shorts, ClothingType.skirt]);
+    }
+    
+    // Elbise - sıcak havada tercih edilir
+    if (temperature > 18) {
+      types.add(ClothingType.dress);
     }
     
     // Dış giyim
     if (temperature < 5) {
-      types.addAll([ClothingType.coat]);
+      types.add(ClothingType.coat);
     } else if (temperature < 15) {
       types.addAll([ClothingType.jacket, ClothingType.coat]);
-    } else if (temperature < 20 && 
-              (condition == WeatherCondition.rainy || 
-               condition == WeatherCondition.cloudy)) {
+    } else if (temperature < 20 && (condition == WeatherCondition.windy || condition == WeatherCondition.rainy)) {
       types.add(ClothingType.jacket);
     }
     
     // Ayakkabı
-    if (condition == WeatherCondition.rainy || 
-        condition == WeatherCondition.snowy ||
-        temperature < 5) {
+    if (condition == WeatherCondition.rainy || condition == WeatherCondition.snowy) {
       types.add(ClothingType.boots);
     } else {
       types.add(ClothingType.shoes);
     }
     
-    // Aksesuar
-    if (temperature < 10) {
-      types.addAll([ClothingType.scarf, ClothingType.hat]);
+    // Aksesuar (şapka, atkı vb.)
+    if (temperature < 10 || condition == WeatherCondition.snowy) {
+      types.addAll([ClothingType.hat, ClothingType.scarf]);
     }
+    
+    types.add(ClothingType.accessory); // Aksesuarlar her durumda olabilir
     
     return types;
   }
@@ -344,68 +458,17 @@ class OutfitRecommendationService {
   // Hava durumuna göre uygun mevsimleri belirle
   List<Season> _getSuitableSeasonsForWeather(WeatherModel weather) {
     final temperature = weather.temperature;
-    final date = weather.timestamp;
-    final month = date.month;
-    
-    // Mevsimi belirle
-    List<Season> seasons = [Season.all];
-    
-    // Astronomik mevsimlere göre
-    if (month >= 3 && month <= 5) {
-      seasons.add(Season.spring);
-    } else if (month >= 6 && month <= 8) {
-      seasons.add(Season.summer);
-    } else if (month >= 9 && month <= 11) {
-      seasons.add(Season.fall);
-    } else {
-      seasons.add(Season.winter);
-    }
-    
-    // Sıcaklığa göre düzeltme
-    if (temperature < 5) {
-      if (!seasons.contains(Season.winter)) seasons.add(Season.winter);
-    } else if (temperature > 25) {
-      if (!seasons.contains(Season.summer)) seasons.add(Season.summer);
-    }
-    
-    return seasons;
-  }
-  
-  // Dış giyim gerekip gerekmediğini belirle
-  bool _needsOuterwear(WeatherModel weather) {
-    final temperature = weather.temperature;
     final condition = weather.condition;
     
-    if (temperature < 15) return true;
-    if (temperature < 20 && 
-       (condition == WeatherCondition.rainy || 
-        condition == WeatherCondition.cloudy ||
-        condition == WeatherCondition.foggy)) {
-      return true;
+    // Sıcaklığa göre mevsim tahmini
+    if (temperature <= 5) {
+      return [Season.winter];
+    } else if (temperature <= 15) {
+      return [Season.winter, Season.fall, Season.spring];
+    } else if (temperature <= 25) {
+      return [Season.fall, Season.spring, Season.summer];
+    } else {
+      return [Season.summer];
     }
-    
-    return false;
-  }
-  
-  // Kıyafet tipinin üst giyim olup olmadığını kontrol et
-  bool _isUpperClothing(ClothingType type) {
-    return type == ClothingType.tShirt ||
-           type == ClothingType.shirt ||
-           type == ClothingType.blouse ||
-           type == ClothingType.sweater;
-  }
-  
-  // Kıyafet tipinin alt giyim olup olmadığını kontrol et
-  bool _isLowerClothing(ClothingType type) {
-    return type == ClothingType.pants ||
-           type == ClothingType.jeans ||
-           type == ClothingType.shorts ||
-           type == ClothingType.skirt;
-  }
-  
-  // Kıyafet tipinin dış giyim olup olmadığını kontrol et
-  bool _isOuterwear(ClothingType type) {
-    return type == ClothingType.jacket ||
-           type == ClothingType.coat;
   }
 } 

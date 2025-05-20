@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../shared/widgets/custom_button.dart';
+import '../providers/wardrobe_provider.dart';
 
-class ClothingItemDetailScreen extends StatelessWidget {
+class ClothingItemDetailScreen extends ConsumerWidget {
   final ClothingItemModel item;
   
   const ClothingItemDetailScreen({
@@ -12,7 +14,7 @@ class ClothingItemDetailScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(item.name),
@@ -344,13 +346,31 @@ class ClothingItemDetailScreen extends StatelessWidget {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            onPressed: () {
-              // TODO: Implement delete functionality
-              Navigator.of(context).pop();
-              Navigator.of(context).pop(); // Navigate back after delete
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Kıyafet silindi')),
-              );
+            onPressed: () async {
+              try {
+                // Kıyafeti sil
+                final clothingNotifier = ProviderScope.containerOf(context).read(clothingItemsProvider.notifier);
+                await clothingNotifier.deleteItem(item.id);
+                
+                // Dialog'ları kapat
+                if (context.mounted) Navigator.of(context).pop();
+                if (context.mounted) Navigator.of(context).pop(); // Detail ekranından çık
+                
+                // Bildirim göster
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Kıyafet başarıyla silindi')),
+                  );
+                }
+              } catch (e) {
+                // Hata durumunda
+                if (context.mounted) Navigator.of(context).pop();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Kıyafet silinirken hata oluştu: $e')),
+                  );
+                }
+              }
             },
             child: const Text('Sil'),
           ),

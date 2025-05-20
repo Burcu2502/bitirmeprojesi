@@ -275,39 +275,131 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
       itemCount: _recommendedOutfit.length,
       itemBuilder: (context, index) {
         final item = _recommendedOutfit[index];
+        
+        // Debug için bilgileri yazdır
+        debugPrint("📊 Kıyafet gösteriliyor: ${item.id} - ${item.name} - Tür: ${item.type}");
+        
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
+            color: Theme.of(context).cardColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
             border: Border.all(color: Colors.grey.shade300),
           ),
           child: ListTile(
-            contentPadding: const EdgeInsets.all(8),
-            leading: item.imageUrl != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      item.imageUrl!,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.image_not_supported),
-                  ),
-            title: Text(item.name),
-            subtitle: Text(_getClothingTypeText(item.type)),
+            contentPadding: const EdgeInsets.all(12),
+            leading: _buildItemImage(item),
+            title: Text(
+              item.name,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 4),
+                Text(_getClothingTypeText(item.type)),
+                if (item.brand != null && item.brand!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text("Marka: ${item.brand}"),
+                ],
+              ],
+            ),
+            isThreeLine: item.brand != null && item.brand!.isNotEmpty,
           ),
         );
       },
     );
+  }
+  
+  Widget _buildItemImage(ClothingItemModel item) {
+    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(
+          item.imageUrl!,
+          width: 70,
+          height: 70, 
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            debugPrint("❌ Resim yüklenemedi: $error");
+            return _buildPlaceholderImage(item);
+          },
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return SizedBox(
+              width: 70,
+              height: 70,
+              child: Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                    : null,
+                  strokeWidth: 2,
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
+    
+    return _buildPlaceholderImage(item);
+  }
+  
+  Widget _buildPlaceholderImage(ClothingItemModel item) {
+    return Container(
+      width: 70,
+      height: 70,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        _getClothingTypeIcon(item.type),
+        size: 32,
+        color: Colors.grey[500],
+      ),
+    );
+  }
+  
+  IconData _getClothingTypeIcon(ClothingType type) {
+    switch (type) {
+      case ClothingType.tShirt:
+      case ClothingType.shirt:
+      case ClothingType.blouse:
+        return Icons.checkroom;
+      case ClothingType.sweater:
+        return Icons.checkroom;
+      case ClothingType.jacket:
+      case ClothingType.coat:
+        return Icons.shield;
+      case ClothingType.jeans:
+      case ClothingType.pants:
+      case ClothingType.shorts:
+      case ClothingType.skirt:
+        return Icons.accessibility;
+      case ClothingType.dress:
+        return Icons.accessibility_new;
+      case ClothingType.shoes:
+      case ClothingType.boots:
+        return Icons.bedroom_baby;
+      case ClothingType.accessory:
+      case ClothingType.hat:
+      case ClothingType.scarf:
+        return Icons.admin_panel_settings;
+      case ClothingType.other:
+      default:
+        return Icons.checkroom;
+    }
   }
   
   String _getClothingTypeText(ClothingType type) {

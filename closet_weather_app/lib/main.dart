@@ -9,6 +9,7 @@ import 'firebase_options.dart';
 import 'features/auth/presentation/screens/splash_screen.dart';
 import 'core/providers/theme_provider.dart' as app_theme;
 import 'core/providers/locale_provider.dart';
+import 'shared/theme/app_theme.dart'; // AppTheme sınıfını import ediyoruz
 
 // Ana uygulama başlangıç noktası
 void main() async {
@@ -93,21 +94,9 @@ class ClosetWeatherApp extends ConsumerWidget {
       title: 'appTitle'.tr(),
       debugShowCheckedModeBanner: false,
       
-      // Tema ayarları
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
+      // Özel tema ayarları
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       themeMode: flutterThemeMode,
       
       // Easy Localization ayarları

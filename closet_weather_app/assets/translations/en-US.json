@@ -63,6 +63,26 @@
     "save": "Save"
   },
   
+  "styles": {
+    "casual": "Casual",
+    "formal": "Formal",
+    "sporty": "Sporty",
+    "minimalist": "Minimalist",
+    "romantic": "Romantic",
+    "vintage": "Vintage",
+    "bohemian": "Bohemian",
+    "classic": "Classic",
+    "streetwear": "Streetwear",
+    "elegant": "Elegant",
+    "retro": "Retro",
+    "businessCasual": "Business Casual",
+    "smart": "Smart Casual",
+    "preppy": "Preppy",
+    "grunge": "Grunge",
+    "gothic": "Gothic",
+    "rock": "Rock"
+  },
+  
   "weather": {
     "weather": "Weather",
     "forecast": "Forecast",
