@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../profile/presentation/screens/profile_screen.dart';
 
 class UserProfileView extends ConsumerWidget {
   const UserProfileView({Key? key}) : super(key: key);
@@ -59,6 +60,10 @@ class UserProfileView extends ConsumerWidget {
             title: 'Profil Bilgilerim',
             onTap: () {
               // Profil düzenleme sayfasına git
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const ProfileScreen())
+              );
             },
           ),
           _buildProfileMenuItem(
@@ -67,6 +72,11 @@ class UserProfileView extends ConsumerWidget {
             title: 'Stil Tercihlerim',
             onTap: () {
               // Stil tercihleri sayfasına git
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Bu özellik henüz hazır değil'),
+                ),
+              );
             },
           ),
           _buildProfileMenuItem(
@@ -75,6 +85,11 @@ class UserProfileView extends ConsumerWidget {
             title: 'Ayarlar',
             onTap: () {
               // Ayarlar sayfasına git
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Bu özellik henüz hazır değil'),
+                ),
+              );
             },
           ),
           _buildProfileMenuItem(
@@ -83,6 +98,11 @@ class UserProfileView extends ConsumerWidget {
             title: 'Yardım ve Destek',
             onTap: () {
               // Yardım sayfasına git
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Bu özellik henüz hazır değil'),
+                ),
+              );
             },
           ),
           
