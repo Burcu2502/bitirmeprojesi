@@ -1,0 +1,3471 @@
+[
+  {
+    "id": "91209705-bdc2-4b6e-8b88-8f4a59491b8a",
+    "userId": "user8",
+    "name": "Pileli Koyu yeşil skirt",
+    "type": "skirt",
+    "colors": [
+      "#008000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=0",
+    "createdAt": "2024-08-09T19:15:52.936923"
+  },
+  {
+    "id": "0d4e6e17-9223-406b-9f96-927d2338ceaa",
+    "userId": "user2",
+    "name": "Jogger Sarı pants",
+    "type": "pants",
+    "colors": [
+      "#FFFF00"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=1",
+    "createdAt": "2024-09-14T19:15:52.936952"
+  },
+  {
+    "id": "bd76c5ea-d31d-42cf-a6b7-8895bded3320",
+    "userId": "user4",
+    "name": "Maksi Açık pembe dress",
+    "type": "dress",
+    "colors": [
+      "#FFC0CB",
+      "#FFFFFF",
+      "#00FF00"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=2",
+    "createdAt": "2024-07-21T19:15:52.936965"
+  },
+  {
+    "id": "8c31c84f-5035-4de3-b16f-034e06b61cf0",
+    "userId": "user8",
+    "name": "Kokteyl Kırmızı dress",
+    "type": "dress",
+    "colors": [
+      "#FF0000",
+      "#008000",
+      "#800000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=3",
+    "createdAt": "2024-11-19T19:15:52.936976"
+  },
+  {
+    "id": "314d3f5a-b18d-4df9-b63c-88d505afd50e",
+    "userId": "user4",
+    "name": "Spor Beyaz tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=4",
+    "createdAt": "2024-07-25T19:15:52.936986"
+  },
+  {
+    "id": "4c1ec01c-9270-4934-b13d-13191c97ba74",
+    "userId": "user8",
+    "name": "Chino Mor pants",
+    "type": "pants",
+    "colors": [
+      "#800080"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=5",
+    "createdAt": "2024-11-25T19:15:52.936995"
+  },
+  {
+    "id": "61a6adec-644f-44e2-b892-5bc556689be1",
+    "userId": "user5",
+    "name": "Midi Yeşil dress",
+    "type": "dress",
+    "colors": [
+      "#00FF00",
+      "#FF0000"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=6",
+    "createdAt": "2024-11-02T19:15:52.937005"
+  },
+  {
+    "id": "792ea184-2579-4636-97cf-1adead01e289",
+    "userId": "user1",
+    "name": "Casual Yeşil shirt",
+    "type": "shirt",
+    "colors": [
+      "#00FF00",
+      "#800080"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=7",
+    "createdAt": "2025-04-17T19:15:52.937014"
+  },
+  {
+    "id": "bb79b29e-6a3f-4e85-bf3f-b337729c5096",
+    "userId": "user8",
+    "name": "Pileli Bordo skirt",
+    "type": "skirt",
+    "colors": [
+      "#800000",
+      "#FFFFFF"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=8",
+    "createdAt": "2025-01-18T19:15:52.937023"
+  },
+  {
+    "id": "9ea41e8c-dd26-4836-93e2-c72c57af279f",
+    "userId": "user4",
+    "name": "Kışlık Lacivert boots",
+    "type": "boots",
+    "colors": [
+      "#000080"
+    ],
+    "brand": null,
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=9",
+    "createdAt": "2025-05-09T19:15:52.937033"
+  },
+  {
+    "id": "b2b0b27c-4b1c-489d-874a-a537a384c967",
+    "userId": "user7",
+    "name": "Günlük Kahverengi dress",
+    "type": "dress",
+    "colors": [
+      "#A52A2A",
+      "#FFA500",
+      "#FFFF00"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=10",
+    "createdAt": "2024-11-02T19:15:52.937042"
+  },
+  {
+    "id": "0ce15f67-08c2-463d-9064-1336a1401ef7",
+    "userId": "user9",
+    "name": "İpek Zeytin yeşili blouse",
+    "type": "blouse",
+    "colors": [
+      "#808000",
+      "#FFC0CB",
+      "#FFFFFF"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=11",
+    "createdAt": "2025-01-05T19:15:52.937052"
+  },
+  {
+    "id": "be15c32f-0315-4394-bf46-cedc3f50a3b7",
+    "userId": "user8",
+    "name": "Mini Siyah skirt",
+    "type": "skirt",
+    "colors": [
+      "#000000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=12",
+    "createdAt": "2025-03-14T19:15:52.937061"
+  },
+  {
+    "id": "55ed6ead-fd30-430c-9b42-75148f424ddd",
+    "userId": "user4",
+    "name": "Boğazlı Gri sweater",
+    "type": "sweater",
+    "colors": [
+      "#808080",
+      "#FFC0CB",
+      "#008080"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=13",
+    "createdAt": "2025-03-08T19:15:52.937071"
+  },
+  {
+    "id": "47da9125-7fcc-44b0-bb60-ec06e1e38d11",
+    "userId": "user10",
+    "name": "Deri Bordo jacket",
+    "type": "jacket",
+    "colors": [
+      "#800000",
+      "#00FF00",
+      "#0000FF"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=14",
+    "createdAt": "2024-10-25T19:15:52.937080"
+  },
+  {
+    "id": "64f3dad0-8434-438a-9301-290b7e7796e1",
+    "userId": "user2",
+    "name": "Deri Gri jacket",
+    "type": "jacket",
+    "colors": [
+      "#808080",
+      "#FFFFFF"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=15",
+    "createdAt": "2025-02-06T19:15:52.937089"
+  },
+  {
+    "id": "c5eb60ca-b27f-4afb-a297-be2a2e41ee62",
+    "userId": "user4",
+    "name": "Mini Beyaz dress",
+    "type": "dress",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=16",
+    "createdAt": "2025-02-13T19:15:52.937098"
+  },
+  {
+    "id": "edefcb79-cfff-41c2-8fc2-01aae6d08e40",
+    "userId": "user4",
+    "name": "Oxford Turkuaz shoes",
+    "type": "shoes",
+    "colors": [
+      "#00FFFF",
+      "#808000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=17",
+    "createdAt": "2024-10-10T19:15:52.937107"
+  },
+  {
+    "id": "5cf082bb-0f30-4d89-8a2a-4841fa7fddce",
+    "userId": "user4",
+    "name": "Yazlık Kahverengi dress",
+    "type": "dress",
+    "colors": [
+      "#A52A2A",
+      "#00FF00"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=18",
+    "createdAt": "2025-05-17T19:15:52.937116"
+  },
+  {
+    "id": "6b90f23d-f164-4b94-bae3-bc9cb193b0d9",
+    "userId": "user10",
+    "name": "Midi Açık pembe dress",
+    "type": "dress",
+    "colors": [
+      "#FFC0CB",
+      "#808000",
+      "#008080"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=19",
+    "createdAt": "2024-12-14T19:15:52.937126"
+  },
+  {
+    "id": "e0c5445d-4c5e-4acf-80fb-cd10135d2115",
+    "userId": "user10",
+    "name": "Spor Pembe shoes",
+    "type": "shoes",
+    "colors": [
+      "#FF00FF"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=20",
+    "createdAt": "2024-10-22T19:15:52.937135"
+  },
+  {
+    "id": "957b073a-654b-4fcb-8849-c1e23e8822b5",
+    "userId": "user5",
+    "name": "Rüzgarlık Gri jacket",
+    "type": "jacket",
+    "colors": [
+      "#808080"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=21",
+    "createdAt": "2024-09-22T19:15:52.937143"
+  },
+  {
+    "id": "c4697166-04ac-4948-a484-b3752b4930e3",
+    "userId": "user5",
+    "name": "Kot Açık pembe shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFC0CB",
+      "#00FF00",
+      "#FFFFFF"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=22",
+    "createdAt": "2025-01-24T19:15:52.937153"
+  },
+  {
+    "id": "28bc04ca-5dce-419f-8533-a9a274aeb3b2",
+    "userId": "user2",
+    "name": "Uzun kollu Kırmızı shirt",
+    "type": "shirt",
+    "colors": [
+      "#FF0000"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=23",
+    "createdAt": "2025-01-22T19:15:52.937162"
+  },
+  {
+    "id": "e5239b89-c9bf-472b-b19e-a5e1a47f34dc",
+    "userId": "user8",
+    "name": "Desenli Beyaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=24",
+    "createdAt": "2024-10-16T19:15:52.937170"
+  },
+  {
+    "id": "fd84c30b-c87b-47a9-9890-386216965645",
+    "userId": "user1",
+    "name": "Kareli Turkuaz shirt",
+    "type": "shirt",
+    "colors": [
+      "#00FFFF"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=25",
+    "createdAt": "2024-11-26T19:15:52.937179"
+  },
+  {
+    "id": "043b604a-6ba3-4d39-bf9d-07d1cae9f8ab",
+    "userId": "user9",
+    "name": "Yazlık Siyah dress",
+    "type": "dress",
+    "colors": [
+      "#000000",
+      "#008080",
+      "#FFC0CB"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=26",
+    "createdAt": "2024-11-29T19:15:52.937188"
+  },
+  {
+    "id": "e1feb86b-d3fa-462c-b222-9e18ea46dd67",
+    "userId": "user9",
+    "name": "Kovboy Koyu yeşil boots",
+    "type": "boots",
+    "colors": [
+      "#008000"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=27",
+    "createdAt": "2025-01-20T19:15:52.937197"
+  },
+  {
+    "id": "954a483e-f329-44e1-bb51-e7730bb3eb12",
+    "userId": "user5",
+    "name": "Çizgili Kahverengi shirt",
+    "type": "shirt",
+    "colors": [
+      "#A52A2A"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=28",
+    "createdAt": "2024-12-05T19:15:52.937206"
+  },
+  {
+    "id": "4212a890-3fc7-497b-8c7f-7e28c437725f",
+    "userId": "user1",
+    "name": "Çiçekli Siyah blouse",
+    "type": "blouse",
+    "colors": [
+      "#000000",
+      "#FFA500",
+      "#FF00FF"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=29",
+    "createdAt": "2024-08-22T19:15:52.937216"
+  },
+  {
+    "id": "6f6287ac-21c5-4636-8371-be60fd7f48d4",
+    "userId": "user2",
+    "name": "Sıcak Kırmızı sweater",
+    "type": "sweater",
+    "colors": [
+      "#FF0000",
+      "#FFC0CB",
+      "#000080"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=30",
+    "createdAt": "2025-01-13T19:15:52.937226"
+  },
+  {
+    "id": "9e15acf7-f012-4329-a4cf-b5d13d5c03f2",
+    "userId": "user2",
+    "name": "Trençkot Mor coat",
+    "type": "coat",
+    "colors": [
+      "#800080",
+      "#FFC0CB"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=31",
+    "createdAt": "2024-06-14T19:15:52.937235"
+  },
+  {
+    "id": "27ed0c80-f606-4454-815b-ede894f7e966",
+    "userId": "user3",
+    "name": "Uzun kollu Kahverengi shirt",
+    "type": "shirt",
+    "colors": [
+      "#A52A2A",
+      "#00FFFF",
+      "#008000"
+    ],
+    "brand": null,
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=32",
+    "createdAt": "2024-07-22T19:15:52.937244"
+  },
+  {
+    "id": "59bb84fb-92a7-4c53-bfd6-5c10f1ebe0fa",
+    "userId": "user5",
+    "name": "Kokteyl Kahverengi dress",
+    "type": "dress",
+    "colors": [
+      "#A52A2A"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=33",
+    "createdAt": "2024-08-19T19:15:52.937253"
+  },
+  {
+    "id": "3d2d8033-b4d5-4868-88b0-a1e05fb9854d",
+    "userId": "user10",
+    "name": "Su geçirmez Mavi jacket",
+    "type": "jacket",
+    "colors": [
+      "#0000FF",
+      "#A52A2A"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=34",
+    "createdAt": "2024-10-23T19:15:52.937263"
+  },
+  {
+    "id": "7e4ff20d-1433-40bd-88ac-0023ea69b9d9",
+    "userId": "user2",
+    "name": "Yazlık Lacivert dress",
+    "type": "dress",
+    "colors": [
+      "#000080",
+      "#800000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=35",
+    "createdAt": "2025-05-13T19:15:52.937273"
+  },
+  {
+    "id": "e73ce6ab-9fe2-4456-b128-39c6245a0530",
+    "userId": "user8",
+    "name": "Spor Beyaz tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=36",
+    "createdAt": "2024-11-05T19:15:52.937283"
+  },
+  {
+    "id": "4f244b45-e019-4736-b2f6-5bb05b77433d",
+    "userId": "user5",
+    "name": "Spor Beyaz shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFFFFF",
+      "#008080",
+      "#800080"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=37",
+    "createdAt": "2024-07-31T19:15:52.937292"
+  },
+  {
+    "id": "6cd7a44f-fa11-4d3c-8b80-f48f19ae266a",
+    "userId": "user10",
+    "name": "Rahat Zeytin yeşili tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#808000",
+      "#FFFFFF",
+      "#000080"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=38",
+    "createdAt": "2024-06-06T19:15:52.937302"
+  },
+  {
+    "id": "a1aa077c-5421-4718-82fb-76fe33e7fe69",
+    "userId": "user4",
+    "name": "Rahat Turuncu shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFA500"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=39",
+    "createdAt": "2024-06-24T19:15:52.937311"
+  },
+  {
+    "id": "13ad24c2-21a2-4695-8198-a4ce1cd557bc",
+    "userId": "user4",
+    "name": "Zarif Siyah blouse",
+    "type": "blouse",
+    "colors": [
+      "#000000"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=40",
+    "createdAt": "2024-10-04T19:15:52.937320"
+  },
+  {
+    "id": "20a4bc84-db95-4cb4-9b4e-ae634f99f441",
+    "userId": "user1",
+    "name": "Kışlık Sarı boots",
+    "type": "boots",
+    "colors": [
+      "#FFFF00",
+      "#008000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=41",
+    "createdAt": "2024-12-23T19:15:52.937329"
+  },
+  {
+    "id": "6e235fbd-c99c-4b7f-b5e4-cc8836c5453f",
+    "userId": "user5",
+    "name": "Düz Yeşil tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#00FF00"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=42",
+    "createdAt": "2024-11-12T19:15:52.937338"
+  },
+  {
+    "id": "b9b18ae5-b08f-4327-85d1-12fc0589fc6b",
+    "userId": "user7",
+    "name": "Kot Turuncu jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFA500",
+      "#FFC0CB"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=43",
+    "createdAt": "2025-02-17T19:15:52.937347"
+  },
+  {
+    "id": "37a6bb0a-8c07-4c04-861f-f91f358167d8",
+    "userId": "user1",
+    "name": "Pileli Sarı skirt",
+    "type": "skirt",
+    "colors": [
+      "#FFFF00"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=44",
+    "createdAt": "2024-06-27T19:15:52.937356"
+  },
+  {
+    "id": "0b23817f-9f73-4fa3-a88d-bb3eb0f26193",
+    "userId": "user2",
+    "name": "Kumaş Yeşil pants",
+    "type": "pants",
+    "colors": [
+      "#00FF00"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=45",
+    "createdAt": "2025-01-02T19:15:52.937365"
+  },
+  {
+    "id": "c710726b-223d-4afc-9ce0-f307b9f2b131",
+    "userId": "user6",
+    "name": "Bermuda Beyaz shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFFFFF",
+      "#000080"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=46",
+    "createdAt": "2025-03-21T19:15:52.937374"
+  },
+  {
+    "id": "2e880559-570a-42e8-8afa-e698792f1b40",
+    "userId": "user6",
+    "name": "Kot Kırmızı skirt",
+    "type": "skirt",
+    "colors": [
+      "#FF0000"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=47",
+    "createdAt": "2024-11-18T19:15:52.937382"
+  },
+  {
+    "id": "31412343-60ac-42b3-bf69-69159235ab24",
+    "userId": "user4",
+    "name": "Yüksek bel Beyaz jeans",
+    "type": "jeans",
+    "colors": [
+      "#FFFFFF",
+      "#FF0000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=48",
+    "createdAt": "2024-11-07T19:15:52.937391"
+  },
+  {
+    "id": "bddd5463-9c55-4244-80f1-677a9dfa0e09",
+    "userId": "user9",
+    "name": "Kalın Yeşil coat",
+    "type": "coat",
+    "colors": [
+      "#00FF00",
+      "#00FF00",
+      "#800000"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=49",
+    "createdAt": "2024-09-06T19:15:52.937401"
+  },
+  {
+    "id": "4a2e4a09-3e8f-4019-a97b-3d3490dbedbd",
+    "userId": "user3",
+    "name": "Uzun Turuncu skirt",
+    "type": "skirt",
+    "colors": [
+      "#FFA500",
+      "#800080",
+      "#808080"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=50",
+    "createdAt": "2025-03-21T19:15:52.937410"
+  },
+  {
+    "id": "fc5f9816-4791-4a0b-b5a8-1ca5fda3f011",
+    "userId": "user9",
+    "name": "Kumaş Mavi pants",
+    "type": "pants",
+    "colors": [
+      "#0000FF",
+      "#800000"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=51",
+    "createdAt": "2024-08-29T19:15:52.937419"
+  },
+  {
+    "id": "190b99c4-e6c7-4404-b676-193f70bcff6f",
+    "userId": "user6",
+    "name": "Sıcak Koyu yeşil sweater",
+    "type": "sweater",
+    "colors": [
+      "#008000",
+      "#800080",
+      "#00FF00"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=52",
+    "createdAt": "2025-03-31T19:15:52.937428"
+  },
+  {
+    "id": "93a20c8b-0c7c-47f9-a8eb-f3b7bad34c17",
+    "userId": "user1",
+    "name": "Kot Kırmızı jeans",
+    "type": "jeans",
+    "colors": [
+      "#FF0000"
+    ],
+    "brand": null,
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=53",
+    "createdAt": "2025-03-05T19:15:52.937438"
+  },
+  {
+    "id": "8ab128b7-3474-4881-a2ab-c2593f1b4ec8",
+    "userId": "user4",
+    "name": "Spor Lacivert shorts",
+    "type": "shorts",
+    "colors": [
+      "#000080",
+      "#808080"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=54",
+    "createdAt": "2024-08-14T19:15:52.937448"
+  },
+  {
+    "id": "3289bebe-86dc-46a6-b3c8-fbc9ed9b844d",
+    "userId": "user3",
+    "name": "Spor Turuncu shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFA500",
+      "#00FF00"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=55",
+    "createdAt": "2025-04-11T19:15:52.937456"
+  },
+  {
+    "id": "2b58d679-5243-4c4c-b1ca-dfc96cb80370",
+    "userId": "user10",
+    "name": "V yaka Koyu yeşil sweater",
+    "type": "sweater",
+    "colors": [
+      "#008000",
+      "#FF00FF",
+      "#808000"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=56",
+    "createdAt": "2024-12-06T19:15:52.937466"
+  },
+  {
+    "id": "dfae561d-8490-4f16-af4b-a85030d1afce",
+    "userId": "user3",
+    "name": "Spor Mor shorts",
+    "type": "shorts",
+    "colors": [
+      "#800080",
+      "#00FFFF",
+      "#000080"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=57",
+    "createdAt": "2024-08-11T19:15:52.937475"
+  },
+  {
+    "id": "e23c6722-47c5-4c3f-9161-bcaae71f7f5a",
+    "userId": "user8",
+    "name": "Yüksek bel Mavi jeans",
+    "type": "jeans",
+    "colors": [
+      "#0000FF"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=58",
+    "createdAt": "2024-12-22T19:15:52.937484"
+  },
+  {
+    "id": "c5ff6375-dc3f-4bbf-adad-53ddbdbd4c3c",
+    "userId": "user8",
+    "name": "Kot Zeytin yeşili jacket",
+    "type": "jacket",
+    "colors": [
+      "#808000",
+      "#FF0000",
+      "#0000FF"
+    ],
+    "brand": null,
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=59",
+    "createdAt": "2025-04-02T19:15:52.937493"
+  },
+  {
+    "id": "a1550e6c-e0b3-40f0-8a73-56c822c9e991",
+    "userId": "user5",
+    "name": "Kışlık Yeşil coat",
+    "type": "coat",
+    "colors": [
+      "#00FF00"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=60",
+    "createdAt": "2024-12-21T19:15:52.937501"
+  },
+  {
+    "id": "80b35383-a0f1-42dd-8327-91a68b02e44c",
+    "userId": "user7",
+    "name": "Oxford Sarı shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFFF00",
+      "#00FFFF"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=61",
+    "createdAt": "2024-09-26T19:15:52.937510"
+  },
+  {
+    "id": "fcb5ad23-1c60-4644-a48f-e12fd5f5a489",
+    "userId": "user7",
+    "name": "Spor Beyaz shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFFFFF",
+      "#FF00FF",
+      "#A52A2A"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=62",
+    "createdAt": "2025-03-01T19:15:52.937520"
+  },
+  {
+    "id": "e0952a9d-13f7-44a0-a9ce-4e743f9a33fb",
+    "userId": "user9",
+    "name": "Kareli Koyu yeşil shirt",
+    "type": "shirt",
+    "colors": [
+      "#008000",
+      "#008080"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=63",
+    "createdAt": "2024-09-10T19:15:52.937528"
+  },
+  {
+    "id": "5736300b-fd54-4a49-b6ba-2ddaa6db627e",
+    "userId": "user6",
+    "name": "Mini Çam yeşili skirt",
+    "type": "skirt",
+    "colors": [
+      "#008080",
+      "#FFC0CB"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=64",
+    "createdAt": "2024-07-04T19:15:52.937537"
+  },
+  {
+    "id": "d1789044-b9f2-48f5-adcb-8c6642472a2a",
+    "userId": "user6",
+    "name": "Renkli Açık pembe tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#FFC0CB"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=65",
+    "createdAt": "2025-02-12T19:15:52.937546"
+  },
+  {
+    "id": "def89bf5-92a9-4007-a34d-5b6fa352d809",
+    "userId": "user4",
+    "name": "Rüzgarlık Sarı jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFFF00",
+      "#008000",
+      "#808000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=66",
+    "createdAt": "2024-07-20T19:15:52.937555"
+  },
+  {
+    "id": "2169757d-49d4-435b-b4e9-966e5ca8b7e8",
+    "userId": "user4",
+    "name": "Şık Sarı shirt",
+    "type": "shirt",
+    "colors": [
+      "#FFFF00",
+      "#000000",
+      "#808080"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=67",
+    "createdAt": "2025-01-31T19:15:52.937565"
+  },
+  {
+    "id": "38d0cfa7-b7d9-4676-affd-0b12fe3b2dcf",
+    "userId": "user3",
+    "name": "Trençkot Kahverengi coat",
+    "type": "coat",
+    "colors": [
+      "#A52A2A",
+      "#0000FF",
+      "#008080"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=68",
+    "createdAt": "2024-12-15T19:15:52.937574"
+  },
+  {
+    "id": "abe9e977-8f87-4e9e-92b2-fad61e486d2e",
+    "userId": "user9",
+    "name": "Postal Beyaz boots",
+    "type": "boots",
+    "colors": [
+      "#FFFFFF",
+      "#800080",
+      "#FFFF00"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=69",
+    "createdAt": "2025-03-17T19:15:52.937583"
+  },
+  {
+    "id": "3e490cc6-b2c4-4fbc-b0fd-764e93b881eb",
+    "userId": "user8",
+    "name": "Trençkot Kırmızı coat",
+    "type": "coat",
+    "colors": [
+      "#FF0000",
+      "#808080"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=70",
+    "createdAt": "2024-06-12T19:15:52.937592"
+  },
+  {
+    "id": "bc1309f4-e956-438a-b4e8-e1bbe820619a",
+    "userId": "user6",
+    "name": "Spor Beyaz shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFFFFF",
+      "#FFFFFF"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=71",
+    "createdAt": "2024-07-07T19:15:52.937602"
+  },
+  {
+    "id": "75ca0f32-e36b-45a5-97e3-8f260110252b",
+    "userId": "user8",
+    "name": "Renkli Çam yeşili tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#008080"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=72",
+    "createdAt": "2024-08-02T19:15:52.937610"
+  },
+  {
+    "id": "17c27454-5ce0-42e6-acf1-72de72e84cb1",
+    "userId": "user4",
+    "name": "Kalın Koyu yeşil coat",
+    "type": "coat",
+    "colors": [
+      "#008000"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=73",
+    "createdAt": "2025-01-28T19:15:52.937621"
+  },
+  {
+    "id": "f77b2cac-d5c7-4d1f-9eeb-f9f04b713a76",
+    "userId": "user9",
+    "name": "Hafif Turuncu jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFA500",
+      "#FF0000",
+      "#0000FF"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=74",
+    "createdAt": "2024-06-30T19:15:52.937630"
+  },
+  {
+    "id": "27359400-32b1-456a-9b8b-604dc846fc81",
+    "userId": "user8",
+    "name": "İpek Kahverengi blouse",
+    "type": "blouse",
+    "colors": [
+      "#A52A2A"
+    ],
+    "brand": null,
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=75",
+    "createdAt": "2025-04-26T19:15:52.937639"
+  },
+  {
+    "id": "c76117a6-ec71-4a67-a754-4b744841b81c",
+    "userId": "user6",
+    "name": "Mini Turkuaz dress",
+    "type": "dress",
+    "colors": [
+      "#00FFFF",
+      "#808000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=76",
+    "createdAt": "2024-11-14T19:15:52.937648"
+  },
+  {
+    "id": "17724fc0-6d60-4077-a55b-17f7d255b794",
+    "userId": "user4",
+    "name": "Casual Zeytin yeşili shirt",
+    "type": "shirt",
+    "colors": [
+      "#808000"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=77",
+    "createdAt": "2025-01-24T19:15:52.937657"
+  },
+  {
+    "id": "e8c84b52-8b49-4004-8554-b09e5aef8530",
+    "userId": "user10",
+    "name": "Pileli Çam yeşili pants",
+    "type": "pants",
+    "colors": [
+      "#008080"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=78",
+    "createdAt": "2025-01-11T19:15:52.937665"
+  },
+  {
+    "id": "9e9f19dd-dece-49c7-aeb3-f5ba7af9acda",
+    "userId": "user5",
+    "name": "Yağmur Çam yeşili boots",
+    "type": "boots",
+    "colors": [
+      "#008080",
+      "#000000",
+      "#808080"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=79",
+    "createdAt": "2025-01-15T19:15:52.937675"
+  },
+  {
+    "id": "736a2931-c90e-4f85-b85f-c01ed408dab0",
+    "userId": "user7",
+    "name": "Spor Turuncu shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFA500",
+      "#000080",
+      "#008000"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=80",
+    "createdAt": "2024-11-13T19:15:52.937684"
+  },
+  {
+    "id": "ca726e2b-d033-487d-830c-a50c5c18d76f",
+    "userId": "user9",
+    "name": "Baskılı Zeytin yeşili tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#808000",
+      "#A52A2A"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=81",
+    "createdAt": "2024-12-22T19:15:52.937693"
+  },
+  {
+    "id": "d1af2274-1b5b-431e-87c9-8c8743e3f3de",
+    "userId": "user2",
+    "name": "İpek Açık pembe blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFC0CB",
+      "#008000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=82",
+    "createdAt": "2024-07-14T19:15:52.937702"
+  },
+  {
+    "id": "483b8785-7c5f-487f-a9fd-c2bd197e7a6c",
+    "userId": "user6",
+    "name": "Uzun kollu Lacivert shirt",
+    "type": "shirt",
+    "colors": [
+      "#000080",
+      "#FF00FF"
+    ],
+    "brand": null,
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=83",
+    "createdAt": "2025-03-08T19:15:52.937711"
+  },
+  {
+    "id": "765e0c2e-2a24-4530-b78f-e4d7534a94c1",
+    "userId": "user3",
+    "name": "Kalın Çam yeşili coat",
+    "type": "coat",
+    "colors": [
+      "#008080",
+      "#000080",
+      "#FFA500"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=84",
+    "createdAt": "2025-03-06T19:15:52.937721"
+  },
+  {
+    "id": "7236f59d-dc84-4e06-a9fe-9814a19693e0",
+    "userId": "user10",
+    "name": "Spor Çam yeşili jacket",
+    "type": "jacket",
+    "colors": [
+      "#008080"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=85",
+    "createdAt": "2024-11-14T19:15:52.937730"
+  },
+  {
+    "id": "4431f768-8fed-4136-9805-d1d45c4d691a",
+    "userId": "user3",
+    "name": "Düz Yeşil tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#00FF00"
+    ],
+    "brand": null,
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=86",
+    "createdAt": "2025-02-06T19:15:52.937738"
+  },
+  {
+    "id": "0875979c-ad68-403a-b95b-5f7edaa036bf",
+    "userId": "user3",
+    "name": "Pileli Zeytin yeşili pants",
+    "type": "pants",
+    "colors": [
+      "#808000",
+      "#FF0000",
+      "#FF0000"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=87",
+    "createdAt": "2025-04-06T19:15:52.937748"
+  },
+  {
+    "id": "b3b16166-03be-48f3-ad41-18fd33650309",
+    "userId": "user5",
+    "name": "Yüksek bel Mavi jeans",
+    "type": "jeans",
+    "colors": [
+      "#0000FF",
+      "#FF00FF",
+      "#FF0000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=88",
+    "createdAt": "2024-12-07T19:15:52.937757"
+  },
+  {
+    "id": "3a7e0893-268e-473b-be6f-9b3e58bd2ea0",
+    "userId": "user8",
+    "name": "V yaka Kırmızı sweater",
+    "type": "sweater",
+    "colors": [
+      "#FF0000",
+      "#FFFF00",
+      "#800080"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=89",
+    "createdAt": "2024-11-04T19:15:52.937766"
+  },
+  {
+    "id": "323cd287-8f86-443c-87e3-2b395fbc5fe1",
+    "userId": "user6",
+    "name": "Rahat Turkuaz shoes",
+    "type": "shoes",
+    "colors": [
+      "#00FFFF",
+      "#00FF00",
+      "#FFC0CB"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=90",
+    "createdAt": "2024-07-15T19:15:52.937776"
+  },
+  {
+    "id": "9b5a3833-ee74-49df-a89a-b48409453507",
+    "userId": "user6",
+    "name": "Kısa Yeşil shorts",
+    "type": "shorts",
+    "colors": [
+      "#00FF00",
+      "#000080"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=91",
+    "createdAt": "2025-03-12T19:15:52.937785"
+  },
+  {
+    "id": "57fcb6a9-fd1c-41c8-9fd6-c93475823ec6",
+    "userId": "user6",
+    "name": "Spor Turkuaz tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#00FFFF",
+      "#FF00FF"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=92",
+    "createdAt": "2025-05-02T19:15:52.937795"
+  },
+  {
+    "id": "a46c319d-057d-470b-9883-5a872f0356bb",
+    "userId": "user9",
+    "name": "Şık Pembe blouse",
+    "type": "blouse",
+    "colors": [
+      "#FF00FF",
+      "#808000",
+      "#008000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=93",
+    "createdAt": "2024-09-30T19:15:52.937804"
+  },
+  {
+    "id": "4b619810-57ba-4dcb-bdc6-805d83efcd45",
+    "userId": "user6",
+    "name": "Spor Koyu yeşil tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#008000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=94",
+    "createdAt": "2025-02-20T19:15:52.937813"
+  },
+  {
+    "id": "bfccfc7f-92a3-4900-be38-f2857c9bf22d",
+    "userId": "user3",
+    "name": "Oxford Kırmızı shoes",
+    "type": "shoes",
+    "colors": [
+      "#FF0000",
+      "#FFA500",
+      "#00FF00"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=95",
+    "createdAt": "2025-03-31T19:15:52.937822"
+  },
+  {
+    "id": "3de86fd2-1bca-4ab3-8fff-40d3a5370b4c",
+    "userId": "user4",
+    "name": "Casual Çam yeşili shirt",
+    "type": "shirt",
+    "colors": [
+      "#008080",
+      "#808080",
+      "#800080"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=96",
+    "createdAt": "2024-06-03T19:15:52.937832"
+  },
+  {
+    "id": "ad552685-2b50-46eb-8c1c-1bb2dbc7753d",
+    "userId": "user9",
+    "name": "Skinny Açık pembe jeans",
+    "type": "jeans",
+    "colors": [
+      "#FFC0CB",
+      "#FF0000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=97",
+    "createdAt": "2024-05-20T19:15:52.937840"
+  },
+  {
+    "id": "9673910d-d276-452f-ac85-d7c4cebcc27d",
+    "userId": "user1",
+    "name": "Şık Beyaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFFFFF",
+      "#008000"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=98",
+    "createdAt": "2024-07-22T19:15:52.937849"
+  },
+  {
+    "id": "941ee5e5-cad0-418e-9a5e-a527ad40a6ed",
+    "userId": "user5",
+    "name": "Uzun Pembe coat",
+    "type": "coat",
+    "colors": [
+      "#FF00FF",
+      "#000080"
+    ],
+    "brand": null,
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=99",
+    "createdAt": "2024-12-05T19:15:52.937858"
+  },
+  {
+    "id": "69e40efc-54f6-4936-aac4-965ab5dd3064",
+    "userId": "user2",
+    "name": "Klasik Turuncu shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFA500"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=100",
+    "createdAt": "2024-12-24T19:15:52.937867"
+  },
+  {
+    "id": "d855fec0-3652-49a0-bc00-a0ab767a6dfb",
+    "userId": "user5",
+    "name": "Renkli Beyaz tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#FFFFFF",
+      "#00FF00"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=101",
+    "createdAt": "2024-08-25T19:15:52.937876"
+  },
+  {
+    "id": "5279ecb1-e4ff-4834-ab3e-e1f4099db2c4",
+    "userId": "user6",
+    "name": "Klasik Kahverengi shirt",
+    "type": "shirt",
+    "colors": [
+      "#A52A2A",
+      "#FF0000",
+      "#FFC0CB"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=102",
+    "createdAt": "2024-09-23T19:15:52.937886"
+  },
+  {
+    "id": "a9f44f54-adf3-47a3-be63-d73f3a15b205",
+    "userId": "user10",
+    "name": "Rüzgarlık Mavi jacket",
+    "type": "jacket",
+    "colors": [
+      "#0000FF",
+      "#FFFFFF"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=103",
+    "createdAt": "2024-09-20T19:15:52.937895"
+  },
+  {
+    "id": "6e8005c0-048b-4b6b-a45a-987f51814fd4",
+    "userId": "user9",
+    "name": "Chino Bordo pants",
+    "type": "pants",
+    "colors": [
+      "#800000",
+      "#00FF00",
+      "#00FF00"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=104",
+    "createdAt": "2025-03-04T19:15:52.937904"
+  },
+  {
+    "id": "956a7b7e-4962-4217-a39e-bb071279e62c",
+    "userId": "user4",
+    "name": "Kargo Bordo shorts",
+    "type": "shorts",
+    "colors": [
+      "#800000",
+      "#00FF00",
+      "#008000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=105",
+    "createdAt": "2024-07-17T19:15:52.937913"
+  },
+  {
+    "id": "d71fa054-083a-4e35-9f44-96e873192ac5",
+    "userId": "user10",
+    "name": "Kot Mor jeans",
+    "type": "jeans",
+    "colors": [
+      "#800080"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=106",
+    "createdAt": "2024-12-28T19:15:52.937922"
+  },
+  {
+    "id": "0533bc1a-03d4-4fa4-9565-9fcd54b67eac",
+    "userId": "user1",
+    "name": "Kışlık Açık pembe coat",
+    "type": "coat",
+    "colors": [
+      "#FFC0CB",
+      "#800000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=107",
+    "createdAt": "2024-06-09T19:15:52.937931"
+  },
+  {
+    "id": "ba847c07-1fe9-4dac-b04e-264b0971abd9",
+    "userId": "user8",
+    "name": "Spor Siyah shoes",
+    "type": "shoes",
+    "colors": [
+      "#000000"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=108",
+    "createdAt": "2024-07-09T19:15:52.937940"
+  },
+  {
+    "id": "06d072ff-b658-4f24-9295-fd0c5ee72699",
+    "userId": "user6",
+    "name": "Spor Beyaz jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFFFFF",
+      "#800000"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=109",
+    "createdAt": "2024-12-27T19:15:52.937949"
+  },
+  {
+    "id": "85dfefcc-271c-47d1-8c55-7933fa80594b",
+    "userId": "user1",
+    "name": "Spor Beyaz shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFFFFF",
+      "#808000",
+      "#008000"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=110",
+    "createdAt": "2024-06-16T19:15:52.937959"
+  },
+  {
+    "id": "6bd8a136-1ed2-451a-9aa6-b276b023cdd0",
+    "userId": "user10",
+    "name": "Skinny Açık pembe jeans",
+    "type": "jeans",
+    "colors": [
+      "#FFC0CB"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=111",
+    "createdAt": "2024-06-23T19:15:52.937969"
+  },
+  {
+    "id": "8e35f51a-12c5-4524-9db8-8e4e83e59595",
+    "userId": "user7",
+    "name": "Straight Zeytin yeşili jeans",
+    "type": "jeans",
+    "colors": [
+      "#808000"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=112",
+    "createdAt": "2025-05-11T19:15:52.937978"
+  },
+  {
+    "id": "64e87aad-791c-4e42-94e4-46e493ba813b",
+    "userId": "user3",
+    "name": "Bermuda Mor shorts",
+    "type": "shorts",
+    "colors": [
+      "#800080"
+    ],
+    "brand": null,
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=113",
+    "createdAt": "2024-10-10T19:15:52.937987"
+  },
+  {
+    "id": "f68cb957-5822-4af8-965a-c4d8e1f0de97",
+    "userId": "user1",
+    "name": "Şık Kırmızı blouse",
+    "type": "blouse",
+    "colors": [
+      "#FF0000"
+    ],
+    "brand": null,
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=114",
+    "createdAt": "2024-10-24T19:15:52.937995"
+  },
+  {
+    "id": "36d5a5e2-27f4-4779-929b-9780f1e561e2",
+    "userId": "user5",
+    "name": "Kalın Zeytin yeşili sweater",
+    "type": "sweater",
+    "colors": [
+      "#808000",
+      "#00FFFF",
+      "#FFC0CB"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=115",
+    "createdAt": "2024-12-16T19:15:52.938004"
+  },
+  {
+    "id": "81d55a4a-d6f8-41ee-8b2c-c7550b538d8e",
+    "userId": "user10",
+    "name": "Rüzgarlık Kahverengi jacket",
+    "type": "jacket",
+    "colors": [
+      "#A52A2A",
+      "#000000"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=116",
+    "createdAt": "2024-07-22T19:15:52.938013"
+  },
+  {
+    "id": "f512a776-84eb-4266-9f69-07a8f056b45f",
+    "userId": "user4",
+    "name": "Rüzgarlık Yeşil jacket",
+    "type": "jacket",
+    "colors": [
+      "#00FF00",
+      "#FFFFFF",
+      "#800000"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=117",
+    "createdAt": "2024-12-18T19:15:52.938022"
+  },
+  {
+    "id": "be7c2668-e18a-4d36-962d-100a0b8ef6bf",
+    "userId": "user8",
+    "name": "Plaj Kahverengi shorts",
+    "type": "shorts",
+    "colors": [
+      "#A52A2A"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=118",
+    "createdAt": "2025-03-04T19:15:52.938031"
+  },
+  {
+    "id": "a93d76e2-4bb5-43f5-b4dd-336b87e9acdb",
+    "userId": "user7",
+    "name": "Plaj Sarı shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFFF00",
+      "#008080"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=119",
+    "createdAt": "2024-09-22T19:15:52.938040"
+  },
+  {
+    "id": "e8517e12-9bbe-4423-889d-318093686373",
+    "userId": "user5",
+    "name": "Pileli Bordo skirt",
+    "type": "skirt",
+    "colors": [
+      "#800000"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=120",
+    "createdAt": "2024-07-24T19:15:52.938048"
+  },
+  {
+    "id": "1bddad21-e2e5-4f29-9fdf-e0cd9e201b53",
+    "userId": "user8",
+    "name": "Spor Turuncu jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFA500",
+      "#808000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=121",
+    "createdAt": "2024-08-10T19:15:52.938057"
+  },
+  {
+    "id": "614f06c4-86b2-47eb-9995-05cf4b1ab83a",
+    "userId": "user2",
+    "name": "Oxford Gri shoes",
+    "type": "shoes",
+    "colors": [
+      "#808080",
+      "#800000"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=122",
+    "createdAt": "2024-12-07T19:15:52.938066"
+  },
+  {
+    "id": "6022eb9b-a86f-43da-ba8f-2e3588b9d5e3",
+    "userId": "user4",
+    "name": "Kot Gri skirt",
+    "type": "skirt",
+    "colors": [
+      "#808080",
+      "#808080"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=123",
+    "createdAt": "2024-09-05T19:15:52.938075"
+  },
+  {
+    "id": "f71205b4-099e-4ed6-8ce0-55d688191a41",
+    "userId": "user9",
+    "name": "Kot Mor jeans",
+    "type": "jeans",
+    "colors": [
+      "#800080",
+      "#FFFFFF",
+      "#A52A2A"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=124",
+    "createdAt": "2025-05-01T19:15:52.938084"
+  },
+  {
+    "id": "6279f090-0bb0-4f1d-a90b-69e752a44fc7",
+    "userId": "user7",
+    "name": "Günlük Mavi shoes",
+    "type": "shoes",
+    "colors": [
+      "#0000FF",
+      "#FF00FF",
+      "#FFFF00"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=125",
+    "createdAt": "2024-12-14T19:15:52.938093"
+  },
+  {
+    "id": "d24944d7-85d4-4d19-8fb7-534e1f55ce99",
+    "userId": "user3",
+    "name": "Maksi Beyaz dress",
+    "type": "dress",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": null,
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=126",
+    "createdAt": "2024-10-30T19:15:52.938102"
+  },
+  {
+    "id": "d686b941-56f5-4a66-883b-928b52767496",
+    "userId": "user10",
+    "name": "Günlük Açık pembe dress",
+    "type": "dress",
+    "colors": [
+      "#FFC0CB",
+      "#00FF00"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=127",
+    "createdAt": "2024-10-02T19:15:52.938111"
+  },
+  {
+    "id": "d6d0b448-4e31-4e18-a6f4-5a9e47b993b9",
+    "userId": "user6",
+    "name": "Mini Lacivert dress",
+    "type": "dress",
+    "colors": [
+      "#000080",
+      "#FFA500",
+      "#FFC0CB"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=128",
+    "createdAt": "2024-09-17T19:15:52.938120"
+  },
+  {
+    "id": "89882966-e0b3-46cb-9125-1c24ed58d4c5",
+    "userId": "user6",
+    "name": "Baskılı Sarı tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#FFFF00"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=129",
+    "createdAt": "2024-07-20T19:15:52.938129"
+  },
+  {
+    "id": "c56333a5-d693-4c52-b790-d320ab3c138c",
+    "userId": "user10",
+    "name": "Mini Turkuaz skirt",
+    "type": "skirt",
+    "colors": [
+      "#00FFFF",
+      "#800000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=130",
+    "createdAt": "2024-11-26T19:15:52.938138"
+  },
+  {
+    "id": "929b0bb9-2537-45d8-b36f-df16f32a89e0",
+    "userId": "user3",
+    "name": "Chino Lacivert pants",
+    "type": "pants",
+    "colors": [
+      "#000080",
+      "#FF00FF",
+      "#000000"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=131",
+    "createdAt": "2025-02-22T19:15:52.938148"
+  },
+  {
+    "id": "5aa45661-1e96-46bc-9183-9332c0766239",
+    "userId": "user9",
+    "name": "Rahat Çam yeşili tShirt",
+    "type": "tShirt",
+    "colors": [
+      "#008080"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=132",
+    "createdAt": "2025-03-02T19:15:52.938158"
+  },
+  {
+    "id": "87bd9c27-e479-4f57-b4de-8efde378684e",
+    "userId": "user2",
+    "name": "Çiçekli Beyaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=133",
+    "createdAt": "2024-06-25T19:15:52.938167"
+  },
+  {
+    "id": "0e5cabf5-0eeb-476a-8915-1940a2f09c83",
+    "userId": "user1",
+    "name": "Spor Lacivert shoes",
+    "type": "shoes",
+    "colors": [
+      "#000080"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=134",
+    "createdAt": "2024-06-22T19:15:52.938176"
+  },
+  {
+    "id": "f07bbcb9-ba8a-435b-a71b-827794830f74",
+    "userId": "user9",
+    "name": "Rahat Bordo pants",
+    "type": "pants",
+    "colors": [
+      "#800000"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=135",
+    "createdAt": "2024-07-17T19:15:52.938243"
+  },
+  {
+    "id": "34779e76-97d1-4183-8566-393bbab0ce0e",
+    "userId": "user6",
+    "name": "Jogger Siyah pants",
+    "type": "pants",
+    "colors": [
+      "#000000",
+      "#FF00FF",
+      "#800000"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=136",
+    "createdAt": "2024-06-07T19:15:52.938253"
+  },
+  {
+    "id": "6aee65ac-f584-471d-8b11-a3a3c4c19ba6",
+    "userId": "user10",
+    "name": "Kovboy Koyu yeşil boots",
+    "type": "boots",
+    "colors": [
+      "#008000",
+      "#FFC0CB"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=137",
+    "createdAt": "2025-01-18T19:15:52.938262"
+  },
+  {
+    "id": "1836130e-46a8-4bde-94a0-2f0f39c3d53e",
+    "userId": "user10",
+    "name": "Kalın Turkuaz sweater",
+    "type": "sweater",
+    "colors": [
+      "#00FFFF",
+      "#FFFFFF"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=138",
+    "createdAt": "2024-09-17T19:15:52.938271"
+  },
+  {
+    "id": "1f5d7d34-9e38-40de-b935-68df1afc1bfb",
+    "userId": "user6",
+    "name": "Chelsea Çam yeşili boots",
+    "type": "boots",
+    "colors": [
+      "#008080",
+      "#A52A2A",
+      "#FF0000"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=139",
+    "createdAt": "2024-09-24T19:15:52.938280"
+  },
+  {
+    "id": "11abb171-564d-49d3-9b23-d553ed6643c6",
+    "userId": "user7",
+    "name": "Günlük Turuncu shoes",
+    "type": "shoes",
+    "colors": [
+      "#FFA500"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=140",
+    "createdAt": "2024-09-13T19:15:52.938289"
+  },
+  {
+    "id": "38c179cf-371b-42c8-b1c3-4ed7bba9fcb6",
+    "userId": "user2",
+    "name": "Kot Mavi jeans",
+    "type": "jeans",
+    "colors": [
+      "#0000FF",
+      "#000080",
+      "#FFFF00"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=141",
+    "createdAt": "2024-07-14T19:15:52.938298"
+  },
+  {
+    "id": "646c3d26-6168-4d2b-8921-aeb7db2a3d57",
+    "userId": "user3",
+    "name": "Şık Mor blouse",
+    "type": "blouse",
+    "colors": [
+      "#800080",
+      "#00FFFF",
+      "#FFC0CB"
+    ],
+    "brand": null,
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=142",
+    "createdAt": "2024-12-26T19:15:52.938307"
+  },
+  {
+    "id": "7df37d88-2ce3-4d4b-8040-87060a670748",
+    "userId": "user4",
+    "name": "Zarif Turkuaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#00FFFF",
+      "#FF00FF"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=143",
+    "createdAt": "2025-01-22T19:15:52.938316"
+  },
+  {
+    "id": "f330dfa6-970f-48da-8cc5-70d83d2dfaf7",
+    "userId": "user1",
+    "name": "Deri Yeşil jacket",
+    "type": "jacket",
+    "colors": [
+      "#00FF00",
+      "#000000",
+      "#008080"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=144",
+    "createdAt": "2025-05-10T19:15:52.938325"
+  },
+  {
+    "id": "279ecdc4-7557-46d1-b9e6-d400415435a3",
+    "userId": "user2",
+    "name": "Desenli Beyaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFFFFF",
+      "#000000"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=145",
+    "createdAt": "2024-09-16T19:15:52.938334"
+  },
+  {
+    "id": "7ebda638-3a6f-4963-aec9-cf8fceecd934",
+    "userId": "user8",
+    "name": "Kalem Gri skirt",
+    "type": "skirt",
+    "colors": [
+      "#808080",
+      "#FFFFFF"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=146",
+    "createdAt": "2024-06-06T19:15:52.938342"
+  },
+  {
+    "id": "ab99d816-223a-4e13-a938-95e65727b6a0",
+    "userId": "user10",
+    "name": "Şık Turkuaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#00FFFF"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=147",
+    "createdAt": "2024-07-09T19:15:52.938351"
+  },
+  {
+    "id": "e53373bf-b4c2-426e-87c6-53b378867b41",
+    "userId": "user7",
+    "name": "Kot Bordo jeans",
+    "type": "jeans",
+    "colors": [
+      "#800000"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=148",
+    "createdAt": "2024-10-22T19:15:52.938359"
+  },
+  {
+    "id": "23b24b52-c444-4e6a-be64-9d2a17e3d514",
+    "userId": "user4",
+    "name": "Kısa Mavi shorts",
+    "type": "shorts",
+    "colors": [
+      "#0000FF",
+      "#00FF00",
+      "#808000"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=149",
+    "createdAt": "2024-08-19T19:15:52.938368"
+  },
+  {
+    "id": "9c982d21-a197-4489-bcde-f4485a7e68a9",
+    "userId": "user9",
+    "name": "Çizgili Pembe shirt",
+    "type": "shirt",
+    "colors": [
+      "#FF00FF"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=150",
+    "createdAt": "2025-04-26T19:15:52.938377"
+  },
+  {
+    "id": "c7e0b649-6200-44bb-b643-7446a2c00e65",
+    "userId": "user8",
+    "name": "Kargo Açık pembe shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFC0CB",
+      "#000000"
+    ],
+    "brand": null,
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=151",
+    "createdAt": "2024-09-06T19:15:52.938386"
+  },
+  {
+    "id": "06dde5cd-e80e-43d2-9640-1bd9500e17f1",
+    "userId": "user8",
+    "name": "Kot Açık pembe jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFC0CB",
+      "#008000"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=152",
+    "createdAt": "2025-04-07T19:15:52.938395"
+  },
+  {
+    "id": "1b26a17f-2b40-42d2-b44d-eb983fcc088c",
+    "userId": "user6",
+    "name": "Loafer Bordo shoes",
+    "type": "shoes",
+    "colors": [
+      "#800000",
+      "#FFA500",
+      "#00FFFF"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=153",
+    "createdAt": "2025-02-15T19:15:52.938404"
+  },
+  {
+    "id": "bf45069d-6e56-4a8a-9028-0479ce29309b",
+    "userId": "user6",
+    "name": "Dantel Çam yeşili blouse",
+    "type": "blouse",
+    "colors": [
+      "#008080",
+      "#008080",
+      "#FFC0CB"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=154",
+    "createdAt": "2024-12-03T19:15:52.938413"
+  },
+  {
+    "id": "97c1984d-406d-4e0e-8b67-bca672383fcb",
+    "userId": "user5",
+    "name": "Klasik Zeytin yeşili shirt",
+    "type": "shirt",
+    "colors": [
+      "#808000"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=155",
+    "createdAt": "2024-12-29T19:15:52.938421"
+  },
+  {
+    "id": "a075a16d-1007-4db3-8531-144bf9129fab",
+    "userId": "user8",
+    "name": "Zarif Beyaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFFFFF",
+      "#800000",
+      "#808080"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=156",
+    "createdAt": "2025-01-22T19:15:52.938431"
+  },
+  {
+    "id": "9d386856-1202-4c91-96b2-a8e6b8c5c2e6",
+    "userId": "user4",
+    "name": "Yağmur Zeytin yeşili boots",
+    "type": "boots",
+    "colors": [
+      "#808000",
+      "#FF0000",
+      "#FFFFFF"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=157",
+    "createdAt": "2024-10-20T19:15:52.938440"
+  },
+  {
+    "id": "a4212892-e608-4e6b-bd60-75049223347c",
+    "userId": "user2",
+    "name": "Uzun Gri skirt",
+    "type": "skirt",
+    "colors": [
+      "#808080"
+    ],
+    "brand": "Adidas",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=158",
+    "createdAt": "2024-12-16T19:15:52.938448"
+  },
+  {
+    "id": "8ebecba9-5c9a-4a97-904d-4e1bb2f55905",
+    "userId": "user1",
+    "name": "Uzun Yeşil coat",
+    "type": "coat",
+    "colors": [
+      "#00FF00"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=159",
+    "createdAt": "2025-01-18T19:15:52.938457"
+  },
+  {
+    "id": "2fde636f-7d17-4b4c-b812-3208dc03f15f",
+    "userId": "user10",
+    "name": "Desenli Yeşil blouse",
+    "type": "blouse",
+    "colors": [
+      "#00FF00",
+      "#00FFFF",
+      "#00FFFF"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=160",
+    "createdAt": "2024-08-06T19:15:52.938466"
+  },
+  {
+    "id": "b174db23-cb70-40f4-9db0-00d129952729",
+    "userId": "user3",
+    "name": "Kışlık Turkuaz boots",
+    "type": "boots",
+    "colors": [
+      "#00FFFF",
+      "#800000"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=161",
+    "createdAt": "2024-10-27T19:15:52.938475"
+  },
+  {
+    "id": "7f22c33c-ae7c-4e85-b15d-9c853f77aa8f",
+    "userId": "user7",
+    "name": "Desenli Turuncu blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFA500",
+      "#000080",
+      "#FFFFFF"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=162",
+    "createdAt": "2024-10-10T19:15:52.938484"
+  },
+  {
+    "id": "d565ff15-2ab1-49cd-ba48-6d373a46563f",
+    "userId": "user8",
+    "name": "İpek Pembe blouse",
+    "type": "blouse",
+    "colors": [
+      "#FF00FF",
+      "#FFA500"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=163",
+    "createdAt": "2024-12-01T19:15:52.938493"
+  },
+  {
+    "id": "5ff7a871-60cf-46ae-bf61-a0805d6fe982",
+    "userId": "user2",
+    "name": "Loafer Turkuaz shoes",
+    "type": "shoes",
+    "colors": [
+      "#00FFFF"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=164",
+    "createdAt": "2024-10-26T19:15:52.938501"
+  },
+  {
+    "id": "ff768e99-673e-4e2e-999f-0d8f0b5d18ca",
+    "userId": "user8",
+    "name": "Örme Bordo sweater",
+    "type": "sweater",
+    "colors": [
+      "#800000",
+      "#00FFFF"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=165",
+    "createdAt": "2024-07-07T19:15:52.938510"
+  },
+  {
+    "id": "ba860b66-184c-472a-a81d-3b8b7dcbac00",
+    "userId": "user6",
+    "name": "Mini Yeşil skirt",
+    "type": "skirt",
+    "colors": [
+      "#00FF00",
+      "#800000",
+      "#008000"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=166",
+    "createdAt": "2024-12-10T19:15:52.938519"
+  },
+  {
+    "id": "e188e0ac-b4b0-4dac-8774-f1cbb73c8275",
+    "userId": "user3",
+    "name": "Desenli Lacivert blouse",
+    "type": "blouse",
+    "colors": [
+      "#000080",
+      "#800000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=167",
+    "createdAt": "2024-12-01T19:15:52.938528"
+  },
+  {
+    "id": "4ec96143-0907-4bd3-9a63-b50f06e4b61f",
+    "userId": "user6",
+    "name": "Kot Pembe jacket",
+    "type": "jacket",
+    "colors": [
+      "#FF00FF",
+      "#800000"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=168",
+    "createdAt": "2025-03-22T19:15:52.938537"
+  },
+  {
+    "id": "7f2f9f7f-3f38-4622-bc2e-24a892a81c92",
+    "userId": "user1",
+    "name": "Spor Gri shorts",
+    "type": "shorts",
+    "colors": [
+      "#808080",
+      "#800000",
+      "#00FFFF"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=169",
+    "createdAt": "2024-08-01T19:15:52.938546"
+  },
+  {
+    "id": "19a02512-f6da-41ba-ab12-90ff5e445c08",
+    "userId": "user5",
+    "name": "Sıcak Beyaz sweater",
+    "type": "sweater",
+    "colors": [
+      "#FFFFFF",
+      "#FF00FF",
+      "#00FFFF"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=170",
+    "createdAt": "2024-11-29T19:15:52.938555"
+  },
+  {
+    "id": "e16179c4-1820-4f02-92d6-e2940819cc18",
+    "userId": "user2",
+    "name": "Rahat Lacivert shoes",
+    "type": "shoes",
+    "colors": [
+      "#000080",
+      "#FFC0CB",
+      "#00FFFF"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=171",
+    "createdAt": "2024-09-05T19:15:52.938564"
+  },
+  {
+    "id": "8f1c8b5f-9f6c-4e13-9250-e4928f42dbf9",
+    "userId": "user8",
+    "name": "Mini Mor dress",
+    "type": "dress",
+    "colors": [
+      "#800080",
+      "#00FF00"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=172",
+    "createdAt": "2025-02-21T19:15:52.938573"
+  },
+  {
+    "id": "e28b7f16-4593-4d2d-aa11-f89739d8f3f1",
+    "userId": "user2",
+    "name": "Rüzgarlık Mavi jacket",
+    "type": "jacket",
+    "colors": [
+      "#0000FF",
+      "#FFFFFF",
+      "#A52A2A"
+    ],
+    "brand": null,
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=173",
+    "createdAt": "2024-09-23T19:15:52.938582"
+  },
+  {
+    "id": "06c382af-f84c-4505-bf29-869a88e84f2d",
+    "userId": "user6",
+    "name": "V yaka Kırmızı sweater",
+    "type": "sweater",
+    "colors": [
+      "#FF0000",
+      "#800080",
+      "#008080"
+    ],
+    "brand": null,
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=174",
+    "createdAt": "2025-04-06T19:15:52.938591"
+  },
+  {
+    "id": "d5d51bf5-3eab-4a27-9a31-be0b8fd06840",
+    "userId": "user6",
+    "name": "Rahat Turkuaz pants",
+    "type": "pants",
+    "colors": [
+      "#00FFFF",
+      "#808000",
+      "#FFA500"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=175",
+    "createdAt": "2024-09-20T19:15:52.938600"
+  },
+  {
+    "id": "f2ef6d36-18e9-431e-bf0e-094a828c8f62",
+    "userId": "user1",
+    "name": "Kot Siyah jeans",
+    "type": "jeans",
+    "colors": [
+      "#000000",
+      "#FF0000"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "spring"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=176",
+    "createdAt": "2025-01-09T19:15:52.938609"
+  },
+  {
+    "id": "6b6dcaa7-ffa2-4b01-ba34-66044f9a4434",
+    "userId": "user3",
+    "name": "Kot Sarı shorts",
+    "type": "shorts",
+    "colors": [
+      "#FFFF00",
+      "#000000"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=177",
+    "createdAt": "2024-08-31T19:15:52.938618"
+  },
+  {
+    "id": "90144bbd-af72-4dae-97ad-82f0f235a592",
+    "userId": "user3",
+    "name": "Desenli Siyah blouse",
+    "type": "blouse",
+    "colors": [
+      "#000000"
+    ],
+    "brand": "H&M",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=178",
+    "createdAt": "2024-10-22T19:15:52.938626"
+  },
+  {
+    "id": "5b720518-cbee-48c8-8024-b787223fdc68",
+    "userId": "user10",
+    "name": "Boğazlı Sarı sweater",
+    "type": "sweater",
+    "colors": [
+      "#FFFF00",
+      "#00FFFF"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=179",
+    "createdAt": "2025-02-25T19:15:52.938635"
+  },
+  {
+    "id": "8b35b429-87f1-459d-849b-b671e6c04bb6",
+    "userId": "user3",
+    "name": "Spor Gri jacket",
+    "type": "jacket",
+    "colors": [
+      "#808080"
+    ],
+    "brand": "Mango",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=180",
+    "createdAt": "2025-03-27T19:15:52.938644"
+  },
+  {
+    "id": "7ec963eb-556b-47b5-9687-375b87e4d40b",
+    "userId": "user1",
+    "name": "Kışlık Kırmızı boots",
+    "type": "boots",
+    "colors": [
+      "#FF0000",
+      "#800080"
+    ],
+    "brand": null,
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=181",
+    "createdAt": "2025-03-17T19:15:52.938653"
+  },
+  {
+    "id": "50ef5090-9a8c-46e3-90cc-ccecb45ae964",
+    "userId": "user8",
+    "name": "Mini Sarı dress",
+    "type": "dress",
+    "colors": [
+      "#FFFF00"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=182",
+    "createdAt": "2024-07-13T19:15:52.938661"
+  },
+  {
+    "id": "d05ab0e0-1af5-48dd-bdc5-7d8f2f691e8f",
+    "userId": "user4",
+    "name": "Rahat Gri pants",
+    "type": "pants",
+    "colors": [
+      "#808080",
+      "#FFA500"
+    ],
+    "brand": "Zara",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=183",
+    "createdAt": "2025-04-23T19:15:52.938670"
+  },
+  {
+    "id": "d15bc11c-53bb-462f-9445-395e30edcbf9",
+    "userId": "user5",
+    "name": "Çiçekli Turuncu blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFA500"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=184",
+    "createdAt": "2025-02-26T19:15:52.938679"
+  },
+  {
+    "id": "ab41eb79-a535-44fa-8bc3-c86226dbf284",
+    "userId": "user1",
+    "name": "Şık Beyaz blouse",
+    "type": "blouse",
+    "colors": [
+      "#FFFFFF"
+    ],
+    "brand": null,
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=185",
+    "createdAt": "2025-01-02T19:15:52.938687"
+  },
+  {
+    "id": "d5338e8a-2271-4232-99d4-b5cd5b1bcafe",
+    "userId": "user3",
+    "name": "Straight Mor jeans",
+    "type": "jeans",
+    "colors": [
+      "#800080",
+      "#A52A2A"
+    ],
+    "brand": "Lacoste",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=186",
+    "createdAt": "2024-07-13T19:15:52.938696"
+  },
+  {
+    "id": "290fc346-8a05-4ed0-b6c2-1cd4d2eef7a3",
+    "userId": "user2",
+    "name": "Su geçirmez Turuncu jacket",
+    "type": "jacket",
+    "colors": [
+      "#FFA500",
+      "#800080"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=187",
+    "createdAt": "2024-08-04T19:15:52.938705"
+  },
+  {
+    "id": "74a61f3f-ad70-4cb4-81a1-c0fdbe2b1082",
+    "userId": "user6",
+    "name": "Günlük Mor dress",
+    "type": "dress",
+    "colors": [
+      "#800080",
+      "#800080"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=188",
+    "createdAt": "2025-02-18T19:15:52.938714"
+  },
+  {
+    "id": "34e7a730-3a0a-4a79-8407-425932d77261",
+    "userId": "user9",
+    "name": "Regular Beyaz jeans",
+    "type": "jeans",
+    "colors": [
+      "#FFFFFF",
+      "#800080",
+      "#000000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=189",
+    "createdAt": "2024-10-07T19:15:52.938723"
+  },
+  {
+    "id": "355a0a4c-8c9c-4c68-aa27-279c8d6008c4",
+    "userId": "user5",
+    "name": "Kargo Koyu yeşil shorts",
+    "type": "shorts",
+    "colors": [
+      "#008000",
+      "#800000"
+    ],
+    "brand": "Calvin Klein",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "casual",
+    "imageUrl": "https://picsum.photos/200/300?random=190",
+    "createdAt": "2025-04-16T19:15:52.938732"
+  },
+  {
+    "id": "9ad8a3b8-de7b-44e3-843c-b0ba6fb0df51",
+    "userId": "user5",
+    "name": "Slim fit Açık pembe pants",
+    "type": "pants",
+    "colors": [
+      "#FFC0CB",
+      "#808080"
+    ],
+    "brand": "Levi's",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=191",
+    "createdAt": "2024-06-10T19:15:52.938740"
+  },
+  {
+    "id": "e4c06343-5111-44cd-bff6-7df0f83478b2",
+    "userId": "user5",
+    "name": "Günlük Kırmızı dress",
+    "type": "dress",
+    "colors": [
+      "#FF0000"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=192",
+    "createdAt": "2024-08-31T19:15:52.938749"
+  },
+  {
+    "id": "5d5f2e06-097b-449f-8a2b-de577ad12eaf",
+    "userId": "user3",
+    "name": "Plaj Zeytin yeşili shorts",
+    "type": "shorts",
+    "colors": [
+      "#808000",
+      "#008080",
+      "#00FFFF"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "fall"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=193",
+    "createdAt": "2025-02-24T19:15:52.938758"
+  },
+  {
+    "id": "fafe72b1-25f6-485e-a8d1-5cd76dd3f00b",
+    "userId": "user9",
+    "name": "Çizgili Bordo shirt",
+    "type": "shirt",
+    "colors": [
+      "#800000",
+      "#000080",
+      "#FF00FF"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=194",
+    "createdAt": "2024-09-11T19:15:52.938767"
+  },
+  {
+    "id": "491bf9ab-1184-4238-ad3a-a3b3ad9d1192",
+    "userId": "user6",
+    "name": "Chelsea Açık pembe boots",
+    "type": "boots",
+    "colors": [
+      "#FFC0CB"
+    ],
+    "brand": "LCW",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=195",
+    "createdAt": "2024-11-08T19:15:52.938776"
+  },
+  {
+    "id": "d287f2fe-9f99-4946-88a3-288d58444f72",
+    "userId": "user10",
+    "name": "Şık Kırmızı blouse",
+    "type": "blouse",
+    "colors": [
+      "#FF0000",
+      "#008000"
+    ],
+    "brand": "Tommy Hilfiger",
+    "seasons": [
+      "summer"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=196",
+    "createdAt": "2024-06-02T19:15:52.938784"
+  },
+  {
+    "id": "33e3083e-3a8a-4b67-b067-897794350361",
+    "userId": "user6",
+    "name": "Spor Çam yeşili jacket",
+    "type": "jacket",
+    "colors": [
+      "#008080",
+      "#008080"
+    ],
+    "brand": "DeFacto",
+    "seasons": [
+      "winter"
+    ],
+    "occasion": "special",
+    "imageUrl": "https://picsum.photos/200/300?random=197",
+    "createdAt": "2025-04-07T19:15:52.938793"
+  },
+  {
+    "id": "59876875-b571-4a56-90a2-65121c3c7318",
+    "userId": "user4",
+    "name": "Maksi Pembe dress",
+    "type": "dress",
+    "colors": [
+      "#FF00FF",
+      "#800080"
+    ],
+    "brand": "Koton",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "occasion": "sport",
+    "imageUrl": "https://picsum.photos/200/300?random=198",
+    "createdAt": "2024-06-15T19:15:52.938802"
+  },
+  {
+    "id": "bb169c9a-288a-407a-8a48-c1b4217c15d6",
+    "userId": "user9",
+    "name": "Kokteyl Kahverengi dress",
+    "type": "dress",
+    "colors": [
+      "#A52A2A"
+    ],
+    "brand": "Nike",
+    "seasons": [
+      "all"
+    ],
+    "occasion": "formal",
+    "imageUrl": "https://picsum.photos/200/300?random=199",
+    "createdAt": "2025-03-18T19:15:52.938810"
+  }
+]

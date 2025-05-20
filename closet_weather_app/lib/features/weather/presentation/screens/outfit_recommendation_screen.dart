@@ -6,6 +6,7 @@ import '../../../../core/models/weather_model.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/services/firestore_service.dart';
 import '../../../../core/services/outfit_recommendation_service.dart';
+import '../../../../core/services/ml_recommendation_service.dart';
 import '../providers/weather_provider.dart';
 import '../../../wardrobe/presentation/widgets/clothing_grid_item.dart';
 
@@ -25,14 +26,19 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
   final FirestoreService _firestoreService = FirestoreService();
   final AuthService _authService = AuthService();
   final OutfitRecommendationService _recommendationService = OutfitRecommendationService();
+  final MLRecommendationService _mlRecommendationService = MLRecommendationService();
   
   List<ClothingItemModel> _recommendedOutfit = [];
   bool _isLoading = true;
+  bool _useMachineLearning = true;
   String? _errorMessage;
   
   @override
   void initState() {
     super.initState();
+    // API kullanımı hakkında log
+    debugPrint("🔍 ML Servisi Durumu: ${_useMachineLearning ? 'Aktif' : 'Pasif'}");
+    debugPrint("🌡️ Hava Durumu: ${widget.weather.temperature}°C, ${widget.weather.condition}");
     _loadRecommendations();
   }
   
@@ -42,14 +48,20 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
       _errorMessage = null;
     });
     
+    debugPrint("⏳ Kombin önerileri yükleniyor...");
+    
     try {
       final userId = _authService.currentUser?.uid;
       if (userId == null) {
         throw Exception('Kullanıcı oturumu bulunamadı');
       }
       
+      debugPrint("👤 Kullanıcı: $userId");
+      
       // Kullanıcının kıyafetlerini getir
       final clothingItems = await _firestoreService.getUserClothingItems(userId);
+      
+      debugPrint("👚 Kullanıcı kıyafet sayısı: ${clothingItems.length}");
       
       if (clothingItems.isEmpty) {
         setState(() {
@@ -59,15 +71,51 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
         return;
       }
       
-      // Kullanıcı bilgilerini getir (cilt tonu için)
-      final user = await _firestoreService.getUser(userId);
+      List<ClothingItemModel> recommendedOutfit;
       
-      // Kombin önerisi oluştur
-      final recommendedOutfit = _recommendationService.recommendOutfitForWeather(
-        clothingItems,
-        widget.weather,
-        skinTone: user?.skinTone,
-      );
+      // Makine öğrenmesi veya normal algoritma seçimi
+      if (_useMachineLearning) {
+        try {
+          // ML API'den öneri al
+          debugPrint('🧠 Makine öğrenmesi servisi kullanılıyor...');
+          recommendedOutfit = await _mlRecommendationService.getOutfitRecommendation(
+            userId,
+            widget.weather,
+          );
+          debugPrint('✅ ML servisi ${recommendedOutfit.length} kıyafet önerdi');
+          
+          // İlk 3 kıyafetin isimlerini yazdır
+          if (recommendedOutfit.isNotEmpty) {
+            for (int i = 0; i < min(recommendedOutfit.length, 3); i++) {
+              debugPrint('  - ${recommendedOutfit[i].name} (${recommendedOutfit[i].type})');
+            }
+          }
+        } catch (e) {
+          // ML hatası durumunda normal algoritmaya dön
+          debugPrint('⚠️ ML hatası, normal algoritma kullanılıyor: $e');
+          // Kullanıcı bilgilerini getir (cilt tonu için)
+          final user = await _firestoreService.getUser(userId);
+          
+          // Kombin önerisi oluştur
+          recommendedOutfit = _recommendationService.recommendOutfitForWeather(
+            clothingItems,
+            widget.weather,
+            skinTone: user?.skinTone,
+          );
+        }
+      } else {
+        // Normal algoritma (yedek)
+        debugPrint('📊 Normal kombin algoritması kullanılıyor...');
+        // Kullanıcı bilgilerini getir (cilt tonu için)
+        final user = await _firestoreService.getUser(userId);
+        
+        // Kombin önerisi oluştur
+        recommendedOutfit = _recommendationService.recommendOutfitForWeather(
+          clothingItems,
+          widget.weather,
+          skinTone: user?.skinTone,
+        );
+      }
       
       setState(() {
         _recommendedOutfit = recommendedOutfit;
@@ -75,11 +123,15 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
         if (recommendedOutfit.isEmpty) {
           _errorMessage = 'Mevcut hava durumu için uygun kıyafet kombinasyonu oluşturulamadı. Lütfen dolabınıza daha fazla kıyafet ekleyin.';
         }
+        
+        // Sonuç hakkında log
+        debugPrint("✅ Kombin oluşturma tamamlandı. Kıyafet sayısı: ${_recommendedOutfit.length}");
       });
     } catch (e) {
       setState(() {
         _errorMessage = 'Kombin önerisi oluşturulurken bir hata oluştu: $e';
         _isLoading = false;
+        debugPrint("❌ Hata: $e");
       });
     }
   }
@@ -136,8 +188,18 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hava Durumuna Göre Kombin'),
+        title: Text(_useMachineLearning ? 'ML Kombin Önerisi' : 'Hava Durumuna Göre Kombin'),
         actions: [
+          IconButton(
+            icon: Icon(_useMachineLearning ? Icons.psychology : Icons.auto_awesome),
+            tooltip: _useMachineLearning ? 'Makine Öğrenmesi Aktif' : 'Normal Algoritma Aktif',
+            onPressed: () {
+              setState(() {
+                _useMachineLearning = !_useMachineLearning;
+                _loadRecommendations();
+              });
+            },
+          ),
           if (_recommendedOutfit.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.save),
@@ -181,6 +243,36 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
                     children: [
                       // Hava durumu bilgisi
                       _buildWeatherCard(),
+                      
+                      const SizedBox(height: 8),
+                      
+                      // ML/Normal algoritma bilgisi
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Chip(
+                          avatar: Icon(
+                            _useMachineLearning ? Icons.psychology : Icons.auto_awesome,
+                            size: 18,
+                            color: _useMachineLearning 
+                                ? Colors.purple.shade700 
+                                : Colors.blue.shade700,
+                          ),
+                          label: Text(
+                            _useMachineLearning 
+                                ? 'Makine Öğrenmesi Algoritması' 
+                                : 'Normal Öneri Algoritması',
+                            style: TextStyle(
+                              color: _useMachineLearning 
+                                  ? Colors.purple.shade700 
+                                  : Colors.blue.shade700,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          backgroundColor: _useMachineLearning 
+                              ? Colors.purple.shade100 
+                              : Colors.blue.shade100,
+                        ),
+                      ),
                       
                       const SizedBox(height: 16),
                       
@@ -440,4 +532,7 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
         return 'Diğer';
     }
   }
+  
+  // Min fonksiyonu
+  int min(int a, int b) => a < b ? a : b;
 } 

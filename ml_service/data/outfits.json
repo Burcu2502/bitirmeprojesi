@@ -1,0 +1,1084 @@
+[
+  {
+    "id": "ef64d9f3-4fd7-4ca5-b204-3a97c8bc865c",
+    "userId": "user8",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "a075a16d-1007-4db3-8531-144bf9129fab",
+      "7ebda638-3a6f-4963-aec9-cf8fceecd934",
+      "ba847c07-1fe9-4dac-b04e-264b0971abd9"
+    ],
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.938933",
+    "updatedAt": "2025-05-20T19:15:52.938935"
+  },
+  {
+    "id": "6d4346f2-1ace-4447-bf83-1122d3200fdb",
+    "userId": "user8",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "3a7e0893-268e-473b-be6f-9b3e58bd2ea0",
+      "e23c6722-47c5-4c3f-9161-bcaae71f7f5a",
+      "ba847c07-1fe9-4dac-b04e-264b0971abd9"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.938959",
+    "updatedAt": "2025-05-20T19:15:52.938960"
+  },
+  {
+    "id": "513fcb80-21a0-4647-b2db-50bab15953e0",
+    "userId": "user8",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "3a7e0893-268e-473b-be6f-9b3e58bd2ea0",
+      "4c1ec01c-9270-4934-b13d-13191c97ba74",
+      "ba847c07-1fe9-4dac-b04e-264b0971abd9"
+    ],
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939024",
+    "updatedAt": "2025-05-20T19:15:52.939031"
+  },
+  {
+    "id": "3aa977b1-0b9c-4a8a-ab8e-ee94f2111fe8",
+    "userId": "user8",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "ff768e99-673e-4e2e-999f-0d8f0b5d18ca",
+      "91209705-bdc2-4b6e-8b88-8f4a59491b8a",
+      "ba847c07-1fe9-4dac-b04e-264b0971abd9"
+    ],
+    "seasons": [
+      "summer",
+      "all"
+    ],
+    "weatherConditions": [
+      "snowy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939053",
+    "updatedAt": "2025-05-20T19:15:52.939054"
+  },
+  {
+    "id": "dcbe9eb4-ce3e-4f31-b134-4d60509f23f8",
+    "userId": "user8",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "a075a16d-1007-4db3-8531-144bf9129fab",
+      "be7c2668-e18a-4d36-962d-100a0b8ef6bf",
+      "ba847c07-1fe9-4dac-b04e-264b0971abd9"
+    ],
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "weatherConditions": [
+      "snowy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939072",
+    "updatedAt": "2025-05-20T19:15:52.939073"
+  },
+  {
+    "id": "79e7eb4f-6773-49c2-8e41-9babbf36ad7c",
+    "userId": "user2",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "d1af2274-1b5b-431e-87c9-8c8743e3f3de",
+      "0d4e6e17-9223-406b-9f96-927d2338ceaa",
+      "614f06c4-86b2-47eb-9995-05cf4b1ab83a"
+    ],
+    "seasons": [
+      "fall",
+      "summer"
+    ],
+    "weatherConditions": [
+      "cloudy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939089",
+    "updatedAt": "2025-05-20T19:15:52.939090"
+  },
+  {
+    "id": "d72f3a36-ce09-4b28-917f-a01658427e54",
+    "userId": "user2",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "279ecdc4-7557-46d1-b9e6-d400415435a3",
+      "0d4e6e17-9223-406b-9f96-927d2338ceaa",
+      "e16179c4-1820-4f02-92d6-e2940819cc18",
+      "e28b7f16-4593-4d2d-aa11-f89739d8f3f1"
+    ],
+    "seasons": [
+      "summer",
+      "fall"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939106",
+    "updatedAt": "2025-05-20T19:15:52.939107"
+  },
+  {
+    "id": "053d1167-ac09-4338-b621-b9b9e2f3586a",
+    "userId": "user2",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "279ecdc4-7557-46d1-b9e6-d400415435a3",
+      "0d4e6e17-9223-406b-9f96-927d2338ceaa",
+      "5ff7a871-60cf-46ae-bf61-a0805d6fe982",
+      "290fc346-8a05-4ed0-b6c2-1cd4d2eef7a3"
+    ],
+    "seasons": [
+      "fall",
+      "summer"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939123",
+    "updatedAt": "2025-05-20T19:15:52.939124"
+  },
+  {
+    "id": "7639f7ec-017f-4672-be18-182beb58284d",
+    "userId": "user2",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "28bc04ca-5dce-419f-8533-a9a274aeb3b2",
+      "a4212892-e608-4e6b-bd60-75049223347c",
+      "69e40efc-54f6-4936-aac4-965ab5dd3064"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "cloudy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939139",
+    "updatedAt": "2025-05-20T19:15:52.939140"
+  },
+  {
+    "id": "f0cc2122-44d3-4f40-a242-f4d62c39bfcf",
+    "userId": "user2",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "279ecdc4-7557-46d1-b9e6-d400415435a3",
+      "0b23817f-9f73-4fa3-a88d-bb3eb0f26193",
+      "5ff7a871-60cf-46ae-bf61-a0805d6fe982"
+    ],
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "weatherConditions": [
+      "sunny",
+      "cloudy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939154",
+    "updatedAt": "2025-05-20T19:15:52.939155"
+  },
+  {
+    "id": "f62be2e8-d9f7-49f5-ace4-54c6358e5eef",
+    "userId": "user4",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "13ad24c2-21a2-4695-8198-a4ce1cd557bc",
+      "6022eb9b-a86f-43da-ba8f-2e3588b9d5e3",
+      "a1aa077c-5421-4718-82fb-76fe33e7fe69"
+    ],
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939171",
+    "updatedAt": "2025-05-20T19:15:52.939172"
+  },
+  {
+    "id": "c291c283-fb9f-4a35-9893-23a03471f3a6",
+    "userId": "user4",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "13ad24c2-21a2-4695-8198-a4ce1cd557bc",
+      "8ab128b7-3474-4881-a2ab-c2593f1b4ec8",
+      "a1aa077c-5421-4718-82fb-76fe33e7fe69",
+      "17c27454-5ce0-42e6-acf1-72de72e84cb1"
+    ],
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "weatherConditions": [
+      "snowy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939188",
+    "updatedAt": "2025-05-20T19:15:52.939189"
+  },
+  {
+    "id": "746f3e54-ca36-456b-9b85-b56c7ee24404",
+    "userId": "user4",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "2169757d-49d4-435b-b4e9-966e5ca8b7e8",
+      "23b24b52-c444-4e6a-be64-9d2a17e3d514",
+      "a1aa077c-5421-4718-82fb-76fe33e7fe69",
+      "def89bf5-92a9-4007-a34d-5b6fa352d809"
+    ],
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939205",
+    "updatedAt": "2025-05-20T19:15:52.939206"
+  },
+  {
+    "id": "d96c130f-bd84-4df6-aadd-6a4806b49335",
+    "userId": "user4",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "13ad24c2-21a2-4695-8198-a4ce1cd557bc",
+      "23b24b52-c444-4e6a-be64-9d2a17e3d514",
+      "edefcb79-cfff-41c2-8fc2-01aae6d08e40"
+    ],
+    "seasons": [
+      "winter",
+      "fall"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939221",
+    "updatedAt": "2025-05-20T19:15:52.939222"
+  },
+  {
+    "id": "d5951619-702e-43c3-90e7-15c18b606297",
+    "userId": "user4",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "314d3f5a-b18d-4df9-b63c-88d505afd50e",
+      "8ab128b7-3474-4881-a2ab-c2593f1b4ec8",
+      "a1aa077c-5421-4718-82fb-76fe33e7fe69"
+    ],
+    "seasons": [
+      "summer",
+      "all"
+    ],
+    "weatherConditions": [
+      "rainy",
+      "cloudy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939238",
+    "updatedAt": "2025-05-20T19:15:52.939239"
+  },
+  {
+    "id": "35306098-9791-495d-8f7d-93abe1a65d7a",
+    "userId": "user5",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "19a02512-f6da-41ba-ab12-90ff5e445c08",
+      "9ad8a3b8-de7b-44e3-843c-b0ba6fb0df51",
+      "9e9f19dd-dece-49c7-aeb3-f5ba7af9acda"
+    ],
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "weatherConditions": [
+      "sunny",
+      "cloudy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939255",
+    "updatedAt": "2025-05-20T19:15:52.939256"
+  },
+  {
+    "id": "7607d86c-86a2-4693-a1e5-634d95ae89d4",
+    "userId": "user5",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "97c1984d-406d-4e0e-8b67-bca672383fcb",
+      "355a0a4c-8c9c-4c68-aa27-279c8d6008c4",
+      "9e9f19dd-dece-49c7-aeb3-f5ba7af9acda",
+      "941ee5e5-cad0-418e-9a5e-a527ad40a6ed"
+    ],
+    "seasons": [
+      "summer",
+      "fall"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939271",
+    "updatedAt": "2025-05-20T19:15:52.939272"
+  },
+  {
+    "id": "e1e792ad-9cfd-4f54-b69f-675c569854e2",
+    "userId": "user5",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "6e235fbd-c99c-4b7f-b5e4-cc8836c5453f",
+      "e8517e12-9bbe-4423-889d-318093686373",
+      "9e9f19dd-dece-49c7-aeb3-f5ba7af9acda",
+      "941ee5e5-cad0-418e-9a5e-a527ad40a6ed"
+    ],
+    "seasons": [
+      "all",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy",
+      "cloudy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939287",
+    "updatedAt": "2025-05-20T19:15:52.939288"
+  },
+  {
+    "id": "6b647678-4871-41bd-998f-8871c68ff54d",
+    "userId": "user5",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "954a483e-f329-44e1-bb51-e7730bb3eb12",
+      "b3b16166-03be-48f3-ad41-18fd33650309",
+      "9e9f19dd-dece-49c7-aeb3-f5ba7af9acda"
+    ],
+    "seasons": [
+      "summer",
+      "all"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939302",
+    "updatedAt": "2025-05-20T19:15:52.939320"
+  },
+  {
+    "id": "ee536feb-1350-477d-a620-10585bcc65e1",
+    "userId": "user5",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "6e235fbd-c99c-4b7f-b5e4-cc8836c5453f",
+      "e8517e12-9bbe-4423-889d-318093686373",
+      "9e9f19dd-dece-49c7-aeb3-f5ba7af9acda",
+      "957b073a-654b-4fcb-8849-c1e23e8822b5"
+    ],
+    "seasons": [
+      "all",
+      "winter"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939396",
+    "updatedAt": "2025-05-20T19:15:52.939400"
+  },
+  {
+    "id": "0bd986b1-0ec4-4baf-bd95-183a1a0016be",
+    "userId": "user1",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "ab41eb79-a535-44fa-8bc3-c86226dbf284",
+      "f2ef6d36-18e9-431e-bf0e-094a828c8f62",
+      "0e5cabf5-0eeb-476a-8915-1940a2f09c83"
+    ],
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "weatherConditions": [
+      "sunny",
+      "cloudy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939424",
+    "updatedAt": "2025-05-20T19:15:52.939426"
+  },
+  {
+    "id": "c4bdadf7-04d2-436d-b896-d3eb28e1c7ab",
+    "userId": "user1",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "4212a890-3fc7-497b-8c7f-7e28c437725f",
+      "7f2f9f7f-3f38-4622-bc2e-24a892a81c92",
+      "7ec963eb-556b-47b5-9687-375b87e4d40b",
+      "0533bc1a-03d4-4fa4-9565-9fcd54b67eac"
+    ],
+    "seasons": [
+      "all",
+      "spring"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939444",
+    "updatedAt": "2025-05-20T19:15:52.939445"
+  },
+  {
+    "id": "88b2ef9e-595a-4690-b43b-88f17a7df394",
+    "userId": "user1",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "9673910d-d276-452f-ac85-d7c4cebcc27d",
+      "f2ef6d36-18e9-431e-bf0e-094a828c8f62",
+      "0e5cabf5-0eeb-476a-8915-1940a2f09c83"
+    ],
+    "seasons": [
+      "fall",
+      "spring"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939460",
+    "updatedAt": "2025-05-20T19:15:52.939461"
+  },
+  {
+    "id": "877a9835-6334-43b3-91ee-826e3e637841",
+    "userId": "user1",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "f68cb957-5822-4af8-965a-c4d8e1f0de97",
+      "f2ef6d36-18e9-431e-bf0e-094a828c8f62",
+      "20a4bc84-db95-4cb4-9b4e-ae634f99f441"
+    ],
+    "seasons": [
+      "spring",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy",
+      "cloudy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939475",
+    "updatedAt": "2025-05-20T19:15:52.939476"
+  },
+  {
+    "id": "286d6324-5392-49e9-a3a7-55d7ee38e336",
+    "userId": "user1",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "ab41eb79-a535-44fa-8bc3-c86226dbf284",
+      "7f2f9f7f-3f38-4622-bc2e-24a892a81c92",
+      "7ec963eb-556b-47b5-9687-375b87e4d40b",
+      "0533bc1a-03d4-4fa4-9565-9fcd54b67eac"
+    ],
+    "seasons": [
+      "summer",
+      "all"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939492",
+    "updatedAt": "2025-05-20T19:15:52.939493"
+  },
+  {
+    "id": "38c780c2-16cb-4974-a945-8a130a6bec0c",
+    "userId": "user7",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "7f22c33c-ae7c-4e85-b15d-9c853f77aa8f",
+      "fcb5ad23-1c60-4644-a48f-e12fd5f5a489",
+      "736a2931-c90e-4f85-b85f-c01ed408dab0"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939507",
+    "updatedAt": "2025-05-20T19:15:52.939508"
+  },
+  {
+    "id": "6614a87e-e355-4beb-a8a4-4b8fe59b3d58",
+    "userId": "user7",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "7f22c33c-ae7c-4e85-b15d-9c853f77aa8f",
+      "e53373bf-b4c2-426e-87c6-53b378867b41",
+      "6279f090-0bb0-4f1d-a90b-69e752a44fc7",
+      "b9b18ae5-b08f-4327-85d1-12fc0589fc6b"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939524",
+    "updatedAt": "2025-05-20T19:15:52.939525"
+  },
+  {
+    "id": "4cfffb05-0362-4a41-88b9-c518669e1efd",
+    "userId": "user7",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "7f22c33c-ae7c-4e85-b15d-9c853f77aa8f",
+      "e53373bf-b4c2-426e-87c6-53b378867b41",
+      "6279f090-0bb0-4f1d-a90b-69e752a44fc7",
+      "b9b18ae5-b08f-4327-85d1-12fc0589fc6b"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy",
+      "cloudy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939540",
+    "updatedAt": "2025-05-20T19:15:52.939540"
+  },
+  {
+    "id": "8a0b04c0-24b3-48be-be1c-e12e1a17cacd",
+    "userId": "user7",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "7f22c33c-ae7c-4e85-b15d-9c853f77aa8f",
+      "fcb5ad23-1c60-4644-a48f-e12fd5f5a489",
+      "6279f090-0bb0-4f1d-a90b-69e752a44fc7",
+      "b9b18ae5-b08f-4327-85d1-12fc0589fc6b"
+    ],
+    "seasons": [
+      "summer",
+      "spring"
+    ],
+    "weatherConditions": [
+      "snowy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939554",
+    "updatedAt": "2025-05-20T19:15:52.939555"
+  },
+  {
+    "id": "2c7a4a5f-5f74-4667-a957-76eb5b8e14ba",
+    "userId": "user7",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "7f22c33c-ae7c-4e85-b15d-9c853f77aa8f",
+      "e53373bf-b4c2-426e-87c6-53b378867b41",
+      "736a2931-c90e-4f85-b85f-c01ed408dab0"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939568",
+    "updatedAt": "2025-05-20T19:15:52.939569"
+  },
+  {
+    "id": "90ac675b-4dc0-436e-823b-681184c6dd02",
+    "userId": "user9",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "e0952a9d-13f7-44a0-a9ce-4e743f9a33fb",
+      "f07bbcb9-ba8a-435b-a71b-827794830f74",
+      "abe9e977-8f87-4e9e-92b2-fad61e486d2e"
+    ],
+    "seasons": [
+      "summer",
+      "fall"
+    ],
+    "weatherConditions": [
+      "sunny",
+      "cloudy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939584",
+    "updatedAt": "2025-05-20T19:15:52.939585"
+  },
+  {
+    "id": "45ef4797-eebd-4357-9875-90aafb2bb545",
+    "userId": "user9",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "e0952a9d-13f7-44a0-a9ce-4e743f9a33fb",
+      "f07bbcb9-ba8a-435b-a71b-827794830f74",
+      "abe9e977-8f87-4e9e-92b2-fad61e486d2e",
+      "f77b2cac-d5c7-4d1f-9eeb-f9f04b713a76"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939609",
+    "updatedAt": "2025-05-20T19:15:52.939610"
+  },
+  {
+    "id": "afe84771-7a51-44bd-8506-2ea9abe357e1",
+    "userId": "user9",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "5aa45661-1e96-46bc-9183-9332c0766239",
+      "6e8005c0-048b-4b6b-a45a-987f51814fd4",
+      "e1feb86b-d3fa-462c-b222-9e18ea46dd67",
+      "f77b2cac-d5c7-4d1f-9eeb-f9f04b713a76"
+    ],
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939631",
+    "updatedAt": "2025-05-20T19:15:52.939632"
+  },
+  {
+    "id": "f59fd4b5-2540-4c4a-a05f-3400eef0ee55",
+    "userId": "user9",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "9c982d21-a197-4489-bcde-f4485a7e68a9",
+      "f07bbcb9-ba8a-435b-a71b-827794830f74",
+      "e1feb86b-d3fa-462c-b222-9e18ea46dd67"
+    ],
+    "seasons": [
+      "fall",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939648",
+    "updatedAt": "2025-05-20T19:15:52.939649"
+  },
+  {
+    "id": "eaae67ea-37dd-4b61-8627-1e77e75be1d8",
+    "userId": "user9",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "fafe72b1-25f6-485e-a8d1-5cd76dd3f00b",
+      "f07bbcb9-ba8a-435b-a71b-827794830f74",
+      "abe9e977-8f87-4e9e-92b2-fad61e486d2e",
+      "bddd5463-9c55-4244-80f1-677a9dfa0e09"
+    ],
+    "seasons": [
+      "spring",
+      "fall"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939665",
+    "updatedAt": "2025-05-20T19:15:52.939666"
+  },
+  {
+    "id": "fb83116f-3130-4dac-8fbf-73e3cb82563a",
+    "userId": "user10",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "1836130e-46a8-4bde-94a0-2f0f39c3d53e",
+      "e8c84b52-8b49-4004-8554-b09e5aef8530",
+      "e0c5445d-4c5e-4acf-80fb-cd10135d2115",
+      "7236f59d-dc84-4e06-a9fe-9814a19693e0"
+    ],
+    "seasons": [
+      "winter",
+      "summer"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939686",
+    "updatedAt": "2025-05-20T19:15:52.939687"
+  },
+  {
+    "id": "251b9437-ebda-482e-906b-98815692e2e7",
+    "userId": "user10",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "2fde636f-7d17-4b4c-b812-3208dc03f15f",
+      "d71fa054-083a-4e35-9f44-96e873192ac5",
+      "6aee65ac-f584-471d-8b11-a3a3c4c19ba6",
+      "3d2d8033-b4d5-4868-88b0-a1e05fb9854d"
+    ],
+    "seasons": [
+      "summer",
+      "all"
+    ],
+    "weatherConditions": [
+      "snowy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939703",
+    "updatedAt": "2025-05-20T19:15:52.939704"
+  },
+  {
+    "id": "93d378d3-5340-43de-a514-3756624a6b9a",
+    "userId": "user10",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "1836130e-46a8-4bde-94a0-2f0f39c3d53e",
+      "c56333a5-d693-4c52-b790-d320ab3c138c",
+      "e0c5445d-4c5e-4acf-80fb-cd10135d2115"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "snowy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939718",
+    "updatedAt": "2025-05-20T19:15:52.939719"
+  },
+  {
+    "id": "8e8b0ca2-c5c3-4c96-b55c-6786a60c3014",
+    "userId": "user10",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "d287f2fe-9f99-4946-88a3-288d58444f72",
+      "e8c84b52-8b49-4004-8554-b09e5aef8530",
+      "e0c5445d-4c5e-4acf-80fb-cd10135d2115",
+      "a9f44f54-adf3-47a3-be63-d73f3a15b205"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939735",
+    "updatedAt": "2025-05-20T19:15:52.939736"
+  },
+  {
+    "id": "659cecd1-2c3c-485f-90fa-11dbd3773381",
+    "userId": "user10",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "d287f2fe-9f99-4946-88a3-288d58444f72",
+      "6bd8a136-1ed2-451a-9aa6-b276b023cdd0",
+      "e0c5445d-4c5e-4acf-80fb-cd10135d2115",
+      "a9f44f54-adf3-47a3-be63-d73f3a15b205"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "formal",
+    "createdAt": "2025-05-20T19:15:52.939751",
+    "updatedAt": "2025-05-20T19:15:52.939752"
+  },
+  {
+    "id": "38821629-468d-4a22-a74e-ce78de0801d9",
+    "userId": "user3",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "4431f768-8fed-4136-9805-d1d45c4d691a",
+      "64e87aad-791c-4e42-94e4-46e493ba813b",
+      "3289bebe-86dc-46a6-b3c8-fbc9ed9b844d"
+    ],
+    "seasons": [
+      "fall",
+      "spring"
+    ],
+    "weatherConditions": [
+      "cloudy"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939767",
+    "updatedAt": "2025-05-20T19:15:52.939768"
+  },
+  {
+    "id": "b8c0c551-fbef-4bf9-ab81-3700f59320ae",
+    "userId": "user3",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "4431f768-8fed-4136-9805-d1d45c4d691a",
+      "929b0bb9-2537-45d8-b36f-df16f32a89e0",
+      "b174db23-cb70-40f4-9db0-00d129952729"
+    ],
+    "seasons": [
+      "spring",
+      "all"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "sport",
+    "createdAt": "2025-05-20T19:15:52.939783",
+    "updatedAt": "2025-05-20T19:15:52.939784"
+  },
+  {
+    "id": "1d14bbb2-bff7-4263-ad4e-eb2c9861d7c7",
+    "userId": "user3",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "4431f768-8fed-4136-9805-d1d45c4d691a",
+      "64e87aad-791c-4e42-94e4-46e493ba813b",
+      "b174db23-cb70-40f4-9db0-00d129952729",
+      "38d0cfa7-b7d9-4676-affd-0b12fe3b2dcf"
+    ],
+    "seasons": [
+      "spring",
+      "fall"
+    ],
+    "weatherConditions": [
+      "sunny",
+      "cloudy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939799",
+    "updatedAt": "2025-05-20T19:15:52.939800"
+  },
+  {
+    "id": "a3b4d0f3-4d9f-42bb-8066-12fc3c21006c",
+    "userId": "user3",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "646c3d26-6168-4d2b-8921-aeb7db2a3d57",
+      "4a2e4a09-3e8f-4019-a97b-3d3490dbedbd",
+      "b174db23-cb70-40f4-9db0-00d129952729"
+    ],
+    "seasons": [
+      "winter",
+      "all"
+    ],
+    "weatherConditions": [
+      "cloudy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939930",
+    "updatedAt": "2025-05-20T19:15:52.939931"
+  },
+  {
+    "id": "1d4dd024-4677-4bff-bdf2-97aa997a0c5d",
+    "userId": "user3",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "27ed0c80-f606-4454-815b-ede894f7e966",
+      "64e87aad-791c-4e42-94e4-46e493ba813b",
+      "3289bebe-86dc-46a6-b3c8-fbc9ed9b844d"
+    ],
+    "seasons": [
+      "fall",
+      "spring"
+    ],
+    "weatherConditions": [
+      "cloudy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939951",
+    "updatedAt": "2025-05-20T19:15:52.939952"
+  },
+  {
+    "id": "cda8f112-0022-4207-b27e-fa6215ce244e",
+    "userId": "user6",
+    "name": "Kombin 1",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "5279ecb1-e4ff-4834-ab3e-e1f4099db2c4",
+      "5736300b-fd54-4a49-b6ba-2ddaa6db627e",
+      "323cd287-8f86-443c-87e3-2b395fbc5fe1",
+      "4ec96143-0907-4bd3-9a63-b50f06e4b61f"
+    ],
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.939970",
+    "updatedAt": "2025-05-20T19:15:52.939971"
+  },
+  {
+    "id": "30dd68ed-ac10-414a-aeba-1029fbfeb1aa",
+    "userId": "user6",
+    "name": "Kombin 2",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "5279ecb1-e4ff-4834-ab3e-e1f4099db2c4",
+      "9b5a3833-ee74-49df-a89a-b48409453507",
+      "1b26a17f-2b40-42d2-b44d-eb983fcc088c",
+      "33e3083e-3a8a-4b67-b067-897794350361"
+    ],
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.939988",
+    "updatedAt": "2025-05-20T19:15:52.939989"
+  },
+  {
+    "id": "947f5f78-c537-4dc8-958e-6ae8a85edc4e",
+    "userId": "user6",
+    "name": "Kombin 3",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "bf45069d-6e56-4a8a-9028-0479ce29309b",
+      "9b5a3833-ee74-49df-a89a-b48409453507",
+      "1b26a17f-2b40-42d2-b44d-eb983fcc088c"
+    ],
+    "seasons": [
+      "summer",
+      "winter"
+    ],
+    "weatherConditions": [
+      "rainy"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.940004",
+    "updatedAt": "2025-05-20T19:15:52.940005"
+  },
+  {
+    "id": "c6954eca-4fcb-489b-b50f-c8970268638a",
+    "userId": "user6",
+    "name": "Kombin 4",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "57fcb6a9-fd1c-41c8-9fd6-c93475823ec6",
+      "ba860b66-184c-472a-a81d-3b8b7dcbac00",
+      "323cd287-8f86-443c-87e3-2b395fbc5fe1",
+      "06d072ff-b658-4f24-9295-fd0c5ee72699"
+    ],
+    "seasons": [
+      "spring",
+      "winter"
+    ],
+    "weatherConditions": [
+      "sunny"
+    ],
+    "occasion": "special",
+    "createdAt": "2025-05-20T19:15:52.940022",
+    "updatedAt": "2025-05-20T19:15:52.940023"
+  },
+  {
+    "id": "b917f47c-a3f7-4ace-a92b-2730e90f751c",
+    "userId": "user6",
+    "name": "Kombin 5",
+    "description": "Örnek kombin açıklaması",
+    "clothingItemIds": [
+      "190b99c4-e6c7-4404-b676-193f70bcff6f",
+      "c710726b-223d-4afc-9ce0-f307b9f2b131",
+      "491bf9ab-1184-4238-ad3a-a3b3ad9d1192"
+    ],
+    "seasons": [
+      "spring",
+      "winter"
+    ],
+    "weatherConditions": [
+      "cloudy"
+    ],
+    "occasion": "casual",
+    "createdAt": "2025-05-20T19:15:52.940039",
+    "updatedAt": "2025-05-20T19:15:52.940040"
+  }
+]
