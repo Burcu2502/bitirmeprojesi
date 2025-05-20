@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/services/firestore_service.dart';
@@ -100,13 +101,13 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
     if (_formKey.currentState?.validate() != true) return;
     if (_imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen bir resim seçin')),
+        SnackBar(content: Text('wardrobe.imageSection.pleaseSelectImage'.tr())),
       );
       return;
     }
     if (_selectedSeasons.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen en az bir mevsim seçin')),
+        SnackBar(content: Text('wardrobe.clothingDetails.pleaseSelectSeason'.tr())),
       );
       return;
     }
@@ -118,7 +119,7 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
     try {
       final userId = _authService.currentUser?.uid;
       if (userId == null) {
-        throw Exception('Kullanıcı oturumu bulunamadı');
+        throw Exception('wardrobe.clothingDetails.userSessionNotFound'.tr());
       }
       
       // Debug log ekleyelim
@@ -163,7 +164,7 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
           _isLoading = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Kıyafet başarıyla kaydedildi')),
+          SnackBar(content: Text('wardrobe.clothingDetails.clothingSaved'.tr())),
         );
         Navigator.pop(context, true); // Başarılı olduğunda true döndür
       }
@@ -174,7 +175,7 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
           _isLoading = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Kıyafet kaydedilemedi: $e')),
+          SnackBar(content: Text('${tr('wardrobe.clothingDetails.errorSavingClothing')}: $e')),
         );
       }
     }
@@ -184,7 +185,7 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kıyafet Ekle'),
+        title: Text('wardrobe.addClothingItem'.tr()),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -228,13 +229,13 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                         ElevatedButton.icon(
                           onPressed: _pickImage,
                           icon: const Icon(Icons.photo_library),
-                          label: const Text('Galeriden Seç'),
+                          label: Text('wardrobe.imageSection.selectFromGallery'.tr()),
                         ),
                         const SizedBox(width: 16),
                         ElevatedButton.icon(
                           onPressed: _takePhoto,
                           icon: const Icon(Icons.camera_alt),
-                          label: const Text('Fotoğraf Çek'),
+                          label: Text('wardrobe.imageSection.takePhoto'.tr()),
                         ),
                       ],
                     ),
@@ -243,9 +244,9 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                     
                     // Algılanan renkler
                     if (_detectedColors.isNotEmpty) ...[
-                      const Text(
-                        'Algılanan Renkler:',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      Text(
+                        'wardrobe.clothingDetails.detectedColors'.tr(),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -269,13 +270,13 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                     // Kıyafet bilgileri
                     TextFormField(
                       controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Kıyafet Adı',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.clothingName'.tr(),
+                        border: const OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Lütfen bir isim girin';
+                          return 'wardrobe.clothingDetails.pleaseEnterName'.tr();
                         }
                         return null;
                       },
@@ -285,9 +286,9 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                     
                     // Kıyafet tipi seçimi
                     DropdownButtonFormField<ClothingType>(
-                      decoration: const InputDecoration(
-                        labelText: 'Kıyafet Tipi',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.clothingType'.tr(),
+                        border: const OutlineInputBorder(),
                       ),
                       value: _selectedType,
                       items: ClothingType.values.map((type) {
@@ -308,9 +309,9 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                     const SizedBox(height: 16),
                     
                     // Mevsim seçimi
-                    const Text(
-                      'Mevsimler:',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    Text(
+                      'wardrobe.clothingDetails.seasons'.tr(),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Wrap(
                       spacing: 8.0,
@@ -337,9 +338,9 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                     // Marka (opsiyonel)
                     TextFormField(
                       controller: _brandController,
-                      decoration: const InputDecoration(
-                        labelText: 'Marka (Opsiyonel)',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.brand'.tr(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     
@@ -348,9 +349,9 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                     // Materyal (opsiyonel)
                     TextFormField(
                       controller: _materialController,
-                      decoration: const InputDecoration(
-                        labelText: 'Materyal (Opsiyonel)',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.material'.tr(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     
@@ -362,9 +363,9 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: _saveClothingItem,
-                        child: const Text(
-                          'Kıyafeti Kaydet',
-                          style: TextStyle(fontSize: 16),
+                        child: Text(
+                          'wardrobe.clothingDetails.saveClothing'.tr(),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
@@ -378,54 +379,54 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
   String _getClothingTypeName(ClothingType type) {
     switch (type) {
       case ClothingType.tShirt:
-        return 'T-Shirt';
+        return 'clothing.tShirt'.tr();
       case ClothingType.shirt:
-        return 'Gömlek';
+        return 'clothing.shirt'.tr();
       case ClothingType.blouse:
-        return 'Bluz';
+        return 'clothing.blouse'.tr();
       case ClothingType.sweater:
-        return 'Kazak';
+        return 'clothing.sweater'.tr();
       case ClothingType.jacket:
-        return 'Ceket';
+        return 'clothing.jacket'.tr();
       case ClothingType.coat:
-        return 'Mont/Kaban';
+        return 'clothing.coat'.tr();
       case ClothingType.jeans:
-        return 'Kot Pantolon';
+        return 'clothing.jeans'.tr();
       case ClothingType.pants:
-        return 'Pantolon';
+        return 'clothing.pants'.tr();
       case ClothingType.shorts:
-        return 'Şort';
+        return 'clothing.shorts'.tr();
       case ClothingType.skirt:
-        return 'Etek';
+        return 'clothing.skirt'.tr();
       case ClothingType.dress:
-        return 'Elbise';
+        return 'clothing.dress'.tr();
       case ClothingType.shoes:
-        return 'Ayakkabı';
+        return 'clothing.shoes'.tr();
       case ClothingType.boots:
-        return 'Bot';
+        return 'clothing.boots'.tr();
       case ClothingType.accessory:
-        return 'Aksesuar';
+        return 'clothing.accessory'.tr();
       case ClothingType.hat:
-        return 'Şapka';
+        return 'clothing.hat'.tr();
       case ClothingType.scarf:
-        return 'Atkı/Eşarp';
+        return 'clothing.scarf'.tr();
       case ClothingType.other:
-        return 'Diğer';
+        return 'clothing.other'.tr();
     }
   }
   
   String _getSeasonName(Season season) {
     switch (season) {
       case Season.spring:
-        return 'İlkbahar';
+        return 'seasons.spring'.tr();
       case Season.summer:
-        return 'Yaz';
+        return 'seasons.summer'.tr();
       case Season.fall:
-        return 'Sonbahar';
+        return 'seasons.fall'.tr();
       case Season.winter:
-        return 'Kış';
+        return 'seasons.winter'.tr();
       case Season.all:
-        return 'Tüm Sezonlar';
+        return 'seasons.allSeasons'.tr();
     }
   }
 } 

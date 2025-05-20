@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/models/weather_model.dart';
 import '../../../../core/models/outfit_model.dart';
 
@@ -79,26 +80,26 @@ class WeatherForecastItem extends StatelessWidget {
     final dateToCheck = DateTime(date.year, date.month, date.day);
     
     if (dateToCheck.compareTo(today) == 0) {
-      return 'Bugün';
+      return 'weather.today'.tr();
     } else if (dateToCheck.compareTo(tomorrow) == 0) {
-      return 'Yarın';
+      return 'weather.tomorrow'.tr();
     } else {
       final weekDay = date.weekday;
       switch (weekDay) {
         case 1:
-          return 'Pazartesi';
+          return 'weather.monday'.tr();
         case 2:
-          return 'Salı';
+          return 'weather.tuesday'.tr();
         case 3:
-          return 'Çarşamba';
+          return 'weather.wednesday'.tr();
         case 4:
-          return 'Perşembe';
+          return 'weather.thursday'.tr();
         case 5:
-          return 'Cuma';
+          return 'weather.friday'.tr();
         case 6:
-          return 'Cumartesi';
+          return 'weather.saturday'.tr();
         case 7:
-          return 'Pazar';
+          return 'weather.sunday'.tr();
         default:
           return '';
       }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../core/models/weather_model.dart';
 import '../../../../core/models/outfit_model.dart';
@@ -104,8 +105,8 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     final weatherState = ref.watch(weatherStateProvider);
     
     if (!authState.isAuthenticated) {
-      return const Center(
-        child: Text('Kombin önerileri almak için giriş yapmalısınız.'),
+      return Center(
+        child: Text('general.loginRequired'.tr()),
       );
     }
     
@@ -115,7 +116,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Bugün Ne Giysem?',
+            'wardrobe.whatToWearToday'.tr(),
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -137,7 +138,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                     const Icon(Icons.cloud, size: 32),
                     const SizedBox(width: 12),
                     Text(
-                      'Bugünün Hava Durumu',
+                      'weather.todayWeather'.tr(),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -150,7 +151,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                 if (weatherState.isLoading)
                   const Center(child: CircularProgressIndicator())
                 else if (weatherState.error != null)
-                  Text('Hava durumu bilgisi alınamadı: ${weatherState.error}')
+                  Text('weather.unavailable'.tr() + ': ${weatherState.error}')
                 else if (weatherState.currentWeather != null)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,13 +161,13 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                     ],
                   )
                 else
-                  const Text('Hava durumu bilgisi bulunamadı'),
+                  Text('weather.unavailable'.tr()),
                 
                 const SizedBox(height: 16),
                 const Divider(),
                 const SizedBox(height: 16),
                 Text(
-                  'Önerilen Kombin',
+                  'wardrobe.suggestedOutfit'.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -182,7 +183,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _generateNewOutfit,
-                    child: const Text('Yeni Kombin Oluştur'),
+                    child: Text('wardrobe.generateNewOutfit'.tr()),
                   ),
                 ),
               ],
@@ -192,7 +193,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           const SizedBox(height: 24),
           
           Text(
-            'Kişiselleştirilmiş Öneriler',
+            'wardrobe.personalizedSuggestions'.tr(),
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -211,22 +212,22 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   Widget _buildSuggestedOutfit(BuildContext context) {
     // Eğer önerilmiş bir kombin yoksa, boş bir mesaj göster
     if (_suggestedOutfit == null || _suggestedOutfit!.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Column(
             children: [
-              Icon(Icons.sentiment_dissatisfied, size: 48, color: Colors.grey),
-              SizedBox(height: 16),
+              const Icon(Icons.sentiment_dissatisfied, size: 48, color: Colors.grey),
+              const SizedBox(height: 16),
               Text(
-                'Dolaplarınızda yeterli kıyafet bulunmadığından kombin oluşturulamadı.',
+                'wardrobe.noOutfitToCreate'.tr(),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                'Lütfen en az bir üst giyim ve bir alt giyim eklediğinizden emin olun.',
+                'wardrobe.addClothingItems'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
           ),
@@ -280,43 +281,45 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     required String description,
     String? imageUrl,
   }) {
-    return Column(
-      children: [
-        Container(
-          width: 60,
-          height: 60,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-            shape: BoxShape.circle,
-            image: imageUrl != null 
-                ? DecorationImage(
-                    image: _getImageProvider(imageUrl),
-                    fit: BoxFit.cover,
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              borderRadius: BorderRadius.circular(12),
+              image: imageUrl != null && imageUrl.isNotEmpty
+                  ? DecorationImage(
+                      image: _getImageProvider(imageUrl),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
+            ),
+            child: imageUrl == null || imageUrl.isEmpty
+                ? Icon(
+                    icon,
+                    size: 32,
+                    color: Theme.of(context).colorScheme.primary,
                   )
                 : null,
           ),
-          child: imageUrl == null 
-              ? Icon(
-                  icon,
-                  size: 28,
-                  color: Theme.of(context).colorScheme.primary,
-                )
-              : null,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(
-          description,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
+          const SizedBox(height: 8),
+          Text(
+            label.tr(),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
-        ),
-      ],
+          const SizedBox(height: 2),
+          Text(
+            description,
+            style: const TextStyle(fontSize: 10),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
   
@@ -337,8 +340,8 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     return clothingItemsAsyncValue.when(
       data: (clothingItems) {
         if (clothingItems.isEmpty) {
-          return const Center(
-            child: Text('Henüz dolabınıza kıyafet eklenmemiş. Kombinler için kıyafet ekleyin.'),
+          return Center(
+            child: Text('wardrobe.noClothingItems'.tr()),
           );
         }
         
@@ -353,8 +356,8 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         }
         
         if (suggestions.isEmpty) {
-          return const Center(
-            child: Text('Yeterli sayıda kıyafet bulunamadığından kombin önerileri oluşturulamadı.'),
+          return Center(
+            child: Text('wardrobe.notEnoughItems'.tr()),
           );
         }
         
@@ -407,7 +410,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Kombin ${index + 1}',
+                          'wardrobe.outfit'.tr() + ' ${index + 1}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -433,78 +436,78 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Center(
-        child: Text('Kıyafet verileri alınırken hata oluştu: $error'),
+        child: Text('wardrobe.errorLoadingItems'.tr() + ': $error'),
       ),
     );
   }
   
   String _getWeatherAdvice(WeatherModel weather) {
     if (weather.isHot) {
-      return 'Çok sıcak, hafif giyin';
+      return 'weather.advice.veryHot'.tr();
     } else if (weather.isWarm) {
-      return 'Sıcak, hafif giyin';
+      return 'weather.advice.hot'.tr();
     } else if (weather.isMild) {
-      return 'Ilıman, orta kalınlıkta giyin';
+      return 'weather.advice.mild'.tr();
     } else if (weather.isCool) {
-      return 'Serin, kalın giyin';
+      return 'weather.advice.cool'.tr();
     } else if (weather.isCold) {
-      return 'Soğuk, çok kalın giyin';
+      return 'weather.advice.cold'.tr();
     }
     
     switch (weather.condition) {
       case WeatherCondition.rainy:
-        return 'Yağmurlu, şemsiye al';
+        return 'weather.advice.rainy'.tr();
       case WeatherCondition.stormy:
-        return 'Fırtınalı, dışarı çıkma';
+        return 'weather.advice.stormy'.tr();
       case WeatherCondition.snowy:
-        return 'Karlı, kalın ve su geçirmez giyin';
+        return 'weather.advice.snowy'.tr();
       case WeatherCondition.windy:
-        return 'Rüzgarlı, rüzgarlık giyin';
+        return 'weather.advice.windy'.tr();
       case WeatherCondition.foggy:
-        return 'Sisli, dikkatli ol';
+        return 'weather.advice.foggy'.tr();
       case WeatherCondition.sunny:
-        return 'Güneşli, güneş kremi kullan';
+        return 'weather.advice.sunny'.tr();
       default:
-        return 'Normal hava koşulları';
+        return 'weather.advice.normal'.tr();
     }
   }
   
   String _getClothingTypeName(ClothingType type) {
     switch (type) {
       case ClothingType.tShirt:
-        return 'T-Shirt';
+        return 'clothing.tShirt';
       case ClothingType.shirt:
-        return 'Gömlek';
+        return 'clothing.shirt';
       case ClothingType.blouse:
-        return 'Bluz';
+        return 'clothing.blouse';
       case ClothingType.sweater:
-        return 'Kazak';
+        return 'clothing.sweater';
       case ClothingType.jacket:
-        return 'Ceket';
+        return 'clothing.jacket';
       case ClothingType.coat:
-        return 'Mont/Kaban';
+        return 'clothing.coat';
       case ClothingType.jeans:
-        return 'Kot Pantolon';
+        return 'clothing.jeans';
       case ClothingType.pants:
-        return 'Pantolon';
+        return 'clothing.pants';
       case ClothingType.shorts:
-        return 'Şort';
+        return 'clothing.shorts';
       case ClothingType.skirt:
-        return 'Etek';
+        return 'clothing.skirt';
       case ClothingType.dress:
-        return 'Elbise';
+        return 'clothing.dress';
       case ClothingType.shoes:
-        return 'Ayakkabı';
+        return 'clothing.shoes';
       case ClothingType.boots:
-        return 'Bot';
+        return 'clothing.boots';
       case ClothingType.accessory:
-        return 'Aksesuar';
+        return 'clothing.accessory';
       case ClothingType.hat:
-        return 'Şapka';
+        return 'clothing.hat';
       case ClothingType.scarf:
-        return 'Atkı/Eşarp';
-      case ClothingType.other:
-        return 'Diğer';
+        return 'clothing.scarf';
+      default:
+        return 'clothing.other';
     }
   }
 } 

@@ -3,11 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'firebase_options.dart';
 import 'features/auth/presentation/screens/splash_screen.dart';
+import 'core/providers/theme_provider.dart' as app_theme;
+import 'core/providers/locale_provider.dart';
 
+// Ana uygulama başlangıç noktası
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   
   // Firebase'i başlat - çift başlatma hatasını önle
   try {
@@ -45,8 +51,16 @@ void main() async {
   }
   
   runApp(
-    const ProviderScope(
-      child: ClosetWeatherApp(),
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('tr', 'TR'),
+        Locale('en', 'US'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('tr', 'TR'),
+      child: const ProviderScope(
+        child: ClosetWeatherApp(),
+      ),
     ),
   );
 }
@@ -56,9 +70,30 @@ class ClosetWeatherApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Tema sağlayıcısı
+    final themeMode = ref.watch(app_theme.themeProvider);
+    
+    debugPrint("🌐 Şu anki dil: ${context.locale.languageCode}_${context.locale.countryCode}");
+    
+    // Flutter'ın kendi ThemeMode sınıfına dönüştür
+    late ThemeMode flutterThemeMode;
+    switch (themeMode) {
+      case app_theme.ThemeMode.light:
+        flutterThemeMode = ThemeMode.light;
+        break;
+      case app_theme.ThemeMode.dark:
+        flutterThemeMode = ThemeMode.dark;
+        break;
+      case app_theme.ThemeMode.system:
+        flutterThemeMode = ThemeMode.system;
+        break;
+    }
+    
     return MaterialApp(
-      title: 'Dolap & Hava Durumu',
+      title: 'appTitle'.tr(),
       debugShowCheckedModeBanner: false,
+      
+      // Tema ayarları
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
@@ -73,7 +108,13 @@ class ClosetWeatherApp extends ConsumerWidget {
         ),
         useMaterial3: true,
       ),
-      themeMode: ThemeMode.system,
+      themeMode: flutterThemeMode,
+      
+      // Easy Localization ayarları
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      
       home: const SplashScreen(),
     );
   }

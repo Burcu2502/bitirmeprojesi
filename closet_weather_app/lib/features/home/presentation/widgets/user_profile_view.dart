@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../profile/presentation/screens/style_preferences_screen.dart';
+import '../../../profile/presentation/screens/settings_screen.dart';
 
 class UserProfileView extends ConsumerWidget {
   const UserProfileView({Key? key}) : super(key: key);
@@ -48,7 +50,7 @@ class UserProfileView extends ConsumerWidget {
           
           // Kullanıcı adı
           Text(
-            userData?.name ?? 'Kullanıcı',
+            userData?.name ?? 'profile.user'.tr(),
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -68,7 +70,7 @@ class UserProfileView extends ConsumerWidget {
           _buildProfileMenuItem(
             context,
             icon: Icons.account_circle_outlined,
-            title: 'Profil Bilgilerim',
+            title: 'profile.myProfile'.tr(),
             onTap: () {
               // Profil düzenleme sayfasına git
               Navigator.push(
@@ -77,47 +79,51 @@ class UserProfileView extends ConsumerWidget {
               );
             },
           ),
+          
           _buildProfileMenuItem(
             context,
             icon: Icons.style_outlined,
-            title: 'Stil Tercihlerim',
+            title: 'profile.stylePreferences'.tr(),
             onTap: () {
+              // Stil tercihleri sayfasına git
               Navigator.push(
                 context, 
-                MaterialPageRoute(
-                  builder: (context) => const StylePreferencesScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => const StylePreferencesScreen())
               );
             },
           ),
+          
           _buildProfileMenuItem(
             context,
             icon: Icons.settings_outlined,
-            title: 'Ayarlar',
+            title: 'profile.settings'.tr(),
             onTap: () {
               // Ayarlar sayfasına git
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Bu özellik henüz hazır değil'),
-                ),
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const SettingsScreen())
               );
             },
           ),
+          
           _buildProfileMenuItem(
             context,
             icon: Icons.help_outline,
-            title: 'Yardım ve Destek',
+            title: 'profile.helpAndSupport'.tr(),
             onTap: () {
-              // Yardım sayfasına git
+              // Yardım ve destek sayfasına git
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Bu özellik henüz hazır değil'),
+                SnackBar(
+                  content: Text('general.featureNotAvailable'.tr()),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
           ),
           
-          const Spacer(),
+          const SizedBox(height: 16),
+          const Divider(),
+          const SizedBox(height: 16),
           
           // Çıkış yap butonu
           SizedBox(
@@ -125,7 +131,7 @@ class UserProfileView extends ConsumerWidget {
             height: 50,
             child: OutlinedButton.icon(
               icon: const Icon(Icons.logout),
-              label: const Text('Çıkış Yap'),
+              label: Text('auth.logout'.tr()),
               onPressed: () async {
                 try {
                   await ref.read(authProvider.notifier).signOut();
@@ -133,7 +139,7 @@ class UserProfileView extends ConsumerWidget {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Çıkış yapılırken hata oluştu: $e'),
+                        content: Text('auth.logoutError'.tr() + ': $e'),
                         backgroundColor: Colors.red,
                       ),
                     );

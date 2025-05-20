@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../providers/wardrobe_provider.dart';
 import '../widgets/clothing_grid_item.dart';
@@ -36,8 +37,8 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
         title: _isSearching
             ? TextField(
                 controller: _searchController,
-                decoration: const InputDecoration(
-                  hintText: 'Kıyafet ara...',
+                decoration: InputDecoration(
+                  hintText: 'general.search'.tr(),
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
@@ -52,7 +53,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                 },
                 autofocus: true,
               )
-            : const Text('Dolaplarım'),
+            : Text('navigation.myClosets'.tr()),
         actions: [
           IconButton(
             icon: Icon(_isSearching ? Icons.close : Icons.search),
@@ -98,7 +99,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
               data: (items) => _buildClothingGrid(items),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Center(
-                child: Text('Kıyafetler yüklenirken hata: $error'),
+                child: Text('wardrobe.errorLoadingItems'.tr() + ': $error'),
               ),
             ),
           ),
@@ -133,16 +134,16 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
               color: Colors.grey[400],
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Henüz kıyafet eklenmemiş',
-              style: TextStyle(
+            Text(
+              'wardrobe.noClothingItems'.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Dolabınıza yeni kıyafetler eklemek için + butonuna tıklayın',
+            Text(
+              'wardrobe.addClothingItems'.tr(),
               textAlign: TextAlign.center,
             ),
           ],
@@ -200,9 +201,9 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Başlık
-                  const Text(
-                    'Filtreleme Seçenekleri',
-                    style: TextStyle(
+                  Text(
+                    'general.filter'.tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -211,9 +212,9 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                   const SizedBox(height: 24),
                   
                   // Kıyafet tipleri
-                  const Text(
-                    'Kıyafet Tipi',
-                    style: TextStyle(
+                  Text(
+                    'clothing.type'.tr(),
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -223,7 +224,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                     spacing: 8,
                     children: [
                       _filterChip(
-                        label: 'Üst Giyim',
+                        label: 'clothing.tops'.tr(),
                         selected: _filter.types?.contains(ClothingType.tShirt) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -241,7 +242,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                         },
                       ),
                       _filterChip(
-                        label: 'Alt Giyim',
+                        label: 'clothing.bottoms'.tr(),
                         selected: _filter.types?.contains(ClothingType.pants) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -259,7 +260,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                         },
                       ),
                       _filterChip(
-                        label: 'Dış Giyim',
+                        label: 'clothing.outerwear'.tr(),
                         selected: _filter.types?.contains(ClothingType.jacket) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -282,9 +283,9 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                   const SizedBox(height: 16),
                   
                   // Mevsimler
-                  const Text(
-                    'Mevsim',
-                    style: TextStyle(
+                  Text(
+                    'seasons.title'.tr(),
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -294,7 +295,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                     spacing: 8,
                     children: [
                       _filterChip(
-                        label: 'İlkbahar',
+                        label: 'seasons.spring'.tr(),
                         selected: _filter.seasons?.contains(Season.spring) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -312,7 +313,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                         },
                       ),
                       _filterChip(
-                        label: 'Yaz',
+                        label: 'seasons.summer'.tr(),
                         selected: _filter.seasons?.contains(Season.summer) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -330,7 +331,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                         },
                       ),
                       _filterChip(
-                        label: 'Sonbahar',
+                        label: 'seasons.fall'.tr(),
                         selected: _filter.seasons?.contains(Season.fall) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -348,7 +349,7 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                         },
                       ),
                       _filterChip(
-                        label: 'Kış',
+                        label: 'seasons.winter'.tr(),
                         selected: _filter.seasons?.contains(Season.winter) ?? false,
                         onSelected: (selected) {
                           setState(() {
@@ -382,13 +383,13 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
                             });
                           });
                         },
-                        child: const Text('Filtreleri Temizle'),
+                        child: Text('general.clearFilters'.tr()),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Uygula'),
+                        child: Text('general.apply'.tr()),
                       ),
                     ],
                   ),

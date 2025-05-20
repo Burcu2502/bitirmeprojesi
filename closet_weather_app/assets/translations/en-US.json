@@ -1,0 +1,246 @@
+{
+  "appTitle": "Wardrobe & Weather",
+  
+  "navigation": {
+    "home": "Home",
+    "myClosets": "My Closets",
+    "createOutfit": "Create Outfit",
+    "profile": "Profile",
+    "weatherForecast": "Weather Forecast"
+  },
+  
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
+    "currentPassword": "Current Password",
+    "changePassword": "Change Password",
+    "logout": "Logout",
+    "loginError": "An error occurred while logging in",
+    "registerError": "An error occurred while registering",
+    "logoutError": "An error occurred while logging out",
+    "resetPasswordError": "An error occurred while resetting password",
+    "passwordResetSent": "Password reset link has been sent to your email",
+    "passwordChangeSuccess": "Password changed successfully",
+    "passwordMismatch": "Passwords do not match",
+    "wrongPassword": "Wrong password"
+  },
+  
+  "profile": {
+    "myProfile": "My Profile",
+    "stylePreferences": "Style Preferences",
+    "settings": "Settings",
+    "helpAndSupport": "Help & Support",
+    "user": "User"
+  },
+  
+  "settings": {
+    "appearance": "Appearance Settings",
+    "darkMode": "Dark Mode",
+    "darkModeDesc": "Use dark theme for the app",
+    "language": "Language Settings",
+    "appLanguage": "App Language",
+    "currentLang": "Current language:",
+    "notifications": "Notification Settings", 
+    "enableNotifs": "Enable Notifications",
+    "notifsDesc": "Weather, recommendations and other notifications",
+    "about": "About App",
+    "version": "App Version",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "privacyNotReady": "Privacy policy is not ready yet",
+    "termsNotReady": "Terms of use are not ready yet"
+  },
+  
+  "stylePreferences": {
+    "myStylePreferences": "My Style Preferences",
+    "selectStyles": "Select styles that best represent your fashion taste",
+    "selectedCount": "Selected:",
+    "save": "Save"
+  },
+  
+  "weather": {
+    "weather": "Weather",
+    "forecast": "Forecast",
+    "feelsLike": "Feels like:",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "recommendation": "Recommendation",
+    "todaysWeather": "Today's Weather",
+    "weatherUnavailable": "Weather information unavailable",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "searchLocation": "Search Location",
+    "enterCity": "Enter city name",
+    "cancel": "Cancel",
+    "search": "Search",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "fiveDayForecast": "5-Day Forecast",
+    "suitableOutfits": "Suitable Outfits for This Weather",
+    "todayWeather": "Today's Weather",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "unavailable": "Weather information unavailable",
+    "advice": {
+      "veryHot": "Very hot, wear light clothes",
+      "hot": "Hot, wear light clothes",
+      "mild": "Mild, wear medium clothes",
+      "cool": "Cool, wear warm clothes",
+      "cold": "Cold, wear very warm clothes",
+      "rainy": "Rainy, take an umbrella",
+      "stormy": "Stormy, avoid going outside",
+      "snowy": "Snowy, wear warm and waterproof clothes",
+      "windy": "Windy, wear a windbreaker",
+      "foggy": "Foggy, be careful",
+      "drinkWater": "Very hot, drink plenty of water",
+      "veryCold": "Very cold, dress warmly",
+      "sunny": "Sunny, wear a hat and sunscreen",
+      "normal": "Normal weather conditions",
+      "dressAccordingly": "Dress according to the weather"
+    }
+  },
+  
+  "wardrobe": {
+    "whatToWearToday": "What To Wear Today?",
+    "suggestedOutfit": "Suggested Outfit",
+    "generateNewOutfit": "Generate New Outfit",
+    "personalizedSuggestions": "Personalized Suggestions",
+    "noOutfitToCreate": "Not enough clothing items in your closet to create an outfit",
+    "addClothingItems": "Please make sure you have at least one top and one bottom item",
+    "noClothingItems": "No clothing items in your closet yet. Add some to get outfit recommendations.",
+    "notEnoughItems": "Not enough clothing items to create outfit recommendations.",
+    "outfit": "Outfit",
+    "errorLoadingItems": "Error loading clothing items",
+    "addClothingItem": "Add Clothing Item",
+    "imageSection": {
+      "selectFromGallery": "Select from Gallery",
+      "takePhoto": "Take Photo",
+      "pleaseSelectImage": "Please select an image"
+    },
+    "clothingDetails": {
+      "detectedColors": "Detected Colors:",
+      "clothingName": "Clothing Name",
+      "pleaseEnterName": "Please enter a name",
+      "clothingType": "Clothing Type",
+      "seasons": "Seasons:",
+      "pleaseSelectSeason": "Please select at least one season", 
+      "brand": "Brand (Optional)",
+      "material": "Material (Optional)",
+      "saveClothing": "Save Clothing Item",
+      "clothingSaved": "Clothing item saved successfully",
+      "errorSavingClothing": "Failed to save clothing item",
+      "userSessionNotFound": "User session not found"
+    },
+    "list": {
+      "myClosets": "My Closets",
+      "emptyCloset": "No clothing items found in your closets. Click the \"+\" button to add some.",
+      "loadingError": "Error loading clothing items: {error}",
+      "itemAdded": "Clothing item added successfully",
+      "itemDetails": {
+        "type": "Type: {type}",
+        "seasons": "Seasons: {seasons}",
+        "brand": "Brand: {brand}",
+        "material": "Material: {material}",
+        "colors": "Colors:"
+      },
+      "close": "Close",
+      "edit": "Edit",
+      "delete": {
+        "title": "Delete Clothing Item",
+        "message": "Are you sure you want to delete this clothing item?",
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "success": "Clothing item deleted successfully",
+        "error": "Error deleting clothing item: {error}"
+      },
+      "filter": {
+        "title": "Filter Options",
+        "comingSoon": "Filter feature coming soon"
+      },
+      "edit": {
+        "comingSoon": "Edit feature coming soon"
+      }
+    }
+  },
+  
+  "clothing": {
+    "tShirt": "T-Shirt",
+    "shirt": "Shirt",
+    "blouse": "Blouse",
+    "sweater": "Sweater",
+    "jacket": "Jacket",
+    "coat": "Coat",
+    "jeans": "Jeans",
+    "pants": "Pants",
+    "shorts": "Shorts",
+    "skirt": "Skirt",
+    "dress": "Dress",
+    "shoes": "Shoes",
+    "boots": "Boots",
+    "accessory": "Accessory",
+    "hat": "Hat",
+    "scarf": "Scarf",
+    "other": "Other",
+    "type": "Clothing Type",
+    "tops": "Tops",
+    "bottoms": "Bottoms",
+    "outerwear": "Outerwear"
+  },
+  
+  "seasons": {
+    "spring": "Spring",
+    "summer": "Summer",
+    "fall": "Fall",
+    "winter": "Winter",
+    "allSeasons": "All Seasons",
+    "multipleSeasons": "Multiple Seasons",
+    "title": "Season"
+  },
+  
+  "occasions": {
+    "casual": "Casual",
+    "formal": "Formal",
+    "business": "Business",
+    "sports": "Sports",
+    "party": "Party",
+    "beach": "Beach",
+    "home": "Home",
+    "travel": "Travel",
+    "title": "Occasion"
+  },
+  
+  "general": {
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "select": "Select",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "retry": "Retry",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "loginRequired": "You need to log in to see outfit recommendations",
+    "featureNotAvailable": "This feature is not available yet",
+    "search": "Search items...",
+    "filter": "Filter Options",
+    "clearFilters": "Clear Filters"
+  }
+} 

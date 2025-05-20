@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../providers/wardrobe_provider.dart';
 import '../widgets/clothing_item_card.dart';
@@ -22,7 +23,7 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dolaplarım'),
+        title: Text('wardrobe.list.myClosets'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -35,8 +36,8 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
       body: clothingItemsAsync.when(
         data: (clothingItems) {
           if (clothingItems.isEmpty) {
-            return const Center(
-              child: Text('Dolaplarınızda herhangi bir kıyafet bulunamadı. Eklemek için "+" butonuna tıklayın.'),
+            return Center(
+              child: Text('wardrobe.list.emptyCloset'.tr()),
             );
           }
           
@@ -65,7 +66,7 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(
-          child: Text('Kıyafetler yüklenirken bir hata oluştu: $error'),
+          child: Text('wardrobe.list.loadingError'.tr(args: [error.toString()])),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -87,7 +88,7 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
     if (result == true) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kıyafet başarıyla eklendi')),
+        SnackBar(content: Text('wardrobe.list.itemAdded'.tr())),
       );
     }
   }
@@ -114,19 +115,19 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
                 ),
               ),
             const SizedBox(height: 16),
-            Text('Tür: ${_getClothingTypeName(item.type)}'),
+            Text('wardrobe.list.itemDetails.type'.tr(args: [_getClothingTypeName(item.type)])),
             const SizedBox(height: 8),
-            Text('Mevsimler: ${item.seasons.map((s) => _getSeasonName(s)).join(', ')}'),
+            Text('wardrobe.list.itemDetails.seasons'.tr(args: [item.seasons.map((s) => _getSeasonName(s)).join(', ')])),
             if (item.brand != null) ...[
               const SizedBox(height: 8),
-              Text('Marka: ${item.brand}'),
+              Text('wardrobe.list.itemDetails.brand'.tr(args: [item.brand!])),
             ],
             if (item.material != null) ...[
               const SizedBox(height: 8),
-              Text('Materyal: ${item.material}'),
+              Text('wardrobe.list.itemDetails.material'.tr(args: [item.material!])),
             ],
             const SizedBox(height: 8),
-            const Text('Renkler:'),
+            Text('wardrobe.list.itemDetails.colors'.tr()),
             const SizedBox(height: 4),
             Wrap(
               spacing: 8,
@@ -148,14 +149,14 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Kapat'),
+            child: Text('wardrobe.list.close'.tr()),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               _editClothingItem(context, item);
             },
-            child: const Text('Düzenle'),
+            child: Text('wardrobe.list.edit'.tr()),
           ),
         ],
       ),
@@ -165,7 +166,7 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
   void _editClothingItem(BuildContext context, ClothingItemModel item) {
     // TODO: Düzenleme ekranına yönlendir
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Düzenleme özelliği yakında eklenecek')),
+      SnackBar(content: Text('wardrobe.list.edit.comingSoon'.tr())),
     );
   }
   
@@ -173,16 +174,16 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Kıyafeti Sil'),
-        content: const Text('Bu kıyafeti silmek istediğinizden emin misiniz?'),
+        title: Text('wardrobe.list.delete.title'.tr()),
+        content: Text('wardrobe.list.delete.message'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('İptal'),
+            child: Text('wardrobe.list.delete.cancel'.tr()),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sil'),
+            child: Text('wardrobe.list.delete.confirm'.tr()),
           ),
         ],
       ),
@@ -194,11 +195,11 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
         final notifier = ref.read(clothingItemsProvider.notifier);
         await notifier.deleteItem(id);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Kıyafet başarıyla silindi')),
+          SnackBar(content: Text('wardrobe.list.delete.success'.tr())),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Kıyafet silinirken hata oluştu: $e')),
+          SnackBar(content: Text('wardrobe.list.delete.error'.tr(args: [e.toString()]))),
         );
       }
     }
@@ -208,61 +209,61 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
     // Filtreleme ekranını göster
     // TODO: Gelişmiş filtreleme ekranı ekle
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Filtreleme özelliği yakında eklenecek')),
+      SnackBar(content: Text('wardrobe.list.filter.comingSoon'.tr())),
     );
   }
   
   String _getClothingTypeName(ClothingType type) {
     switch (type) {
       case ClothingType.tShirt:
-        return 'T-Shirt';
+        return 'clothing.tShirt'.tr();
       case ClothingType.shirt:
-        return 'Gömlek';
+        return 'clothing.shirt'.tr();
       case ClothingType.blouse:
-        return 'Bluz';
+        return 'clothing.blouse'.tr();
       case ClothingType.sweater:
-        return 'Kazak';
+        return 'clothing.sweater'.tr();
       case ClothingType.jacket:
-        return 'Ceket';
+        return 'clothing.jacket'.tr();
       case ClothingType.coat:
-        return 'Mont/Kaban';
+        return 'clothing.coat'.tr();
       case ClothingType.jeans:
-        return 'Kot Pantolon';
+        return 'clothing.jeans'.tr();
       case ClothingType.pants:
-        return 'Pantolon';
+        return 'clothing.pants'.tr();
       case ClothingType.shorts:
-        return 'Şort';
+        return 'clothing.shorts'.tr();
       case ClothingType.skirt:
-        return 'Etek';
+        return 'clothing.skirt'.tr();
       case ClothingType.dress:
-        return 'Elbise';
+        return 'clothing.dress'.tr();
       case ClothingType.shoes:
-        return 'Ayakkabı';
+        return 'clothing.shoes'.tr();
       case ClothingType.boots:
-        return 'Bot';
+        return 'clothing.boots'.tr();
       case ClothingType.accessory:
-        return 'Aksesuar';
+        return 'clothing.accessory'.tr();
       case ClothingType.hat:
-        return 'Şapka';
+        return 'clothing.hat'.tr();
       case ClothingType.scarf:
-        return 'Atkı/Eşarp';
+        return 'clothing.scarf'.tr();
       case ClothingType.other:
-        return 'Diğer';
+        return 'clothing.other'.tr();
     }
   }
   
   String _getSeasonName(Season season) {
     switch (season) {
       case Season.spring:
-        return 'İlkbahar';
+        return 'seasons.spring'.tr();
       case Season.summer:
-        return 'Yaz';
+        return 'seasons.summer'.tr();
       case Season.fall:
-        return 'Sonbahar';
+        return 'seasons.fall'.tr();
       case Season.winter:
-        return 'Kış';
+        return 'seasons.winter'.tr();
       case Season.all:
-        return 'Tüm Sezonlar';
+        return 'seasons.allSeasons'.tr();
     }
   }
 } 

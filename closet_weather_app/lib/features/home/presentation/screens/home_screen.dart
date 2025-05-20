@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
 import '../../../weather/presentation/screens/weather_screen.dart';
@@ -47,7 +48,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Çıkış yapılırken bir hata oluştu: $e'),
+            content: Text('auth.logoutError'.tr()),
             backgroundColor: Colors.red,
           ),
         );
@@ -73,7 +74,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ana Sayfa'),
+        title: Text('navigation.home'.tr()),
         actions: [
           if (_isLoggingOut)
             const Center(
@@ -91,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           else
             IconButton(
               icon: const Icon(Icons.logout),
-              tooltip: 'Çıkış Yap',
+              tooltip: 'auth.logout'.tr(),
               onPressed: _signOut,
             ),
         ],
@@ -107,26 +108,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: Colors.grey,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_outlined),
-            activeIcon: Icon(Icons.cloud),
-            label: 'Hava Durumu',
+            icon: const Icon(Icons.cloud_outlined),
+            activeIcon: const Icon(Icons.cloud),
+            label: 'navigation.weatherForecast'.tr(),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view_outlined),
-            activeIcon: Icon(Icons.grid_view),
-            label: 'Dolaplarım',
+            icon: const Icon(Icons.grid_view_outlined),
+            activeIcon: const Icon(Icons.grid_view),
+            label: 'navigation.myClosets'.tr(),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            activeIcon: Icon(Icons.add_circle),
-            label: 'Kombin Oluştur',
+            icon: const Icon(Icons.add_circle_outline),
+            activeIcon: const Icon(Icons.add_circle),
+            label: 'navigation.createOutfit'.tr(),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profil',
+            icon: const Icon(Icons.person_outline),
+            activeIcon: const Icon(Icons.person),
+            label: 'navigation.profile'.tr(),
           ),
         ],
       ),

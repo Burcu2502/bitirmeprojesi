@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../providers/profile_provider.dart';
 
 class StylePreferencesScreen extends ConsumerStatefulWidget {
@@ -11,22 +12,22 @@ class StylePreferencesScreen extends ConsumerStatefulWidget {
 
 class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen> {
   final List<String> availableStyles = [
-    'Günlük (Casual)',
-    'Resmi (Formal)',
-    'Spor (Sporty)',
+    'Casual',
+    'Formal',
+    'Sporty',
     'Minimalist',
-    'Romantik',
+    'Romantic',
     'Vintage',
-    'Bohem',
-    'Klasik',
-    'Sokak Modası (Streetwear)',
+    'Bohemian',
+    'Classic',
+    'Streetwear',
     'Elegant',
     'Retro',
     'Business Casual',
-    'Akıllı (Smart)',
+    'Smart',
     'Preppy',
     'Grunge',
-    'Gotik',
+    'Gothic',
     'Rock',
   ];
   
@@ -45,7 +46,7 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stil Tercihlerim'),
+        title: Text('stylePreferences.myStylePreferences'.tr()),
         centerTitle: true,
       ),
       body: profileState.status == ProfileStatus.loading && selectedStyles.isEmpty
@@ -59,12 +60,12 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Tercih Ettiğiniz Stiller',
+                        'stylePreferences.myStylePreferences'.tr(),
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Tarzınızı en iyi temsil eden stilleri seçin. Bu bilgiler size özel kıyafet önerileri sunmamızda yardımcı olacak.',
+                        'stylePreferences.selectStyles'.tr(),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -92,7 +93,7 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
                   child: Column(
                     children: [
                       Text(
-                        'Seçilen: ${selectedStyles.length}/${availableStyles.length}',
+                        'stylePreferences.selectedCount'.tr() + ' ${selectedStyles.length}/${availableStyles.length}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -120,9 +121,9 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
                                     color: Colors.white,
                                   ),
                                 )
-                              : const Text(
-                                  'Kaydet',
-                                  style: TextStyle(
+                              : Text(
+                                  'stylePreferences.save'.tr(),
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -207,16 +208,16 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
       if (mounted) {
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Stil tercihleriniz kaydedildi'),
+            SnackBar(
+              content: Text('general.success'.tr()),
               backgroundColor: Colors.green,
             ),
           );
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Stil tercihleriniz kaydedilirken bir hata oluştu'),
+            SnackBar(
+              content: Text('general.error'.tr()),
               backgroundColor: Colors.red,
             ),
           );
@@ -226,7 +227,7 @@ class _StylePreferencesScreenState extends ConsumerState<StylePreferencesScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Hata: $e'),
+            content: Text('${tr('general.error')}: $e'),
             backgroundColor: Colors.red,
           ),
         );

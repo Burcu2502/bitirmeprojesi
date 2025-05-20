@@ -24,6 +24,46 @@ class WeatherModel {
     required this.location,
   });
 
+  // copyWith metodu - nesneyi değişikliklerle kopyalamak için
+  WeatherModel copyWith({
+    double? temperature,
+    double? feelsLike,
+    int? humidity,
+    double? windSpeed,
+    String? description,
+    WeatherCondition? condition,
+    String? icon,
+    DateTime? timestamp,
+    String? location,
+  }) {
+    return WeatherModel(
+      temperature: temperature ?? this.temperature,
+      feelsLike: feelsLike ?? this.feelsLike,
+      humidity: humidity ?? this.humidity,
+      windSpeed: windSpeed ?? this.windSpeed,
+      description: description ?? this.description,
+      condition: condition ?? this.condition,
+      icon: icon ?? this.icon,
+      timestamp: timestamp ?? this.timestamp,
+      location: location ?? this.location,
+    );
+  }
+
+  // Demo verileri oluşturmak için yardımcı factory metodu
+  factory WeatherModel.demo() {
+    return WeatherModel(
+      temperature: 22.5,
+      feelsLike: 24.0,
+      humidity: 65,
+      windSpeed: 12.0,
+      condition: WeatherCondition.partlyCloudy,
+      description: 'Parçalı bulutlu',
+      icon: '02d',
+      timestamp: DateTime.now(),
+      location: 'İstanbul',
+    );
+  }
+
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
       temperature: json['temperature'].toDouble(),

@@ -1,0 +1,246 @@
+{
+  "appTitle": "Dolap & Hava Durumu",
+  
+  "navigation": {
+    "home": "Ana Sayfa",
+    "myClosets": "Dolaplarım",
+    "createOutfit": "Kombin Oluştur",
+    "profile": "Profil",
+    "weatherForecast": "Hava Durumu"
+  },
+  
+  "auth": {
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "forgotPassword": "Şifremi Unuttum",
+    "email": "E-posta",
+    "password": "Şifre",
+    "confirmPassword": "Şifre (Tekrar)",
+    "newPassword": "Yeni Şifre",
+    "currentPassword": "Mevcut Şifre",
+    "changePassword": "Şifre Değiştir",
+    "logout": "Çıkış Yap",
+    "loginError": "Giriş yapılırken bir hata oluştu",
+    "registerError": "Kayıt olurken bir hata oluştu",
+    "logoutError": "Çıkış yapılırken bir hata oluştu",
+    "resetPasswordError": "Şifre sıfırlanırken bir hata oluştu",
+    "passwordResetSent": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi",
+    "passwordChangeSuccess": "Şifre başarıyla değiştirildi",
+    "passwordMismatch": "Şifreler eşleşmiyor",
+    "wrongPassword": "Yanlış şifre"
+  },
+  
+  "profile": {
+    "myProfile": "Profil Bilgilerim",
+    "stylePreferences": "Stil Tercihlerim",
+    "settings": "Ayarlar",
+    "helpAndSupport": "Yardım ve Destek",
+    "user": "Kullanıcı"
+  },
+  
+  "settings": {
+    "appearance": "Görünüm Ayarları",
+    "darkMode": "Karanlık Mod",
+    "darkModeDesc": "Uygulamanın koyu renk temasını kullan",
+    "language": "Dil Ayarları",
+    "appLanguage": "Uygulama Dili",
+    "currentLang": "Şu anki dil:",
+    "notifications": "Bildirim Ayarları", 
+    "enableNotifs": "Bildirimleri Etkinleştir",
+    "notifsDesc": "Hava durumu, öneriler ve diğer bildirimler",
+    "about": "Uygulama Hakkında",
+    "version": "Uygulama Versiyonu",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Koşulları",
+    "privacyNotReady": "Gizlilik politikası henüz hazır değil",
+    "termsNotReady": "Kullanım koşulları henüz hazır değil"
+  },
+  
+  "stylePreferences": {
+    "myStylePreferences": "Stil Tercihlerim",
+    "selectStyles": "Tarzınızı en iyi temsil eden stilleri seçin",
+    "selectedCount": "Seçilen:",
+    "save": "Kaydet"
+  },
+  
+  "weather": {
+    "weather": "Hava Durumu",
+    "forecast": "Tahmin",
+    "feelsLike": "Hissedilen:",
+    "humidity": "Nem",
+    "wind": "Rüzgar",
+    "recommendation": "Öneri",
+    "todaysWeather": "Bugünün Hava Durumu",
+    "weatherUnavailable": "Hava durumu bilgisi bulunamadı",
+    "loading": "Yükleniyor...",
+    "retry": "Tekrar Dene",
+    "searchLocation": "Konum Ara",
+    "enterCity": "Şehir adı girin",
+    "cancel": "İptal",
+    "search": "Ara",
+    "today": "Bugün",
+    "tomorrow": "Yarın",
+    "fiveDayForecast": "5 Günlük Tahmin",
+    "suitableOutfits": "Bu Havaya Uygun Kombinler",
+    "todayWeather": "Bugünün Hava Durumu",
+    "monday": "Pazartesi",
+    "tuesday": "Salı",
+    "wednesday": "Çarşamba",
+    "thursday": "Perşembe",
+    "friday": "Cuma",
+    "saturday": "Cumartesi",
+    "sunday": "Pazar",
+    "unavailable": "Hava durumu bilgisi bulunamadı",
+    "advice": {
+      "veryHot": "Çok sıcak, hafif giyin",
+      "hot": "Sıcak, hafif giyin",
+      "mild": "Ilıman, orta kalınlıkta giyin",
+      "cool": "Serin, kalın giyin",
+      "cold": "Soğuk, çok kalın giyin",
+      "rainy": "Yağmurlu, şemsiye al",
+      "stormy": "Fırtınalı, dışarı çıkma",
+      "snowy": "Karlı, kalın ve su geçirmez giyin",
+      "windy": "Rüzgarlı, rüzgarlık giyin",
+      "foggy": "Sisli, dikkatli ol",
+      "drinkWater": "Çok sıcak, bol su iç",
+      "veryCold": "Çok soğuk, iyi giyinmelisin",
+      "sunny": "Güneşli, şapka ve güneş kremi kullan",
+      "normal": "Normal hava koşulları",
+      "dressAccordingly": "Hava durumuna uygun giyinin"
+    }
+  },
+  
+  "wardrobe": {
+    "whatToWearToday": "Bugün Ne Giysem?",
+    "suggestedOutfit": "Önerilen Kombin",
+    "generateNewOutfit": "Yeni Kombin Oluştur",
+    "personalizedSuggestions": "Kişiselleştirilmiş Öneriler",
+    "noOutfitToCreate": "Dolaplarınızda yeterli kıyafet bulunmadığından kombin oluşturulamadı",
+    "addClothingItems": "Lütfen en az bir üst giyim ve bir alt giyim eklediğinizden emin olun",
+    "noClothingItems": "Henüz dolabınıza kıyafet eklenmemiş. Kombinler için kıyafet ekleyin.",
+    "notEnoughItems": "Yeterli sayıda kıyafet bulunamadığından kombin önerileri oluşturulamadı.",
+    "outfit": "Kombin",
+    "errorLoadingItems": "Kıyafet verileri alınırken hata oluştu",
+    "addClothingItem": "Kıyafet Ekle",
+    "imageSection": {
+      "selectFromGallery": "Galeriden Seç",
+      "takePhoto": "Fotoğraf Çek",
+      "pleaseSelectImage": "Lütfen bir resim seçin"
+    },
+    "clothingDetails": {
+      "detectedColors": "Algılanan Renkler:",
+      "clothingName": "Kıyafet Adı",
+      "pleaseEnterName": "Lütfen bir isim girin",
+      "clothingType": "Kıyafet Tipi",
+      "seasons": "Mevsimler:",
+      "pleaseSelectSeason": "Lütfen en az bir mevsim seçin", 
+      "brand": "Marka (Opsiyonel)",
+      "material": "Materyal (Opsiyonel)",
+      "saveClothing": "Kıyafeti Kaydet",
+      "clothingSaved": "Kıyafet başarıyla kaydedildi",
+      "errorSavingClothing": "Kıyafet kaydedilemedi",
+      "userSessionNotFound": "Kullanıcı oturumu bulunamadı"
+    },
+    "list": {
+      "myClosets": "Dolaplarım",
+      "emptyCloset": "Dolaplarınızda herhangi bir kıyafet bulunamadı. Eklemek için \"+\" butonuna tıklayın.",
+      "loadingError": "Kıyafetler yüklenirken bir hata oluştu: {error}",
+      "itemAdded": "Kıyafet başarıyla eklendi",
+      "itemDetails": {
+        "type": "Tür: {type}",
+        "seasons": "Mevsimler: {seasons}",
+        "brand": "Marka: {brand}",
+        "material": "Materyal: {material}",
+        "colors": "Renkler:"
+      },
+      "close": "Kapat",
+      "edit": "Düzenle",
+      "delete": {
+        "title": "Kıyafeti Sil",
+        "message": "Bu kıyafeti silmek istediğinizden emin misiniz?",
+        "cancel": "İptal",
+        "confirm": "Sil",
+        "success": "Kıyafet başarıyla silindi",
+        "error": "Kıyafet silinirken hata oluştu: {error}"
+      },
+      "filter": {
+        "title": "Filtreleme Seçenekleri",
+        "comingSoon": "Filtreleme özelliği yakında eklenecek"
+      },
+      "edit": {
+        "comingSoon": "Düzenleme özelliği yakında eklenecek"
+      }
+    }
+  },
+  
+  "clothing": {
+    "tShirt": "Tişört",
+    "shirt": "Gömlek",
+    "blouse": "Bluz",
+    "sweater": "Kazak",
+    "jacket": "Ceket",
+    "coat": "Mont",
+    "jeans": "Kot Pantolon",
+    "pants": "Pantolon",
+    "shorts": "Şort",
+    "skirt": "Etek",
+    "dress": "Elbise",
+    "shoes": "Ayakkabı",
+    "boots": "Bot",
+    "accessory": "Aksesuar",
+    "hat": "Şapka",
+    "scarf": "Atkı/Eşarp",
+    "other": "Diğer",
+    "type": "Kıyafet Tipi",
+    "tops": "Üst Giyim",
+    "bottoms": "Alt Giyim",
+    "outerwear": "Dış Giyim"
+  },
+  
+  "seasons": {
+    "spring": "İlkbahar",
+    "summer": "Yaz",
+    "fall": "Sonbahar",
+    "winter": "Kış",
+    "allSeasons": "Tüm Mevsimler",
+    "multipleSeasons": "Çoklu Mevsim",
+    "title": "Mevsim"
+  },
+  
+  "occasions": {
+    "casual": "Günlük",
+    "formal": "Resmi",
+    "business": "İş",
+    "sports": "Spor",
+    "party": "Parti",
+    "beach": "Plaj",
+    "home": "Ev",
+    "travel": "Seyahat",
+    "title": "Durum"
+  },
+  
+  "general": {
+    "apply": "Uygula",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "select": "Seç",
+    "yes": "Evet",
+    "no": "Hayır",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "retry": "Tekrar Dene",
+    "continue": "Devam Et",
+    "back": "Geri",
+    "next": "İleri",
+    "loginRequired": "Kombin önerileri almak için giriş yapmalısınız",
+    "featureNotAvailable": "Bu özellik henüz hazır değil",
+    "search": "Kıyafet ara...",
+    "filter": "Filtreleme Seçenekleri",
+    "clearFilters": "Filtreleri Temizle"
+  }
+} 

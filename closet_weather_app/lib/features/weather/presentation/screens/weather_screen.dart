@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../presentation/providers/weather_provider.dart';
 import '../widgets/weather_display.dart';
 import '../widgets/weather_forecast_list.dart';
@@ -19,7 +20,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hava Durumu'),
+        title: Text('weather.weather'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -41,8 +42,15 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
   
   Widget _buildBody(BuildContext context, WeatherState state) {
     if (state.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Text('general.loading'.tr()),
+          ],
+        ),
       );
     }
     
@@ -58,7 +66,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Hava durumu alınamadı',
+              'weather.weatherUnavailable'.tr(),
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
@@ -70,7 +78,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => ref.read(weatherStateProvider.notifier).fetchWeatherData(),
-              child: const Text('Tekrar Dene'),
+              child: Text('weather.retry'.tr()),
             ),
           ],
         ),
@@ -78,8 +86,8 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     }
     
     if (state.currentWeather == null) {
-      return const Center(
-        child: Text('Hava durumu bilgisi bulunamadı.'),
+      return Center(
+        child: Text('weather.weatherUnavailable'.tr()),
       );
     }
     
@@ -105,7 +113,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    '5 Günlük Tahmin',
+                    'weather.fiveDayForecast'.tr(),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -121,7 +129,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  'Bu Havaya Uygun Kombinler',
+                  'weather.suitableOutfits'.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -144,12 +152,12 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Konum Ara'),
+        title: Text('weather.searchLocation'.tr()),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Şehir adı girin',
-            prefixIcon: Icon(Icons.location_city),
+          decoration: InputDecoration(
+            hintText: 'weather.enterCity'.tr(),
+            prefixIcon: const Icon(Icons.location_city),
           ),
           autofocus: true,
           onSubmitted: (value) {
@@ -162,7 +170,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('İptal'),
+            child: Text('general.cancel'.tr()),
           ),
           TextButton(
             onPressed: () {
@@ -171,7 +179,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                 Navigator.of(context).pop();
               }
             },
-            child: const Text('Ara'),
+            child: Text('weather.search'.tr()),
           ),
         ],
       ),

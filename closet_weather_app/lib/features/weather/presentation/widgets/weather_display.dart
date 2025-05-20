@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/models/weather_model.dart';
 import '../../../../core/models/outfit_model.dart';
 
@@ -63,7 +64,7 @@ class WeatherDisplay extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Hissedilen: ${weather.feelsLike.toStringAsFixed(1)}°C',
+                        '${tr('weather.feelsLike')} ${weather.feelsLike.toStringAsFixed(1)}°C',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
@@ -104,7 +105,7 @@ class WeatherDisplay extends StatelessWidget {
                   child: _buildWeatherDetail(
                     context, 
                     Icons.water_drop_outlined, 
-                    'Nem',
+                    tr('weather.humidity'),
                     '${weather.humidity}%',
                   ),
                 ),
@@ -114,7 +115,7 @@ class WeatherDisplay extends StatelessWidget {
                   child: _buildWeatherDetail(
                     context, 
                     Icons.air, 
-                    'Rüzgar',
+                    tr('weather.wind'),
                     '${weather.windSpeed} km/s',
                   ),
                 ),
@@ -163,9 +164,9 @@ class WeatherDisplay extends StatelessWidget {
     final dateToCheck = DateTime(date.year, date.month, date.day);
     
     if (dateToCheck == today) {
-      return 'Bugün, ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+      return '${tr('weather.today')}, ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     } else if (dateToCheck == today.add(const Duration(days: 1))) {
-      return 'Yarın, ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+      return '${tr('weather.tomorrow')}, ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     } else {
       return '${date.day}/${date.month}/${date.year}, ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     }
@@ -236,41 +237,41 @@ class WeatherDisplay extends StatelessWidget {
 
   String _getWeatherAdvice(WeatherModel weather) {
     if (weather.isHot) {
-      return 'Çok sıcak, hafif giyin';
+      return tr('weather.advice.veryHot');
     } else if (weather.isWarm) {
-      return 'Sıcak, hafif giyin';
+      return tr('weather.advice.hot');
     } else if (weather.isMild) {
-      return 'Ilıman, orta kalınlıkta giyin';
+      return tr('weather.advice.mild');
     } else if (weather.isCool) {
-      return 'Serin, kalın giyin';
+      return tr('weather.advice.cool');
     } else if (weather.isCold) {
-      return 'Soğuk, çok kalın giyin';
+      return tr('weather.advice.cold');
     }
     
     switch (weather.condition) {
       case WeatherCondition.rainy:
-        return 'Yağmurlu, şemsiye al';
+        return tr('weather.advice.rainy');
       case WeatherCondition.stormy:
-        return 'Fırtınalı, dışarı çıkma';
+        return tr('weather.advice.stormy');
       case WeatherCondition.snowy:
-        return 'Karlı, kalın ve su geçirmez giyin';
+        return tr('weather.advice.snowy');
       case WeatherCondition.windy:
-        return 'Rüzgarlı, rüzgarlık giyin';
+        return tr('weather.advice.windy');
       case WeatherCondition.foggy:
-        return 'Sisli, dikkatli ol';
+        return tr('weather.advice.foggy');
       case WeatherCondition.hot:
-        return 'Çok sıcak, bol su iç';
+        return tr('weather.advice.drinkWater');
       case WeatherCondition.cold:
-        return 'Çok soğuk, iyi giyinmelisin';
+        return tr('weather.advice.veryCold');
       case WeatherCondition.mild:
-        return 'Ilıman, rahat giyinebilirsin';
+        return tr('weather.advice.mild');
       case WeatherCondition.sunny:
-        return 'Güneşli, şapka ve güneş kremi kullan';
+        return tr('weather.advice.sunny');
       case WeatherCondition.partlyCloudy:
       case WeatherCondition.cloudy:
       case WeatherCondition.any:
       default:
-        return 'Normal hava koşulları';
+        return tr('weather.advice.normal');
     }
   }
 } 
