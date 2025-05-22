@@ -1,17 +1,17 @@
-# 🔐 Kimlik Doğrulama Modülü
+# Kimlik Doğrulama Modülü
 
-## 📝 Genel Bakış
+## Genel Bakış
 
 Kimlik doğrulama modülü, kullanıcıların uygulamaya güvenli bir şekilde giriş yapmasını ve hesap yönetimini sağlar. Firebase Authentication servisi kullanılarak implementasyon yapılmıştır.
 
-## 🔧 Teknik Detaylar
+## Teknik Detaylar
 
 ### Kullanılan Teknolojiler
 - Firebase Authentication
 - JWT (JSON Web Tokens)
 - Secure Storage
 
-### Kod Örnekleri
+### Kod İmplementasyonu
 
 #### 1. Giriş İşlemi
 ```dart
@@ -41,43 +41,39 @@ final authStateProvider = StreamProvider<User?>((ref) {
 });
 ```
 
-## 📱 Ekran Görüntüleri ve Akış
+## Ekran Yapıları ve Akış
 
 ### Giriş Ekranı
-<img src="../assets/screenshots/login_flow.png" width="300">
-
-1. Kullanıcı e-posta ve şifresini girer
-2. Validasyon kontrolleri yapılır
-3. Firebase'e kimlik doğrulama isteği gönderilir
-4. Başarılı girişte ana sayfaya yönlendirilir
+- Kullanıcı e-posta ve şifresini girer
+- Validasyon kontrolleri yapılır
+- Firebase'e kimlik doğrulama isteği gönderilir
+- Başarılı girişte ana sayfaya yönlendirilir
 
 ### Kayıt Ekranı
-<img src="../assets/screenshots/register_flow.png" width="300">
+- Kullanıcı bilgilerini doldurur
+- E-posta doğrulama gönderilir
+- Hesap oluşturulur
+- Profil bilgileri Firestore'a kaydedilir
 
-1. Kullanıcı bilgilerini doldurur
-2. E-posta doğrulama gönderilir
-3. Hesap oluşturulur
-4. Profil bilgileri Firestore'a kaydedilir
+## Güvenlik Önlemleri
 
-## 🔒 Güvenlik Önlemleri
+### 1. Şifre Politikası
+- Minimum 8 karakter
+- En az 1 büyük harf
+- En az 1 sayı
+- En az 1 özel karakter
 
-1. **Şifre Politikası**
-   - Minimum 8 karakter
-   - En az 1 büyük harf
-   - En az 1 sayı
-   - En az 1 özel karakter
+### 2. Token Yönetimi
+- JWT kullanımı
+- Refresh token mekanizması
+- Token süre kontrolü
 
-2. **Token Yönetimi**
-   - JWT kullanımı
-   - Refresh token mekanizması
-   - Token süre kontrolü
+### 3. Veri Güvenliği
+- Hassas verilerin şifrelenmesi
+- Secure Storage kullanımı
+- HTTPS zorunluluğu
 
-3. **Veri Güvenliği**
-   - Hassas verilerin şifrelenmesi
-   - Secure Storage kullanımı
-   - HTTPS zorunluluğu
-
-## 🚀 Kullanım Örneği
+## Kullanım Örneği
 
 ```dart
 // Örnek kullanım

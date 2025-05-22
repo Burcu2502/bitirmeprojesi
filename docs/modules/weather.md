@@ -1,10 +1,10 @@
-# 🌤️ Hava Durumu Modülü
+# Hava Durumu Modülü
 
-## 📝 Genel Bakış
+## Genel Bakış
 
 Hava durumu modülü, OpenWeatherMap API'sini kullanarak gerçek zamanlı hava durumu verilerini alır ve kullanıcıya sunar. Bu veriler, kombin önerileri için temel girdi olarak kullanılır.
 
-## 🔧 Teknik Detaylar
+## Teknik Detaylar
 
 ### Kullanılan Teknolojiler
 - OpenWeatherMap API
@@ -74,25 +74,21 @@ class WeatherData {
 }
 ```
 
-## 📱 Ekran Görüntüleri ve Akış
+## Ekran Yapıları
 
 ### Ana Hava Durumu Ekranı
-<img src="../assets/screenshots/weather_main.png" width="300">
-
-1. Kullanıcının konumu alınır
-2. Güncel hava durumu verileri çekilir
-3. 5 günlük tahmin gösterilir
-4. Sıcaklık, nem, rüzgar hızı gibi detaylar sunulur
+- Kullanıcının konumu alınır
+- Güncel hava durumu verileri çekilir
+- 5 günlük tahmin gösterilir
+- Sıcaklık, nem, rüzgar hızı gibi detaylar sunulur
 
 ### Hava Durumu Widget'ı
-<img src="../assets/screenshots/weather_widget.png" width="300">
+- Anlık sıcaklık gösterimi
+- Hava durumu ikonu
+- Hissedilen sıcaklık
+- Kısa tahmin bilgisi
 
-1. Anlık sıcaklık gösterimi
-2. Hava durumu ikonu
-3. Hissedilen sıcaklık
-4. Kısa tahmin bilgisi
-
-## 🔄 State Management
+## Durum Yönetimi
 
 ```dart
 // lib/features/weather/providers/weather_provider.dart
@@ -123,7 +119,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
 }
 ```
 
-## 🎯 Kombin Önerileri için Hava Durumu Analizi
+## Kombin Önerileri için Hava Durumu Analizi
 
 ```dart
 // lib/features/weather/services/weather_analyzer.dart
@@ -146,33 +142,33 @@ class WeatherAnalyzer {
 }
 ```
 
-## 🔄 Veri Akışı
+## Veri Akışı
 
-1. **Konum Alımı**
-   ```dart
-   final position = await Geolocator.getCurrentPosition();
-   ```
+### 1. Konum Alımı
+```dart
+final position = await Geolocator.getCurrentPosition();
+```
 
-2. **Hava Durumu Verisi Çekme**
-   ```dart
-   final weather = await weatherService.getCurrentWeather(
-     position.latitude,
-     position.longitude,
-   );
-   ```
+### 2. Hava Durumu Verisi Çekme
+```dart
+final weather = await weatherService.getCurrentWeather(
+  position.latitude,
+  position.longitude,
+);
+```
 
-3. **Veri İşleme ve Analiz**
-   ```dart
-   final suitability = weatherAnalyzer.analyzeSuitability(weather);
-   final recommendation = weatherAnalyzer.getRecommendation(suitability);
-   ```
+### 3. Veri İşleme ve Analiz
+```dart
+final suitability = weatherAnalyzer.analyzeSuitability(weather);
+final recommendation = weatherAnalyzer.getRecommendation(suitability);
+```
 
-4. **UI Güncelleme**
-   ```dart
-   ref.read(weatherProvider.notifier).updateWeather(weather);
-   ```
+### 4. UI Güncelleme
+```dart
+ref.read(weatherProvider.notifier).updateWeather(weather);
+```
 
-## 🚀 Kullanım Örneği
+## Kullanım Örneği
 
 ```dart
 class WeatherScreen extends ConsumerWidget {

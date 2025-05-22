@@ -1,10 +1,10 @@
-# 👔 Kombin Önerisi Modülü
+# Kombin Önerisi Modülü
 
-## 📝 Genel Bakış
+## Genel Bakış
 
 Kombin önerisi modülü, makine öğrenmesi ve renk teorisi kullanarak kullanıcılara hava durumuna uygun kıyafet kombinleri önerir. Sistem, kullanıcının stil tercihlerini, hava koşullarını ve renk uyumunu dikkate alır.
 
-## 🔧 Teknik Detaylar
+## Teknik Detaylar
 
 ### Kullanılan Teknolojiler
 - TensorFlow Lite (stil analizi)
@@ -113,25 +113,21 @@ class StyleAnalyzer {
 }
 ```
 
-## 📱 Ekran Görüntüleri ve Akış
+## Ekran Yapıları
 
 ### Kombin Önerisi Ekranı
-<img src="../assets/screenshots/outfit_recommendation.png" width="300">
-
-1. Hava durumu özeti
-2. Önerilen kombinler
-3. Uygunluk skorları
-4. Detaylı bilgiler
+- Hava durumu özeti
+- Önerilen kombinler
+- Uygunluk skorları
+- Detaylı bilgiler
 
 ### Kombin Detay Ekranı
-<img src="../assets/screenshots/outfit_detail.png" width="300">
+- Kıyafet parçaları
+- Renk uyumu analizi
+- Hava durumu uygunluğu
+- Stil değerlendirmesi
 
-1. Kıyafet parçaları
-2. Renk uyumu analizi
-3. Hava durumu uygunluğu
-4. Stil değerlendirmesi
-
-## 🧠 Öneri Motoru
+## Öneri Motoru
 
 ```dart
 // lib/features/outfit/services/recommendation_engine.dart
@@ -190,7 +186,7 @@ class OutfitRecommendationEngine {
 }
 ```
 
-## 🔄 State Management
+## Durum Yönetimi
 
 ```dart
 // lib/features/outfit/providers/outfit_provider.dart
@@ -225,7 +221,7 @@ class OutfitRecommendationsNotifier extends StateNotifier<AsyncValue<List<Outfit
 }
 ```
 
-## 🚀 Kullanım Örneği
+## Kullanım Örneği
 
 ```dart
 class OutfitRecommendationScreen extends ConsumerWidget {

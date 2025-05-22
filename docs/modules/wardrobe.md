@@ -1,10 +1,10 @@
-# 👕 Dolap Yönetimi Modülü
+# Dolap Yönetimi Modülü
 
-## 📝 Genel Bakış
+## Genel Bakış
 
 Dolap yönetimi modülü, kullanıcıların kıyafetlerini dijital ortamda yönetmelerini sağlar. Kıyafet ekleme, düzenleme, kategorilendirme ve arama gibi temel işlevleri sunar.
 
-## 🔧 Teknik Detaylar
+## Teknik Detaylar
 
 ### Kullanılan Teknolojiler
 - Firebase Firestore (veri depolama)
@@ -108,25 +108,21 @@ class WardrobeRepository {
 }
 ```
 
-## 📱 Ekran Görüntüleri ve Akış
+## Ekran Yapıları
 
 ### Dolap Ana Ekranı
-<img src="../assets/screenshots/wardrobe_main.png" width="300">
-
-1. Kategorilere göre filtreleme
-2. Grid görünümünde kıyafetler
-3. Hızlı arama özelliği
-4. Kıyafet ekleme butonu
+- Kategorilere göre filtreleme
+- Grid görünümünde kıyafetler
+- Hızlı arama özelliği
+- Kıyafet ekleme butonu
 
 ### Kıyafet Ekleme Ekranı
-<img src="../assets/screenshots/add_clothing.png" width="300">
+- Fotoğraf çekme/seçme
+- Otomatik kategori tespiti
+- Renk analizi
+- Detay bilgileri girişi
 
-1. Fotoğraf çekme/seçme
-2. Otomatik kategori tespiti
-3. Renk analizi
-4. Detay bilgileri girişi
-
-## 🎨 Renk Analizi ve Kategori Tespiti
+## Görüntü İşleme ve Analiz
 
 ```dart
 // lib/features/wardrobe/services/image_processor.dart
@@ -148,7 +144,7 @@ class ImageProcessor {
 }
 ```
 
-## 🔄 State Management
+## Durum Yönetimi
 
 ```dart
 // lib/features/wardrobe/providers/wardrobe_provider.dart
@@ -185,7 +181,7 @@ class WardrobeNotifier extends StateNotifier<WardrobeState> {
 }
 ```
 
-## 🚀 Kullanım Örneği
+## Kullanım Örneği
 
 ```dart
 class WardrobeScreen extends ConsumerWidget {

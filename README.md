@@ -1,124 +1,108 @@
-# 🌤️ Akıllı Dolap Yönetimi Uygulaması
+# Akıllı Dolap Yönetimi Uygulaması
 
-<div align="center">
-  <img src="docs/assets/app_logo.png" alt="App Logo" width="200"/>
-  <br>
-  <p>
-    <b>Hava durumuna göre akıllı kombin önerileri sunan mobil uygulama</b>
-  </p>
-  <hr>
-</div>
+## Proje Tanıtımı
 
-## 📱 Uygulama Tanıtımı
+Bu uygulama, kullanıcıların kıyafet dolabını dijital ortamda yönetmelerini ve günlük hava durumuna uygun kombin önerileri almalarını sağlayan bir mobil uygulamadır. Makine öğrenmesi ve renk analizi algoritmaları kullanarak kişiselleştirilmiş öneriler sunar.
 
-Bu uygulama, kullanıcıların kıyafet dolabını dijital ortamda yönetmelerini ve günlük hava durumuna uygun kombin önerileri almalarını sağlar. Makine öğrenmesi ve renk analizi algoritmaları kullanarak kişiselleştirilmiş öneriler sunar.
+## Temel Özellikler
 
-### 🌟 Öne Çıkan Özellikler
+- Hava durumuna göre akıllı kombin önerileri
+- Kıyafet tanıma ve kategorilendirme
+- Renk uyumu analizi
+- Gerçek zamanlı hava durumu entegrasyonu
+- Kişiselleştirilmiş kullanıcı deneyimi
 
-- 🎯 Hava durumuna göre akıllı kombin önerileri
-- 📸 Kıyafet tanıma ve kategorilendirme
-- 🎨 Renk uyumu analizi
-- 🌡️ Gerçek zamanlı hava durumu entegrasyonu
-- 👤 Kişiselleştirilmiş kullanıcı deneyimi
+## Teknik Mimari
 
-## 🏗️ Teknik Mimari
+Uygulama, Clean Architecture prensiplerine uygun olarak geliştirilmiş ve MVVM (Model-View-ViewModel) tasarım desenini kullanmaktadır.
 
-Uygulama, Clean Architecture prensiplerine uygun olarak geliştirilmiş ve MVVM (Model-View-ViewModel) tasarım desenini kullanmaktadır. Detaylı teknik dokümantasyon için:
+### Modül Dokümantasyonları
 
-### 📚 Modül Dokümantasyonları
-
-- [👤 Kimlik Doğrulama Modülü](docs/modules/auth.md)
+- [Kimlik Doğrulama Modülü](docs/modules/auth.md)
   * Firebase Authentication entegrasyonu
   * Güvenli oturum yönetimi
   * Kullanıcı profil yönetimi
 
-- [👕 Dolap Yönetimi Modülü](docs/modules/wardrobe.md)
+- [Dolap Yönetimi Modülü](docs/modules/wardrobe.md)
   * Kıyafet kategorilendirme
   * Görüntü işleme ve analiz
   * Dolap organizasyonu
 
-- [🌤️ Hava Durumu Modülü](docs/modules/weather.md)
+- [Hava Durumu Modülü](docs/modules/weather.md)
   * OpenWeatherMap API entegrasyonu
   * Konum bazlı hava durumu
   * 5 günlük tahmin
 
-- [👔 Kombin Önerisi Modülü](docs/modules/outfit.md)
+- [Kombin Önerisi Modülü](docs/modules/outfit.md)
   * ML tabanlı öneri sistemi
   * Renk uyumu analizi
   * Hava durumu uyumluluğu
 
-### 🛠️ Teknoloji Stack'i
+### Teknoloji Stack
 
-- **Frontend**
-  * Flutter Framework
-  * Dart Programlama Dili
-  * Riverpod (State Management)
-  * Material Design & Custom Widgets
+#### Frontend
+- Flutter Framework
+- Dart Programlama Dili
+- Riverpod (State Management)
+- Material Design & Custom Widgets
 
-- **Backend**
-  * Firebase Platform
-    - Authentication
-    - Cloud Firestore
-    - Storage
-    - ML Kit
+#### Backend
+- Firebase Platform
+  * Authentication
+  * Cloud Firestore
+  * Storage
+  * ML Kit
 
-- **Makine Öğrenmesi**
-  * TensorFlow Lite
-  * OpenCV
-  * Custom ML Modelleri
+#### Makine Öğrenmesi
+- TensorFlow Lite
+- OpenCV
+- Custom ML Modelleri
 
-## 🚀 Kurulum
+## Kurulum ve Çalıştırma
 
-1. Gereksinimler:
+### Gereksinimler
+```bash
+flutter --version
+# Flutter 3.19.0
+# Dart 3.3.0
+```
+
+### Kurulum Adımları
+
+1. Projeyi indirin:
    ```bash
-   flutter --version
-   # Flutter 3.19.0
-   # Dart 3.3.0
+   git clone [REPO_URL]
+   cd [PROJE_DIZINI]
    ```
 
-2. Projeyi klonlayın:
-   ```bash
-   git clone https://github.com/username/closet-weather-app.git
-   cd closet-weather-app
-   ```
-
-3. Bağımlılıkları yükleyin:
+2. Bağımlılıkları yükleyin:
    ```bash
    flutter pub get
    ```
 
-4. Firebase yapılandırmasını ekleyin:
+3. Firebase yapılandırmasını ekleyin:
    ```bash
    flutterfire configure
    ```
 
-5. `.env` dosyasını oluşturun:
+4. Ortam değişkenlerini ayarlayın:
    ```env
-   OPENWEATHERMAP_API_KEY=your_api_key
+   OPENWEATHERMAP_API_KEY=[API_KEY]
    ```
 
-6. Uygulamayı çalıştırın:
+5. Uygulamayı çalıştırın:
    ```bash
    flutter run
    ```
 
-## 📱 Ekran Görüntüleri
-
-<div align="center">
-  <img src="docs/assets/screenshots/login.png" width="200" />
-  <img src="docs/assets/screenshots/home.png" width="200" /> 
-  <img src="docs/assets/screenshots/wardrobe.png" width="200" />
-  <img src="docs/assets/screenshots/outfit.png" width="200" />
-</div>
-
-## 🔒 Güvenlik
+## Güvenlik
 
 - End-to-end encryption
 - Güvenli veri depolama
 - API güvenliği
 - Input validasyonu
 
-## 📈 Performans
+## Performans Optimizasyonları
 
 - Lazy loading mekanizmaları
 - Önbellek yönetimi
