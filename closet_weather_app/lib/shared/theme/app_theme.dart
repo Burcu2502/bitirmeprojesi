@@ -108,7 +108,7 @@ class AppTheme {
         ),
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: lightCardColor,
         elevation: cardElevation,
         shadowColor: Colors.black.withOpacity(0.05),
@@ -161,7 +161,7 @@ class AppTheme {
         ),
       ),
       // Dialog stili
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: lightSurfaceColor,
         elevation: isIOS ? 0 : 8,
         shape: RoundedRectangleBorder(
@@ -262,7 +262,7 @@ class AppTheme {
         ),
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: darkCardColor,
         elevation: cardElevation,
         shadowColor: Colors.black.withOpacity(0.2),
@@ -315,7 +315,7 @@ class AppTheme {
         ),
       ),
       // Dialog stili
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: darkSurfaceColor,
         elevation: isIOS ? 0 : 8,
         shape: RoundedRectangleBorder(
