@@ -1,0 +1,158 @@
+# MOBİL UYGULAMA MİMARİSİ VE TEKNOLOJİ STACK'İ
+
+## 1. YAZILIM MİMARİSİ
+
+### 1.1. Clean Architecture (Temiz Mimari)
+Clean Architecture, yazılım geliştirmede kullanılan modern bir mimari yaklaşımdır. Bu yaklaşımın temel amacı:
+- Kodun test edilebilirliğini artırmak
+- Bakım maliyetini düşürmek
+- Bağımlılıkları minimize etmek
+- Kod tekrarını önlemek
+
+Uygulamamızda Clean Architecture'ı 3 ana katmanda uyguladık:
+
+1. **Presentation Katmanı (Sunum)**
+   - Kullanıcı arayüzü elemanları
+   - Ekran tasarımları
+   - Kullanıcı etkileşimleri
+   - Veri gösterimi
+
+2. **Domain Katmanı (İş Mantığı)**
+   - Uygulamanın temel iş kuralları
+   - Veri modelleri
+   - Kullanım senaryoları (Use Cases)
+   - İş mantığı servisleri
+
+3. **Data Katmanı (Veri)**
+   - Veri kaynakları ile iletişim
+   - API istekleri
+   - Veritabanı işlemleri
+   - Veri dönüşümleri
+
+### 1.2. MVVM (Model-View-ViewModel) Deseni
+Uygulamamız MVVM tasarım desenini kullanır:
+
+- **Model**: Veri yapıları ve iş mantığı
+- **View**: Kullanıcı arayüzü
+- **ViewModel**: View ile Model arasındaki köprü
+
+Bu desen sayesinde:
+- Kullanıcı arayüzü ve iş mantığı birbirinden ayrılır
+- Kod daha modüler hale gelir
+- Test yazımı kolaylaşır
+
+## 2. KULLANILAN TEKNOLOJİLER
+
+### 2.1. Frontend Teknolojileri
+- **Flutter Framework**: Google'ın geliştirdiği cross-platform uygulama geliştirme framework'ü
+  * Tek kod tabanıyla iOS ve Android için native performans
+  * Material Design ve Cupertino widget'ları
+  * Hot Reload özelliği ile hızlı geliştirme
+  * Zengin widget kütüphanesi
+
+- **Dart Programlama Dili**
+  * Nesne yönelimli
+  * Güçlü tip sistemi
+  * Asenkron programlama desteği
+  * JIT (Just-In-Time) ve AOT (Ahead-Of-Time) compilation
+
+### 2.2. Backend Teknolojileri
+- **Firebase Platform**
+  * Authentication: Kullanıcı kimlik doğrulama sistemi
+  * Cloud Firestore: NoSQL veritabanı
+  * Storage: Dosya depolama sistemi
+  * Cloud Functions: Sunucu tarafı işlevler
+
+### 2.3. Makine Öğrenmesi Teknolojileri
+- **TensorFlow Lite**
+  * Mobil cihazlar için optimize edilmiş ML modeli
+  * Kıyafet tanıma ve sınıflandırma
+  * Düşük kaynak kullanımı
+  * Çevrimdışı çalışabilme
+
+- **OpenCV**
+  * Görüntü işleme kütüphanesi
+  * Renk analizi
+  * Nesne tespiti
+  * Görüntü segmentasyonu
+
+## 3. VERİ YAPISI VE YÖNETİMİ
+
+### 3.1. Veritabanı Tasarımı
+Firebase Firestore'da NoSQL yapısında aşağıdaki koleksiyonlar bulunur:
+
+1. **Users Collection**
+   - Kullanıcı profil bilgileri
+   - Tercihler ve ayarlar
+   - Stil parametreleri
+
+2. **Wardrobe Collection**
+   - Kıyafet bilgileri
+   - Kategori ve etiketler
+   - Renk ve desen özellikleri
+
+3. **Outfits Collection**
+   - Kombin bilgileri
+   - Kıyafet referansları
+   - Mevsim ve durum bilgileri
+
+### 3.2. State Management
+Riverpod kütüphanesi ile durum yönetimi:
+- Merkezi durum yönetimi
+- Bağımlılık enjeksiyonu
+- Reaktif programlama
+- Otomatik bellek yönetimi
+
+## 4. UYGULAMA MODÜLLERİ
+
+### 4.1. Kimlik Doğrulama Modülü
+- JWT tabanlı authentication
+- Güvenli oturum yönetimi
+- Sosyal medya entegrasyonu
+- Şifre sıfırlama mekanizması
+
+### 4.2. Dolap Yönetim Modülü
+- Kıyafet kategorilendirme
+- Görüntü işleme ve analiz
+- Metadata yönetimi
+- Arama ve filtreleme
+
+### 4.3. Hava Durumu Entegrasyonu
+- OpenWeatherMap API entegrasyonu
+- Gerçek zamanlı hava durumu verileri
+- Konum bazlı öneriler
+- 5 günlük tahmin
+
+### 4.4. Kombin Önerisi Modülü
+- Makine öğrenmesi tabanlı öneriler
+- Renk uyumu algoritmaları
+- Mevsimsel analiz
+- Kullanıcı tercihleri adaptasyonu
+
+## 5. GÜVENLİK VE PERFORMANS
+
+### 5.1. Güvenlik Önlemleri
+- End-to-end encryption
+- Güvenli veri depolama
+- API güvenliği
+- Input validasyonu
+
+### 5.2. Performans Optimizasyonları
+- Lazy loading mekanizmaları
+- Önbellek yönetimi
+- Görüntü optimizasyonu
+- Ağ istekleri optimizasyonu
+
+## 6. ÖLÇEKLEME VE SÜRDÜRÜLEBİLİRLİK
+
+### 6.1. Kod Kalitesi
+- SOLID prensipleri
+- Dependency Injection
+- Unit test coverage
+- Code review süreçleri
+
+### 6.2. Deployment Stratejisi
+- CI/CD pipeline
+- Otomatik test süreçleri
+- Versiyonlama stratejisi
+- Monitoring ve logging
