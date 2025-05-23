@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "588205202600-u51dm6hiuso9faj3a0q36m8vv5fp92rr.apps.googleusercontent.com",
+          "client_id": "588205202600-q264qetpl1nhbq1db270jtgl541voqob.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.weathercloset.closet_weather_app",
-            "certificate_hash": "3f30003f7e6c479340438b31a2d148888f27965c"
+            "certificate_hash": "8f73366250793457ee351be11d0b70872697b566"
+          }
+        },
+        {
+          "client_id": "588205202600-rshgf2o6mah9sf1i2aurj0hndnvrsvmu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weathercloset.closet_weather_app",
+            "certificate_hash": "391228056b826315f7d80d19ad28c04c602f1f3f"
           }
         },
         {

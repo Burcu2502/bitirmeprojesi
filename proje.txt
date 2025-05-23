@@ -1,66 +1,129 @@
-HAVA DURUMU VE MODA UYUMU İLE DOLAP YÖNETİMİ YAPAN MOBİL UYGULAMA
-1. Proje Adı
-Hava Durumu ve Moda Uyumu ile Dolap Yönetimi Yapan Mobil Uygulama
-2. Proje Amacı
-Bu proje, kullanıcıların dolaplarındaki giysileri hava durumu, renk uyumu ve moda trendlerine göre analiz ederek en uygun kombinleri oluşturmasını sağlamaktadır. Kullanıcının cilt tonu, giysi rengi ve mevsimsel koşullar dikkate alınarak kişiselleştirilmiş giyim önerileri sunulacaktır.
-3. Kullanılacak Teknolojiler ve Araçlar
-•	Mobil Geliştirme: Flutter (Dart), Provider/Riverpod/Bloc (Durum Yönetimi), Material Design
-•	Veri Yönetimi: Firebase, PostgreSQL, Hive (Local Storage), Firebase Storage
-•	Makine Öğrenmesi & Görüntü İşleme: TensorFlow Lite, OpenCV, Color Thief, K-Means Clustering
-•	Hava Durumu API Kullanımı: OpenWeatherMap API, WeatherAPI
-•	Backend : FastAPI (Python) veya .NET Core API
-4. Mevcut Sistemler ve İyileştirme Potansiyelleri
-Bu proje, aşağıdaki mevcut sistemleri inceleyerek geliştirilecektir:
-•	Moda ve renk uyumu önerileri sunan uygulamalar
-•	Hava durumuna göre giyim önerisi sunan sistemler
-•	Dijital dolap yönetimi uygulamaları
-Eksiklikler ve geliştirme potansiyelleri analiz edilerek yenilikçi bir sistem tasarlanacaktır.
-5. Beklenen Katkılar
-•	Kullanıcının dolabına eklediği giysileri analiz ederek renk uyumu önerileri sunmak
-•	Kullanıcının cilt tonuna uygun renk kombinasyonları önermek
-•	Hava durumuna göre en uygun kombinleri otomatik olarak önermek
-6. Karşılaşılması Muhtemel Zorluklar
-•	Kullanıcı tarafından girilen giysi verilerinin doğruluğunu sağlamak
-•	Renk uyumu algoritmalarının hassasiyetini optimize etmek
-•	Kullanıcı deneyimini iyileştirmek ve öneri sistemini kişiselleştirmek
-7. Yöntem ve İş Planı
-1.	Veri Toplama: Kullanıcılardan dolaplarındaki giysi verileri toplanacak.
-2.	Makine Öğrenmesi Modeli: Renk uyumu ve hava durumuna uygun kombin önerileri için algoritmalar geliştirilecek.
-3.	Mobil Uygulama Geliştirme: Flutter tabanlı, kullanıcı dostu bir mobil uygulama geliştirilecek.
-4.	Test ve Değerlendirme: Kullanıcı geribildirimleri ile sistem iyileştirilecek.
-8. Sonuç
-Bu proje, bireylerin modayı daha bilinçli ve etkin bir şekilde kullanmalarını sağlayacak yenilikçi ve akıllı bir çözüm sunmayı amaçlamaktadır. Kullanıcıların giyim tercihlerine rehberlik ederek zaman kazandırmaya ve stil sahibi kombinler oluşturmalarına yardımcı olacaktır.
+# Dolap & Hava Durumu Uygulaması Proje Raporu
 
-HAVA DURUMU VE MODA UYUMU İLE DOLAP YÖNETİMİ YAPAN MOBİL UYGULAMA
-1. Proje Adı
-Hava Durumu ve Moda Uyumu ile Dolap Yönetimi Yapan Mobil Uygulama
-2. Proje Amacı
-Bu proje, kullanıcıların dolaplarındaki giysileri hava durumu, renk uyumu ve moda trendlerine göre analiz ederek en uygun kombinleri oluşturmasını sağlamaktadır. Kullanıcının cilt tonu, giysi rengi ve mevsimsel koşullar dikkate alınarak kişiselleştirilmiş giyim önerileri sunulacaktır.
-3. Kullanılacak Teknolojiler ve Araçlar
-•	Mobil Geliştirme: Flutter (Dart), Provider/Riverpod/Bloc (Durum Yönetimi), Material Design
-•	Veri Yönetimi: Firebase, PostgreSQL, Hive (Local Storage), Firebase Storage
-•	Makine Öğrenmesi & Görüntü İşleme: TensorFlow Lite, OpenCV, Color Thief, K-Means Clustering
-•	Hava Durumu API Kullanımı: OpenWeatherMap API, WeatherAPI
-•	Backend : FastAPI (Python) veya .NET Core API
-4. Mevcut Sistemler ve İyileştirme Potansiyelleri
-Bu proje, aşağıdaki mevcut sistemleri inceleyerek geliştirilecektir:
-•	Moda ve renk uyumu önerileri sunan uygulamalar
-•	Hava durumuna göre giyim önerisi sunan sistemler
-•	Dijital dolap yönetimi uygulamaları
-Eksiklikler ve geliştirme potansiyelleri analiz edilerek yenilikçi bir sistem tasarlanacaktır.
-5. Beklenen Katkılar
-•	Kullanıcının dolabına eklediği giysileri analiz ederek renk uyumu önerileri sunmak
-•	Kullanıcının cilt tonuna uygun renk kombinasyonları önermek
-•	Hava durumuna göre en uygun kombinleri otomatik olarak önermek
-6. Karşılaşılması Muhtemel Zorluklar
-•	Kullanıcı tarafından girilen giysi verilerinin doğruluğunu sağlamak
-•	Renk uyumu algoritmalarının hassasiyetini optimize etmek
-•	Kullanıcı deneyimini iyileştirmek ve öneri sistemini kişiselleştirmek
-7. Yöntem ve İş Planı
-1.	Veri Toplama: Kullanıcılardan dolaplarındaki giysi verileri toplanacak.
-2.	Makine Öğrenmesi Modeli: Renk uyumu ve hava durumuna uygun kombin önerileri için algoritmalar geliştirilecek.
-3.	Mobil Uygulama Geliştirme: Flutter tabanlı, kullanıcı dostu bir mobil uygulama geliştirilecek.
-4.	Test ve Değerlendirme: Kullanıcı geribildirimleri ile sistem iyileştirilecek.
-8. Sonuç
-Bu proje, bireylerin modayı daha bilinçli ve etkin bir şekilde kullanmalarını sağlayacak yenilikçi ve akıllı bir çözüm sunmayı amaçlamaktadır. Kullanıcıların giyim tercihlerine rehberlik ederek zaman kazandırmaya ve stil sahibi kombinler oluşturmalarına yardımcı olacaktır.
+## 1. Proje Genel Bakış
+Dolap & Hava Durumu uygulaması, kullanıcıların gardıroplarını dijital ortamda yönetmelerini ve günlük hava durumuna göre kıyafet önerileri almalarını sağlayan bir mobil uygulamadır. Flutter framework'ü kullanılarak geliştirilmiş olup, hem iOS hem de Android platformlarında çalışabilmektedir.
+
+## 2. Teknik Altyapı
+
+### 2.1 Kullanılan Teknolojiler
+- Flutter/Dart
+- Firebase (Authentication, Firestore, Storage, App Check)
+- Riverpod (State Management)
+- Easy Localization (Çoklu Dil Desteği)
+- Image Picker & Color Analysis
+- Machine Learning (Kıyafet Önerileri için)
+
+### 2.2 Mimari Yapı
+Proje, Clean Architecture prensiplerine uygun olarak geliştirilmiş ve aşağıdaki katmanlara ayrılmıştır:
+- features/ (Ana özellik modülleri)
+- core/ (Temel bileşenler ve modeller)
+- shared/ (Paylaşılan widget'lar ve utilities)
+
+## 3. Ana Özellikler
+
+### 3.1 Kullanıcı Yönetimi
+- Kayıt ve giriş sistemi
+- Google ile giriş yapma
+- Profil yönetimi
+- Çoklu dil desteği (Türkçe/İngilizce)
+
+### 3.2 Gardırop Yönetimi
+- Kıyafet ekleme ve düzenleme
+- Fotoğraf çekme veya galeriden seçme
+- Otomatik renk analizi
+- Kategorilere göre filtreleme
+- Mevsimsel etiketleme
+
+### 3.3 Hava Durumu Entegrasyonu
+- Güncel hava durumu gösterimi
+- 5 günlük hava tahmini
+- Konum bazlı hava durumu
+- Sıcaklık, nem, rüzgar hızı bilgileri
+- Hava durumuna özel tavsiyeler
+
+### 3.4 Kıyafet Önerileri
+- Hava durumuna uygun kombin önerileri
+- Makine öğrenmesi destekli öneriler
+- Mevsimsel ve stil bazlı filtreleme
+- Favori kombinleri kaydetme
+
+## 4. Kullanıcı Arayüzü
+
+### 4.1 Ana Ekranlar
+- Hava Durumu Ekranı
+- Gardırop Ekranı
+- Kombin Oluşturma Ekranı
+- Profil Ekranı
+
+### 4.2 Tasarım Özellikleri
+- Modern ve kullanıcı dostu arayüz
+- Dinamik tema desteği (Açık/Koyu mod)
+- Responsive tasarım
+- Animasyonlu geçişler
+- Material Design 3 uyumlu
+
+## 5. Güvenlik ve Performans
+
+### 5.1 Güvenlik Önlemleri
+- Firebase App Check entegrasyonu
+- Güvenli kullanıcı kimlik doğrulama
+- Veri şifreleme
+- Güvenli depolama
+
+### 5.2 Performans Optimizasyonları
+- Lazy loading
+- Önbellek yönetimi
+- Görsel optimizasyonu
+- Verimli state management
+
+## 6. Gelecek Geliştirmeler
+- Sosyal medya paylaşım özellikleri
+- Gelişmiş gardırop analizi
+- Giysi satın alma önerileri
+- Stil danışmanlığı entegrasyonu
+- Yapay zeka destekli stil önerileri
+
+## 7. Teknik Detaylar
+
+### 7.1 Proje Yapısı
+```
+lib/
+├── core/
+│   ├── models/
+│   └── providers/
+├── features/
+│   ├── auth/
+│   ├── wardrobe/
+│   ├── weather/
+│   └── profile/
+├── shared/
+│   ├── theme/
+│   └── widgets/
+└── main.dart
+```
+
+### 7.2 Bağımlılıklar
+- flutter_riverpod: State management
+- firebase_core: Firebase temel işlevler
+- firebase_auth: Kimlik doğrulama
+- cloud_firestore: Veritabanı işlemleri
+- firebase_storage: Dosya depolama
+- easy_localization: Çoklu dil desteği
+- image_picker: Fotoğraf seçimi
+- cached_network_image: Görsel önbellekleme
+
+## 8. Kurulum ve Çalıştırma
+
+### 8.1 Gereksinimler
+- Flutter SDK
+- Android Studio / Xcode
+- Firebase hesabı
+- Hava durumu API anahtarı
+
+### 8.2 Kurulum Adımları
+1. Projeyi klonlama
+2. Bağımlılıkları yükleme
+3. Firebase yapılandırması
+4. API anahtarlarını ayarlama
+5. Uygulamayı derleme ve çalıştırma
 
