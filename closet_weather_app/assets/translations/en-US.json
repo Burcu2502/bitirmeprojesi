@@ -1,5 +1,5 @@
 {
-  "appTitle": "Wardrobe & Weather",
+  "appTitle": "Closet Weather",
   
   "navigation": {
     "home": "Home",
@@ -135,6 +135,7 @@
     "suggestedOutfit": "Suggested Outfit",
     "generateNewOutfit": "Generate New Outfit",
     "personalizedSuggestions": "Personalized Suggestions",
+    "clickForDetails": "Click for details",
     "noOutfitToCreate": "Not enough clothing items in your closet to create an outfit",
     "addClothingItems": "Please make sure you have at least one top and one bottom item",
     "noClothingItems": "No clothing items in your closet yet. Add some to get outfit recommendations.",
@@ -240,27 +241,24 @@
   },
   
   "general": {
+    "search": "Search",
+    "filter": "Filter",
     "apply": "Apply",
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
-    "select": "Select",
-    "yes": "Yes",
-    "no": "No",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "warning": "Warning",
-    "info": "Info",
     "retry": "Retry",
-    "continue": "Continue",
-    "back": "Back",
-    "next": "Next",
-    "loginRequired": "You need to log in to see outfit recommendations",
+    "clearFilters": "Clear Filters",
+    "noResults": "No results found",
     "featureNotAvailable": "This feature is not available yet",
-    "search": "Search items...",
-    "filter": "Filter Options",
-    "clearFilters": "Clear Filters"
+    "loginRequired": "Login required"
   }
 } 

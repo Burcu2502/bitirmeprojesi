@@ -155,12 +155,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                     scale: _scaleAnimation,
                     child: Column(
                       children: [
-                        // Logo ikonu
+                        // Logo ikonu - AI + Hava durumu + Kıyafet kombinasyonu
                         Container(
                           width: size.width * 0.4,
                           height: size.width * 0.4,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white,
+                                Colors.blue.shade50,
+                              ],
+                            ),
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
@@ -170,12 +177,50 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                               ),
                             ],
                           ),
-                          child: Center(
-                            child: Icon(
-                              Icons.cloud_outlined,
-                              size: size.width * 0.25,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              // Ana ikon - AI brain
+                              Icon(
+                                Icons.psychology,
+                                size: size.width * 0.15,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              // Küçük hava durumu ikonu
+                              Positioned(
+                                top: size.width * 0.08,
+                                right: size.width * 0.08,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange.shade400,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.wb_sunny,
+                                    size: size.width * 0.06,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              // Küçük kıyafet ikonu
+                              Positioned(
+                                bottom: size.width * 0.08,
+                                left: size.width * 0.08,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.purple.shade400,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.checkroom,
+                                    size: size.width * 0.06,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         
@@ -183,9 +228,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                         
                         // Uygulama adı
                         Text(
-                          'Dolap & Hava Durumu',
+                          'AI Dolap Asistanı',
                           style: TextStyle(
-                            fontSize: 28,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             letterSpacing: 1.2,
@@ -201,14 +246,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                         
                         const SizedBox(height: 15),
                         
-                        // Slogan
+                        // Ana slogan
                         Text(
-                          'Hava durumuna uygun kombin önerileri',
+                          '🤖 Yapay Zeka ile Akıllı Kombin Önerileri',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white.withOpacity(0.95),
                           ),
+                          textAlign: TextAlign.center,
+                        ),
+                        
+                        const SizedBox(height: 8),
+                        
+                        // Alt slogan
+                        Text(
+                          'Hava durumuna uygun • Renk uyumlu • Stil bazlı',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),

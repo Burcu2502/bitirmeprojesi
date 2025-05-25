@@ -10,6 +10,8 @@ import '../widgets/outfit_suggestion_view.dart';
 import '../widgets/user_profile_view.dart';
 import '../../../../core/providers/firestore_providers.dart';
 import '../../../wardrobe/presentation/providers/wardrobe_provider.dart';
+import '../../../weather/presentation/screens/outfit_recommendation_screen.dart';
+import '../../../weather/presentation/providers/weather_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -28,9 +30,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _screens = [
-      const WeatherScreen(),
-      const WardrobeScreen(), 
       const OutfitSuggestionView(),
+      const WardrobeScreen(),
+      const WeatherScreen(),
       const UserProfileView(),
     ];
   }
@@ -64,6 +66,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
   
+  String _getAppBarTitle() {
+    switch (_currentIndex) {
+      case 0:
+        return 'navigation.home'.tr();
+      case 1:
+        return 'navigation.myClosets'.tr();
+      case 2:
+        return 'navigation.weatherForecast'.tr();
+      case 3:
+        return 'navigation.profile'.tr();
+      default:
+        return 'navigation.home'.tr();
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     // Auth durumunu kontrol et
@@ -76,8 +93,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('navigation.home'.tr()),
+        title: Text(_getAppBarTitle()),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.auto_awesome),
+            tooltip: 'Hava Durumuna Göre Kombin',
+            onPressed: () {
+              // Hava durumu bilgisini al
+              final weatherState = ref.read(weatherStateProvider);
+              if (weatherState.currentWeather != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OutfitRecommendationScreen(
+                      weather: weatherState.currentWeather!,
+                    ),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Hava durumu bilgisi yükleniyor, lütfen bekleyin...'),
+                  ),
+                );
+              }
+            },
+          ),
           if (_isLoggingOut)
             const Center(
               child: Padding(
@@ -108,7 +149,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           });
           
           // Kıyafet verilerini gösteren tab'lara geçildiğinde provider'ları yenile
-          if (index == 1 || index == 2) { // Wardrobe veya Outfit Suggestion
+          if (index == 0 || index == 1) { // Ana Sayfa (AI önerileri) veya Dolaplarım
             ref.invalidate(userClothingItemsProvider);
             ref.invalidate(clothingItemsProvider);
           }
@@ -118,9 +159,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.cloud_outlined),
-            activeIcon: const Icon(Icons.cloud),
-            label: 'navigation.weatherForecast'.tr(),
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: 'navigation.home'.tr(),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.grid_view_outlined),
@@ -128,9 +169,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             label: 'navigation.myClosets'.tr(),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.add_circle_outline),
-            activeIcon: const Icon(Icons.add_circle),
-            label: 'navigation.createOutfit'.tr(),
+            icon: const Icon(Icons.cloud_outlined),
+            activeIcon: const Icon(Icons.cloud),
+            label: 'navigation.weatherForecast'.tr(),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person_outline),
