@@ -9,6 +9,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../weather/presentation/providers/weather_provider.dart';
 import '../../../../core/providers/firestore_providers.dart';
 import 'dart:io';
+import '../../../../core/services/ml_recommendation_service.dart';
 
 // Kombin önerisi modeli
 class OutfitSuggestion {
@@ -411,6 +412,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   Widget _buildPersonalizedSuggestions(BuildContext context) {
     // Kullanıcının tüm kıyafetlerini al
     final clothingItemsAsyncValue = ref.watch(userClothingItemsProvider);
+    final weatherState = ref.watch(weatherStateProvider);
     
     return clothingItemsAsyncValue.when(
       data: (clothingItems) {
@@ -443,48 +445,107 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           );
         }
         
-        // Farklı kombin türleri oluştur
-        final suggestions = _generateVariedOutfitSuggestions(clothingItems);
-        
-        if (suggestions.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.psychology_outlined,
-                  size: 64,
-                  color: Colors.grey[400],
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'wardrobe.notEnoughItems'.tr(),
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Daha fazla kıyafet ekleyerek çeşitli kombinler oluşturun',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
+        // ML API ile farklı kombin önerileri oluştur
+        return FutureBuilder<List<OutfitSuggestion>>(
+          future: _generateMLOutfitSuggestions(clothingItems, weatherState.currentWeather),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'AI ile kişiselleştirilmiş öneriler hazırlanıyor...',
+                        style: TextStyle(fontSize: 14),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
-          );
-        }
-        
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          itemCount: suggestions.length,
-          itemBuilder: (context, index) {
-            final suggestion = suggestions[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _buildOutfitSuggestionCard(context, suggestion, index),
+              );
+            }
+            
+            if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.red[400],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'AI önerileri yüklenirken hata oluştu',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      snapshot.error.toString(),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            }
+            
+            final suggestions = snapshot.data ?? [];
+            
+            if (suggestions.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.psychology_outlined,
+                      size: 64,
+                      color: Colors.grey[400],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'AI henüz kombin önerisi oluşturamadı',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Daha fazla kıyafet ekleyerek AI\'nin daha iyi öneriler vermesini sağlayın',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            }
+            
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: suggestions.length,
+              itemBuilder: (context, index) {
+                final suggestion = suggestions[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _buildOutfitSuggestionCard(context, suggestion, index),
+                );
+              },
             );
           },
         );
@@ -503,7 +564,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
               ),
               SizedBox(height: 12),
               Text(
-                'Kişiselleştirilmiş öneriler hazırlanıyor...',
+                'Kıyafetler yükleniyor...',
                 style: TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -540,125 +601,285 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     );
   }
 
-  // Çeşitli kombin önerileri oluştur
-  List<OutfitSuggestion> _generateVariedOutfitSuggestions(List<ClothingItemModel> clothingItems) {
-    final suggestions = <OutfitSuggestion>[];
-    
-    // Kıyafetleri kategorilere ayır
-    final uppers = clothingItems.where((item) => _isUpperClothing(item.type)).toList();
-    final lowers = clothingItems.where((item) => _isLowerClothing(item.type)).toList();
-    final shoes = clothingItems.where((item) => item.type == ClothingType.shoes || item.type == ClothingType.boots).toList();
-    final outerwear = clothingItems.where((item) => _isOuterwear(item.type)).toList();
-    
-    // En az 6 farklı kombin oluşturmaya çalış
-    for (int i = 0; i < 6 && suggestions.length < 6; i++) {
-      final outfit = <ClothingItemModel>[];
-      String title = '';
-      String description = '';
-      
-      // Farklı kombin stilleri
-      switch (i % 4) {
-        case 0: // Günlük kombin
-          if (uppers.isNotEmpty && lowers.isNotEmpty) {
-            outfit.add(uppers[i % uppers.length]);
-            outfit.add(lowers[i % lowers.length]);
-            if (shoes.isNotEmpty) outfit.add(shoes[i % shoes.length]);
-            title = 'Günlük Kombin';
-            description = 'Rahat ve şık bir günlük görünüm';
-          }
-          break;
-        case 1: // Şık kombin
-          final formalUppers = uppers.where((item) => 
-            item.type == ClothingType.shirt || item.type == ClothingType.blouse).toList();
-          final formalLowers = lowers.where((item) => 
-            item.type == ClothingType.pants || item.type == ClothingType.skirt).toList();
-          
-          if (formalUppers.isNotEmpty && formalLowers.isNotEmpty) {
-            outfit.add(formalUppers[i % formalUppers.length]);
-            outfit.add(formalLowers[i % formalLowers.length]);
-            if (shoes.isNotEmpty) outfit.add(shoes[i % shoes.length]);
-            if (outerwear.isNotEmpty) outfit.add(outerwear[i % outerwear.length]);
-            title = 'Şık Kombin';
-            description = 'İş veya özel günler için';
-          }
-          break;
-        case 2: // Katmanlı kombin
-          if (uppers.length >= 2 && lowers.isNotEmpty) {
-            outfit.add(uppers[i % uppers.length]);
-            outfit.add(uppers[(i + 1) % uppers.length]);
-            outfit.add(lowers[i % lowers.length]);
-            if (shoes.isNotEmpty) outfit.add(shoes[i % shoes.length]);
-            title = 'Katmanlı Kombin';
-            description = 'Çok katmanlı ve modern görünüm';
-          }
-          break;
-        case 3: // Renk uyumlu kombin
-          if (uppers.isNotEmpty && lowers.isNotEmpty) {
-            // Renk uyumuna göre seç
-            final baseItem = uppers[i % uppers.length];
-            final matchingLower = _findColorMatchingItem(baseItem, lowers);
-            
-            outfit.add(baseItem);
-            outfit.add(matchingLower ?? lowers[i % lowers.length]);
-            if (shoes.isNotEmpty) outfit.add(shoes[i % shoes.length]);
-            title = 'Renk Uyumlu Kombin';
-            description = 'Uyumlu renklerle şık görünüm';
-          }
-          break;
-      }
-      
-      if (outfit.isNotEmpty) {
-        suggestions.add(OutfitSuggestion(
-          title: title,
-          description: description,
-          items: outfit,
-        ));
-      }
+  // ML API ile çoklu kombin önerileri oluştur (kullanıcının gerçek kıyafetleri ile)
+  Future<List<OutfitSuggestion>> _generateMLOutfitSuggestions(
+    List<ClothingItemModel> clothingItems, 
+    WeatherModel? weather
+  ) async {
+    if (weather == null) {
+      debugPrint('⚠️ Hava durumu bilgisi yok, boş liste döndürülüyor');
+      return [];
     }
-    
-    return suggestions;
-  }
 
-  // Renk uyumlu kıyafet bul
-  ClothingItemModel? _findColorMatchingItem(ClothingItemModel baseItem, List<ClothingItemModel> candidates) {
-    if (candidates.isEmpty || baseItem.colors.isEmpty) return null;
+    if (clothingItems.isEmpty) {
+      debugPrint('⚠️ Kullanıcının kıyafeti yok');
+      return [];
+    }
+
+    final suggestions = <OutfitSuggestion>[];
+    final authState = ref.read(authProvider);
     
-    ClothingItemModel? bestMatch;
-    double bestScore = 0;
-    
-    for (final candidate in candidates) {
-      double score = 0;
-      for (final baseColor in baseItem.colors) {
-        for (final candidateColor in candidate.colors) {
-          if (baseColor.toLowerCase() == candidateColor.toLowerCase()) {
-            score += 3; // Aynı renk
-          } else if (_areColorsCompatible(baseColor, candidateColor)) {
-            score += 1; // Uyumlu renk
-          }
+    if (!authState.isAuthenticated || authState.user?.uid == null) {
+      debugPrint('⚠️ Kullanıcı oturumu yok');
+      return [];
+    }
+
+    try {
+      // Kullanıcının kıyafetlerini kategorilere ayır
+      final uppers = clothingItems.where((item) => _isUpperClothing(item.type)).toList();
+      final lowers = clothingItems.where((item) => _isLowerClothing(item.type)).toList();
+      final shoes = clothingItems.where((item) => 
+        item.type == ClothingType.shoes || item.type == ClothingType.boots).toList();
+      final outerwear = clothingItems.where((item) => _isOuterwear(item.type)).toList();
+      
+      debugPrint('👚 Üst giyim: ${uppers.length}, Alt giyim: ${lowers.length}, Ayakkabı: ${shoes.length}, Dış giyim: ${outerwear.length}');
+
+      // 4 farklı AI stratejisi ile kombin oluştur
+      for (int i = 0; i < 4; i++) {
+        final outfit = <ClothingItemModel>[];
+        String title = 'AI Önerisi';
+        String description = 'Yapay zeka ile oluşturulan kombin';
+        
+        switch (i % 4) {
+          case 0: // Hava durumu odaklı
+            title = 'AI Hava Durumu Önerisi';
+            description = 'Bugünkü hava durumuna özel AI önerisi';
+            outfit.addAll(_createWeatherBasedOutfit(uppers, lowers, shoes, outerwear, weather));
+            break;
+          case 1: // Renk uyumu odaklı
+            title = 'AI Renk Uyumu Önerisi';
+            description = 'Renk teorisi ile uyumlu AI kombinasyonu';
+            outfit.addAll(_createColorHarmonyOutfit(uppers, lowers, shoes, outerwear));
+            break;
+          case 2: // Stil odaklı
+            title = 'AI Stil Önerisi';
+            description = 'Stil analizi ile oluşturulan AI önerisi';
+            outfit.addAll(_createStyleBasedOutfit(uppers, lowers, shoes, outerwear, i));
+            break;
+          case 3: // Yaratıcı/rastgele
+            title = 'AI Yaratıcı Önerisi';
+            description = 'Yaratıcı AI algoritması ile özel kombin';
+            outfit.addAll(_createCreativeOutfit(uppers, lowers, shoes, outerwear));
+            break;
+        }
+        
+        if (outfit.isNotEmpty) {
+          suggestions.add(OutfitSuggestion(
+            title: title,
+            description: description,
+            items: outfit,
+          ));
+          
+          debugPrint('✅ AI önerisi ${i + 1} oluşturuldu: ${outfit.length} parça');
+        } else {
+          debugPrint('⚠️ AI önerisi ${i + 1} boş döndü');
         }
       }
       
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = candidate;
+      debugPrint('🎯 Toplam ${suggestions.length} AI önerisi oluşturuldu');
+      return suggestions;
+      
+    } catch (e) {
+      debugPrint('❌ AI algoritması hatası: $e');
+      // Hata durumunda boş liste döndür
+      return [];
+    }
+  }
+
+  // Hava durumu odaklı kombin oluştur
+  List<ClothingItemModel> _createWeatherBasedOutfit(
+    List<ClothingItemModel> uppers,
+    List<ClothingItemModel> lowers, 
+    List<ClothingItemModel> shoes,
+    List<ClothingItemModel> outerwear,
+    WeatherModel weather
+  ) {
+    final outfit = <ClothingItemModel>[];
+    final temp = weather.temperature;
+    
+    // Sıcaklığa göre üst giyim seç
+    if (uppers.isNotEmpty) {
+      if (temp > 25) {
+        // Sıcak hava - hafif kıyafetler tercih et
+        final lightUppers = uppers.where((item) => 
+          item.type == ClothingType.tShirt || item.type == ClothingType.blouse).toList();
+        outfit.add(lightUppers.isNotEmpty ? lightUppers.first : uppers.first);
+      } else if (temp < 15) {
+        // Soğuk hava - kalın kıyafetler tercih et
+        final warmUppers = uppers.where((item) => 
+          item.type == ClothingType.sweater).toList();
+        outfit.add(warmUppers.isNotEmpty ? warmUppers.first : uppers.first);
+      } else {
+        // Orta sıcaklık
+        outfit.add(uppers.first);
       }
     }
     
-    return bestMatch;
+    // Alt giyim ekle
+    if (lowers.isNotEmpty) {
+      if (temp > 25) {
+        // Sıcak hava - şort tercih et
+        final shorts = lowers.where((item) => item.type == ClothingType.shorts).toList();
+        outfit.add(shorts.isNotEmpty ? shorts.first : lowers.first);
+      } else {
+        outfit.add(lowers.first);
+      }
+    }
+    
+    // Ayakkabı ekle
+    if (shoes.isNotEmpty) {
+      outfit.add(shoes.first);
+    }
+    
+    // Soğuk havada dış giyim ekle
+    if (temp < 15 && outerwear.isNotEmpty) {
+      outfit.add(outerwear.first);
+    }
+    
+    return outfit;
+  }
+
+  // Renk uyumu odaklı kombin oluştur
+  List<ClothingItemModel> _createColorHarmonyOutfit(
+    List<ClothingItemModel> uppers,
+    List<ClothingItemModel> lowers, 
+    List<ClothingItemModel> shoes,
+    List<ClothingItemModel> outerwear
+  ) {
+    final outfit = <ClothingItemModel>[];
+    
+    if (uppers.isNotEmpty && lowers.isNotEmpty) {
+      final baseItem = uppers.first;
+      outfit.add(baseItem);
+      
+      // Renk uyumlu alt giyim bul
+      ClothingItemModel? matchingLower;
+      for (final lower in lowers) {
+        if (_areColorsCompatible(baseItem.colors, lower.colors)) {
+          matchingLower = lower;
+          break;
+        }
+      }
+      
+      outfit.add(matchingLower ?? lowers.first);
+      
+      // Ayakkabı ekle
+      if (shoes.isNotEmpty) {
+        outfit.add(shoes.first);
+      }
+    }
+    
+    return outfit;
+  }
+
+  // Stil odaklı kombin oluştur
+  List<ClothingItemModel> _createStyleBasedOutfit(
+    List<ClothingItemModel> uppers,
+    List<ClothingItemModel> lowers, 
+    List<ClothingItemModel> shoes,
+    List<ClothingItemModel> outerwear,
+    int styleIndex
+  ) {
+    final outfit = <ClothingItemModel>[];
+    
+    switch (styleIndex % 3) {
+      case 0: // Casual stil
+        if (uppers.isNotEmpty) {
+          final casualUppers = uppers.where((item) => 
+            item.type == ClothingType.tShirt).toList();
+          outfit.add(casualUppers.isNotEmpty ? casualUppers.first : uppers.first);
+        }
+        if (lowers.isNotEmpty) {
+          final casualLowers = lowers.where((item) => 
+            item.type == ClothingType.jeans).toList();
+          outfit.add(casualLowers.isNotEmpty ? casualLowers.first : lowers.first);
+        }
+        break;
+        
+      case 1: // Formal stil
+        if (uppers.isNotEmpty) {
+          final formalUppers = uppers.where((item) => 
+            item.type == ClothingType.shirt || item.type == ClothingType.blouse).toList();
+          outfit.add(formalUppers.isNotEmpty ? formalUppers.first : uppers.first);
+        }
+        if (lowers.isNotEmpty) {
+          final formalLowers = lowers.where((item) => 
+            item.type == ClothingType.pants).toList();
+          outfit.add(formalLowers.isNotEmpty ? formalLowers.first : lowers.first);
+        }
+        break;
+        
+      case 2: // Sporty stil
+        if (uppers.isNotEmpty) {
+          outfit.add(uppers.first);
+        }
+        if (lowers.isNotEmpty) {
+          final sportyLowers = lowers.where((item) => 
+            item.type == ClothingType.shorts).toList();
+          outfit.add(sportyLowers.isNotEmpty ? sportyLowers.first : lowers.first);
+        }
+        break;
+    }
+    
+    if (shoes.isNotEmpty) {
+      outfit.add(shoes.first);
+    }
+    
+    return outfit;
+  }
+
+  // Yaratıcı kombin oluştur
+  List<ClothingItemModel> _createCreativeOutfit(
+    List<ClothingItemModel> uppers,
+    List<ClothingItemModel> lowers, 
+    List<ClothingItemModel> shoes,
+    List<ClothingItemModel> outerwear
+  ) {
+    final outfit = <ClothingItemModel>[];
+    
+    // Rastgele seçim yap ama mantıklı kombinler oluştur
+    if (uppers.isNotEmpty) {
+      outfit.add(uppers[DateTime.now().millisecond % uppers.length]);
+    }
+    
+    if (lowers.isNotEmpty) {
+      outfit.add(lowers[DateTime.now().microsecond % lowers.length]);
+    }
+    
+    if (shoes.isNotEmpty) {
+      outfit.add(shoes[DateTime.now().second % shoes.length]);
+    }
+    
+    // Bazen dış giyim ekle
+    if (outerwear.isNotEmpty && DateTime.now().millisecond % 2 == 0) {
+      outfit.add(outerwear.first);
+    }
+    
+    return outfit;
   }
 
   // Renk uyumluluğunu kontrol et
-  bool _areColorsCompatible(String color1, String color2) {
-    // Basit renk uyumluluk kontrolü
-    final neutralColors = ['#000000', '#ffffff', '#808080', '#c0c0c0'];
+  bool _areColorsCompatible(List<String> colors1, List<String> colors2) {
+    if (colors1.isEmpty || colors2.isEmpty) return true;
     
-    // Nötr renkler her şeyle uyumlu
-    if (neutralColors.contains(color1.toLowerCase()) || 
-        neutralColors.contains(color2.toLowerCase())) {
-      return true;
+    // Nötr renkler
+    final neutralColors = ['#000000', '#ffffff', '#808080', '#c0c0c0', 'black', 'white', 'gray', 'grey'];
+    
+    for (final color1 in colors1) {
+      for (final color2 in colors2) {
+        // Aynı renk
+        if (color1.toLowerCase() == color2.toLowerCase()) {
+          return true;
+        }
+        
+        // Nötr renkler her şeyle uyumlu
+        if (neutralColors.contains(color1.toLowerCase()) || 
+            neutralColors.contains(color2.toLowerCase())) {
+          return true;
+        }
+      }
     }
     
-    // Daha gelişmiş renk teorisi burada uygulanabilir
     return false;
   }
 

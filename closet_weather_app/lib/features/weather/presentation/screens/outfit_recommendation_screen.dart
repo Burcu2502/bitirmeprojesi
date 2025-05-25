@@ -37,7 +37,7 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
   void initState() {
     super.initState();
     // API kullanımı hakkında log
-    debugPrint("🔍 ML Servisi Durumu: ${_useMachineLearning ? 'Aktif' : 'Pasif'}");
+    debugPrint("🔍 AI Servisi Durumu: ${_useMachineLearning ? 'Aktif' : 'Pasif'}");
     debugPrint("🌡️ Hava Durumu: ${widget.weather.temperature}°C, ${widget.weather.condition}");
     _loadRecommendations();
   }
@@ -77,12 +77,12 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
       if (_useMachineLearning) {
         try {
           // ML API'den öneri al
-          debugPrint('🧠 Makine öğrenmesi servisi kullanılıyor...');
+          debugPrint('🧠 Yapay zeka servisi kullanılıyor...');
           recommendedOutfit = await _mlRecommendationService.getOutfitRecommendation(
             userId,
             widget.weather,
           );
-          debugPrint('✅ ML servisi ${recommendedOutfit.length} kıyafet önerdi');
+          debugPrint('✅ AI servisi ${recommendedOutfit.length} kıyafet önerdi');
           
           // İlk 3 kıyafetin isimlerini yazdır
           if (recommendedOutfit.isNotEmpty) {
@@ -92,7 +92,7 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
           }
         } catch (e) {
           // ML hatası durumunda normal algoritmaya dön
-          debugPrint('⚠️ ML hatası, normal algoritma kullanılıyor: $e');
+          debugPrint('⚠️ AI hatası, normal algoritma kullanılıyor: $e');
           // Kullanıcı bilgilerini getir (cilt tonu için)
           final user = await _firestoreService.getUser(userId);
           
@@ -188,11 +188,11 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_useMachineLearning ? 'ML Kombin Önerisi' : 'Hava Durumuna Göre Kombin'),
+        title: Text(_useMachineLearning ? 'AI Kombin Önerisi' : 'Hava Durumuna Göre Kombin'),
         actions: [
           IconButton(
             icon: Icon(_useMachineLearning ? Icons.psychology : Icons.auto_awesome),
-            tooltip: _useMachineLearning ? 'Makine Öğrenmesi Aktif' : 'Normal Algoritma Aktif',
+            tooltip: _useMachineLearning ? 'AI Algoritması Aktif' : 'Normal Algoritma Aktif',
             onPressed: () {
               setState(() {
                 _useMachineLearning = !_useMachineLearning;
@@ -259,7 +259,7 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
                           ),
                           label: Text(
                             _useMachineLearning 
-                                ? 'Makine Öğrenmesi Algoritması' 
+                                ? 'Yapay Zeka Algoritması' 
                                 : 'Normal Öneri Algoritması',
                             style: TextStyle(
                               color: _useMachineLearning 
