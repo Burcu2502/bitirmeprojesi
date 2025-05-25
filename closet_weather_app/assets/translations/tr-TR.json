@@ -1,5 +1,5 @@
 {
-  "appTitle": "Dolap & Hava Durumu",
+  "appTitle": "Dolap Hava Durumu",
   
   "navigation": {
     "home": "Ana Sayfa",
@@ -135,6 +135,7 @@
     "suggestedOutfit": "Önerilen Kombin",
     "generateNewOutfit": "Yeni Kombin Oluştur",
     "personalizedSuggestions": "Kişiselleştirilmiş Öneriler",
+    "clickForDetails": "Detayları görmek için tıklayın",
     "noOutfitToCreate": "Dolaplarınızda yeterli kıyafet bulunmadığından kombin oluşturulamadı",
     "addClothingItems": "Lütfen en az bir üst giyim ve bir alt giyim eklediğinizden emin olun",
     "noClothingItems": "Henüz dolabınıza kıyafet eklenmemiş. Kombinler için kıyafet ekleyin.",
@@ -145,7 +146,8 @@
     "imageSection": {
       "selectFromGallery": "Galeriden Seç",
       "takePhoto": "Fotoğraf Çek",
-      "pleaseSelectImage": "Lütfen bir resim seçin"
+      "pleaseSelectImage": "Lütfen bir resim seçin",
+      "analyzingColors": "Renkler ayrıştırılıyor..."
     },
     "clothingDetails": {
       "detectedColors": "Algılanan Renkler:",
@@ -257,10 +259,14 @@
     "continue": "Devam Et",
     "back": "Geri",
     "next": "İleri",
-    "loginRequired": "Kombin önerileri almak için giriş yapmalısınız",
+    "loginRequired": "Giriş yapmanız gerekiyor",
     "featureNotAvailable": "Bu özellik henüz hazır değil",
-    "search": "Kıyafet ara...",
-    "filter": "Filtreleme Seçenekleri",
-    "clearFilters": "Filtreleri Temizle"
+    "search": "Ara",
+    "filter": "Filtrele",
+    "clearFilters": "Filtreleri Temizle",
+    "add": "Ekle",
+    "sort": "Sırala",
+    "close": "Kapat",
+    "ok": "Tamam"
   }
 } 

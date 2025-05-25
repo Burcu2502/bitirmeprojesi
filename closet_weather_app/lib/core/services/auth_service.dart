@@ -78,8 +78,15 @@ class AuthService {
     try {
       debugPrint("🔐 Google ile giriş başlatılıyor");
       
-      // Google ile giriş işlemi
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      // Google ile giriş işlemi - basitleştirilmiş
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        // Google Play Services hatası için basit konfigürasyon
+        scopes: ['email', 'profile'],
+      );
+      
+      // Önce mevcut oturumu temizle
+      await googleSignIn.signOut();
+      
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       
       if (googleUser == null) {
@@ -88,12 +95,10 @@ class AuthService {
       }
       
       debugPrint("✅ Google hesabı seçildi: ${googleUser.email}");
-      debugPrint("👤 Google kullanıcı ID: ${googleUser.id}");
       
       // Google ile kimlik doğrulama detaylarını al
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      debugPrint("✅ Google authentication başarılı, idToken alındı: ${googleAuth.idToken != null}");
-      debugPrint("✅ Google accessToken alındı: ${googleAuth.accessToken != null}");
+      debugPrint("✅ Google authentication başarılı");
       
       // Firebase ile giriş için kimlik bilgisi oluştur
       final credential = GoogleAuthProvider.credential(
@@ -104,97 +109,46 @@ class AuthService {
       debugPrint("🔄 Firebase credential oluşturuldu, Firebase'e giriş yapılıyor...");
       
       // Firebase ile giriş yap
-      try {
-        // PigeonUserDetails hatasını bypass etmek için, direkt erişim sağlayalım
-        // Problem, signInWithCredential metodunda
+      final userCredential = await _auth.signInWithCredential(credential);
+      debugPrint("✅ Firebase giriş başarılı: ${userCredential.user?.uid}");
+      
+      // Kullanıcı verilerini Firestore'da kontrol et ve oluştur
+      if (userCredential.user != null) {
+        final userData = await _firestoreService.getUser(userCredential.user!.uid);
         
-        // ÇÖZÜM: Kullanıcı zaten giriş yapmış mı kontrol edelim
-        User? currentUser = _auth.currentUser;
-        if (currentUser != null) {
-          debugPrint("✅ Kullanıcı zaten giriş yapmış: ${currentUser.uid}");
+        if (userData == null) {
+          // Kullanıcı Firestore'da yoksa oluştur
+          final newUser = UserModel(
+            id: userCredential.user!.uid,
+            email: googleUser.email,
+            name: googleUser.displayName ?? 'Google Kullanıcısı',
+            photoUrl: googleUser.photoUrl,
+            skinTone: null,
+            stylePreferences: [],
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          );
           
-          // Firestore'dan kullanıcı bilgilerini al
-          final userData = await _firestoreService.getUser(currentUser.uid);
-          
-          if (userData == null) {
-            // Kullanıcı Firestore'da yoksa oluştur
-            final newUser = UserModel(
-              id: currentUser.uid,
-              email: googleUser.email,
-              name: googleUser.displayName ?? 'Google Kullanıcısı',
-              photoUrl: googleUser.photoUrl,
-              skinTone: null,
-              stylePreferences: [],
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
-            );
-            
-            await _firestoreService.createUser(newUser);
-          }
-          
-          // Kullanıcı zaten giriş yapmış, o zaman direkt hata fırlatalım
-          _throwPigeonHandledError(currentUser);
+          await _firestoreService.createUser(newUser);
+          debugPrint("✅ Yeni kullanıcı Firestore'da oluşturuldu");
         }
-        
-        // Kullanıcı giriş yapmamışsa, credential ile giriş yapalım
-        try {
-          final userCredential = await _auth.signInWithCredential(credential);
-          debugPrint("✅ Firebase giriş başarılı: ${userCredential.user?.uid}");
-          return userCredential;
-        } catch (e) {
-          // PigeonUserDetails hatası alınırsa, firebaseAuth instance'ı sıfırlayarak tekrar deneyelim
-          if (e.toString().contains("PigeonUserDetails")) {
-            debugPrint("⚠️ PigeonUserDetails hatası tespit edildi, alternatif yöntem deneniyor");
-            
-            // Kullanıcı giriş yapmış mı tekrar kontrol edelim
-            currentUser = _auth.currentUser;
-            if (currentUser != null) {
-              debugPrint("✅ Hata sonrası kullanıcı oturumu tespit edildi: ${currentUser.uid}");
-              
-              // Özel hata fırlat
-              _throwPigeonHandledError(currentUser);
-            }
-            
-            throw Exception("Firebase Authentication hatası: PigeonUserDetails hatası sonrası kullanıcı bulunamadı");
-          }
-          
-          throw e;
-        }
-      } catch (e) {
-        debugPrint("❌ Firebase giriş hatası: $e");
-        throw Exception('Firebase giriş hatası: $e');
       }
+      
+      return userCredential;
     } catch (e) {
       debugPrint("❌ Google ile giriş yaparken genel hata: $e");
+      
+      // Google Play Services hatası için özel kontrol
+      if (e.toString().contains('SecurityException') || 
+          e.toString().contains('Unknown calling package')) {
+        debugPrint("⚠️ Google Play Services güvenlik hatası tespit edildi");
+        throw Exception('Google Play Services hatası. Lütfen cihazınızın Google Play Services güncel olduğundan emin olun.');
+      }
+      
       throw Exception('Google ile giriş yaparken bir hata oluştu: $e');
     }
   }
   
-  // Helper method: Pigeon hatası için özel bir hata fırlat
-  // Bu hata yukarıda AuthNotifier tarafından ele alınacak
-  void _throwPigeonHandledError(User user) {
-    debugPrint("🔄 Pigeon hatasını bypass ediyoruz. Kullanıcı: ${user.uid}");
-    
-    // Özel bir hata fırlat
-    throw FirebaseAuthException(
-      code: 'pigeon-error-handled',
-      message: 'Pigeon hatası nedeniyle UserCredential oluşturulamıyor, ancak kullanıcı oturumu açık: ${user.uid}'
-    );
-  }
-
-  // Kullanıcının Firestore'da olup olmadığını kontrol et
-  Future<bool> _checkIfUserExists(String uid) async {
-    try {
-      debugPrint("🔄 Firestore'da kullanıcı kontrolü: $uid");
-      final user = await _firestoreService.getUser(uid);
-      debugPrint("✅ Firestore kullanıcı kontrolü tamamlandı. Sonuç: ${user != null}");
-      return user != null;
-    } catch (e) {
-      debugPrint("❌ Firestore kullanıcı kontrolünde hata: $e");
-      return false;
-    }
-  }
-
   // Çıkış
   Future<void> signOut() async {
     try {
@@ -238,32 +192,24 @@ class AuthService {
   // Kullanıcı verilerini getir
   Future<UserModel?> getCurrentUserData() async {
     try {
-      if (currentUser != null) {
-        debugPrint("🔄 Kullanıcı verileri alınıyor: ${currentUser!.uid}");
-        try {
-          final userData = await _firestoreService.getUser(currentUser!.uid);
-          debugPrint("✅ Kullanıcı verileri alındı: ${userData?.name}");
-          return userData;
-        } catch (e) {
-          debugPrint("⚠️ Firestore'dan veri alınırken hata: $e");
-          // Hata olduysa yeni bir model oluşturalım
-          return UserModel(
-            id: currentUser!.uid,
-            email: currentUser!.email ?? '',
-            name: currentUser!.displayName ?? 'Kullanıcı',
-            photoUrl: currentUser!.photoURL,
-            skinTone: null,
-            stylePreferences: [],
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          );
-        }
+      if (currentUser == null) {
+        debugPrint("⚠️ Kullanıcı oturumu açık değil");
+        return null;
       }
-      debugPrint("ℹ️ Giriş yapmış kullanıcı bulunamadı");
-      return null;
+      
+      debugPrint("🔄 Kullanıcı verileri getiriliyor: ${currentUser!.uid}");
+      final userData = await _firestoreService.getUser(currentUser!.uid);
+      
+      if (userData != null) {
+        debugPrint("✅ Kullanıcı verileri başarıyla alındı: ${userData.name}");
+      } else {
+        debugPrint("⚠️ Kullanıcı verileri Firestore'da bulunamadı");
+      }
+      
+      return userData;
     } catch (e) {
       debugPrint("❌ Kullanıcı verileri alınırken hata: $e");
-      return null; // Hata durumunda null döndür, istemciyi çökertme
+      return null;
     }
   }
 } 

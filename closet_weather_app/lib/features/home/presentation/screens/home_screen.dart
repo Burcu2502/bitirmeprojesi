@@ -8,6 +8,8 @@ import '../../../weather/presentation/screens/weather_screen.dart';
 import '../../../wardrobe/presentation/screens/wardrobe_screen.dart';
 import '../widgets/outfit_suggestion_view.dart';
 import '../widgets/user_profile_view.dart';
+import '../../../../core/providers/firestore_providers.dart';
+import '../../../wardrobe/presentation/providers/wardrobe_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -104,6 +106,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           setState(() {
             _currentIndex = index;
           });
+          
+          // Kıyafet verilerini gösteren tab'lara geçildiğinde provider'ları yenile
+          if (index == 1 || index == 2) { // Wardrobe veya Outfit Suggestion
+            ref.invalidate(userClothingItemsProvider);
+            ref.invalidate(clothingItemsProvider);
+          }
         },
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).colorScheme.primary,

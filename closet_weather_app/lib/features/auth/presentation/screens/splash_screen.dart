@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/auth_provider.dart';
 import '../../../home/presentation/screens/home_screen.dart';
 import 'login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -50,47 +51,78 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
         setState(() {
           _isAnimationComplete = true;
         });
-        _checkAuthAndNavigate();
+        _initializeApp();
       }
     });
 
     // 3 saniye sonra bir sonraki ekrana geçiş yapacak
     Timer(const Duration(seconds: 3), () {
       if (mounted) {
-        _checkAuthAndNavigate();
+        _initializeApp();
       }
     });
   }
   
-  void _checkAuthAndNavigate() {
-    if (!_isAnimationComplete || !_isLoading) return;
-    
-    setState(() {
-      _isLoading = false;
-    });
-    
-    // Önce Firebase'ten doğrudan kontrol et (bu daha güvenilir)
-    final firebaseUser = FirebaseAuth.instance.currentUser;
-    debugPrint("🔄 SplashScreen: Firebase kullanıcı kontrolü: ${firebaseUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
-    
-    // Provider'daki durumu da kontrol et
-    final authState = ref.read(authProvider);
-    debugPrint("🔄 SplashScreen: AuthProvider kullanıcı kontrolü: ${authState.isAuthenticated ? 'Oturum açık' : 'Oturum kapalı'}");
-    
-    // Eğer Firebase'ten doğrudan kontrol edildiğinde kullanıcı varsa ama provider'da yoksa, provider'ı güncelle
-    if (firebaseUser != null && !authState.isAuthenticated) {
-      debugPrint("⚠️ SplashScreen: Firebase'de kullanıcı var ama Provider'da yok, durumu düzeltiyoruz");
-      // Provider'ı güncelleme burada manuel olarak yapılmıyor, çünkü AuthService içindeki listener bunu otomatik yapacak
+  Future<void> _initializeApp() async {
+    try {
+      // Minimum splash süresi (çok kısa)
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      // Firebase hazır mı kontrol et
+      await _waitForFirebase();
+      
+      if (mounted) {
+        _checkAuthStatus();
+      }
+    } catch (e) {
+      debugPrint("❌ Uygulama başlatma hatası: $e");
+      if (mounted) {
+        _navigateToLogin();
+      }
+    }
+  }
+
+  Future<void> _waitForFirebase() async {
+    // Firebase'in hazır olmasını bekle (maksimum 3 saniye)
+    int attempts = 0;
+    while (Firebase.apps.isEmpty && attempts < 30) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      attempts++;
     }
     
-    // Yönlendirme kararı
-    if (firebaseUser != null || authState.isAuthenticated) {
-      debugPrint("✅ SplashScreen: Kullanıcı oturumu açık, Ana Sayfaya yönlendiriliyor");
+    if (Firebase.apps.isEmpty) {
+      throw Exception("Firebase başlatılamadı");
+    }
+  }
+
+  void _checkAuthStatus() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      debugPrint("🔄 SplashScreen: Firebase kullanıcı kontrolü: ${currentUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
+      
+      if (currentUser != null) {
+        // Kullanıcı oturum açmış, ana sayfaya git
+        _navigateToHome();
+      } else {
+        // Oturum kapalı, login'e git
+        _navigateToLogin();
+      }
+    } catch (e) {
+      debugPrint("❌ Auth kontrol hatası: $e");
+      _navigateToLogin();
+    }
+  }
+
+  void _navigateToHome() {
+    if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
-    } else {
-      debugPrint("ℹ️ SplashScreen: Kullanıcı oturumu kapalı, Giriş Sayfasına yönlendiriliyor");
+    }
+  }
+
+  void _navigateToLogin() {
+    if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );

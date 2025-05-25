@@ -4,9 +4,11 @@ import '../models/clothing_item_model.dart';
 import '../models/outfit_model.dart';
 import '../models/user_model.dart';
 import 'package:flutter/foundation.dart';
+import 'connectivity_service.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ConnectivityService _connectivityService = ConnectivityService();
   
   // Koleksiyon referansları
   CollectionReference get _usersCollection => _firestore.collection('users');
@@ -50,6 +52,12 @@ class FirestoreService {
   // Kıyafet işlemleri
   Future<String> addClothingItem(ClothingItemModel item) async {
     try {
+      // İnternet bağlantısını kontrol et
+      final hasConnectivity = await _connectivityService.checkConnectivity();
+      if (!hasConnectivity) {
+        throw Exception('İnternet bağlantınız yok. Lütfen bağlantınızı kontrol edip tekrar deneyin.');
+      }
+
       // Debug log ekleyelim
       debugPrint("💾 FirestoreService - Kıyafet ekleme işlemi başladı: ${item.name}");
       
@@ -106,13 +114,20 @@ class FirestoreService {
 
   Future<List<ClothingItemModel>> getUserClothingItems(String userId) async {
     try {
+      // İnternet bağlantısını kontrol et
+      final hasConnectivity = await _connectivityService.checkConnectivity();
+      if (!hasConnectivity) {
+        debugPrint("⚠️ İnternet bağlantısı yok - Kıyafetler yüklenemedi");
+        return []; // İnternet yoksa boş liste dön
+      }
+
       final snapshot = await _clothingItemsCollection(userId).get();
-          
       return snapshot.docs
           .map((doc) => ClothingItemModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      throw Exception('Failed to get user clothing items: $e');
+      debugPrint("❌ Kıyafetler yüklenirken hata: $e");
+      return []; // Hata durumunda boş liste dön
     }
   }
 

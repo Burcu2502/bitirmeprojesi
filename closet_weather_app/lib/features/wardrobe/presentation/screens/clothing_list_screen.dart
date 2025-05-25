@@ -86,6 +86,9 @@ class _ClothingListScreenState extends ConsumerState<ClothingListScreen> {
     );
     
     if (result == true) {
+      // Provider'ı invalidate et ki yeni kıyafet listede görünsün
+      ref.invalidate(clothingItemsProvider);
+      
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('wardrobe.list.itemAdded'.tr())),

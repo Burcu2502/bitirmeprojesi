@@ -4,10 +4,12 @@ import json
 import os
 import pickle
 import random
+from datetime import datetime
 
 class OutfitRecommender:
     def __init__(self, model_path=None):
         self.model = self._create_new_model()
+        self.last_recommendations = []  # Son önerileri sakla
         
     def _create_new_model(self):
         # Basit bir model yapısı
@@ -22,56 +24,237 @@ class OutfitRecommender:
         print(f"🌡️ Hava durumu: {weather['temperature']}°C, {weather['condition']}")
         print(f"👕 Toplam kıyafet sayısı: {len(user_items)}")
         
-        # Hava durumuna göre uygun kıyafetleri filtrele
+        # Çoklu strateji ile farklı kombinler oluştur
+        strategies = [
+            self._strategy_weather_focused,
+            self._strategy_color_harmony,
+            self._strategy_style_based,
+            self._strategy_random_creative
+        ]
+        
+        # Rastgele bir strateji seç (ama son kullanılanı tekrar etme)
+        available_strategies = [s for s in strategies if s.__name__ not in [r.get('strategy') for r in self.last_recommendations[-3:]]]
+        if not available_strategies:
+            available_strategies = strategies
+            
+        selected_strategy = random.choice(available_strategies)
+        print(f"🎯 Seçilen strateji: {selected_strategy.__name__}")
+        
+        # Stratejiyi uygula
+        outfit = selected_strategy(user_items, weather)
+        
+        # Sonucu kaydet
+        self.last_recommendations.append({
+            'strategy': selected_strategy.__name__,
+            'timestamp': datetime.now().isoformat(),
+            'outfit_count': len(outfit)
+        })
+        
+        # Son 10 öneriyi sakla
+        if len(self.last_recommendations) > 10:
+            self.last_recommendations = self.last_recommendations[-10:]
+        
+        print(f"✅ Kombin oluşturuldu: {len(outfit)} parça")
+        return outfit
+    
+    def _strategy_weather_focused(self, user_items, weather):
+        """Hava durumu odaklı strateji"""
+        print("🌤️ Hava durumu odaklı strateji kullanılıyor")
+        
+        temperature = weather['temperature']
         suitable_items = self._filter_by_weather(user_items, weather)
-        print(f"🔍 Hava durumuna uygun kıyafet sayısı: {len(suitable_items)}")
         
         if not suitable_items:
-            print("⚠️ Hava durumuna uygun kıyafet bulunamadı!")
-            return []
+            suitable_items = user_items
+            
+        return self._build_basic_outfit(suitable_items, weather)
+    
+    def _strategy_color_harmony(self, user_items, weather):
+        """Renk uyumu odaklı strateji"""
+        print("🎨 Renk uyumu odaklı strateji kullanılıyor")
         
-        # Kıyafetleri kategorilerine göre ayır
+        # Önce hava durumuna uygun kıyafetleri filtrele
+        suitable_items = self._filter_by_weather(user_items, weather)
+        if not suitable_items:
+            suitable_items = user_items
+            
+        # Kategorilere ayır
         tops = [item for item in suitable_items if self._is_upper_clothing(item)]
         bottoms = [item for item in suitable_items if self._is_lower_clothing(item)]
         shoes = [item for item in suitable_items if self._is_footwear(item)]
         outerwears = [item for item in suitable_items if self._is_outerwear(item)]
         
-        print(f"👚 Üst giyim: {len(tops)}, 👖 Alt giyim: {len(bottoms)}, 👞 Ayakkabı: {len(shoes)}, 🧥 Dış giyim: {len(outerwears)}")
-        
-        # En uygun kombinasyonu bul
         outfit = []
         
-        # Üst giyim ekle
+        # Dominant rengi olan bir üst giyim seç
         if tops:
-            upper = self._select_best_item(tops, weather)
-            outfit.append(upper)
-            print(f"👚 Seçilen üst giyim: {upper['name']}")
-        
-        # Alt giyim ekle
-        if bottoms:
-            if outfit:  # Üst giyimle uyumlu alt giyim seç
-                bottom = self._select_matching_item(outfit[0], bottoms)
+            # Renkli kıyafetleri öncelikle seç
+            colorful_tops = [item for item in tops if len(item['colors']) > 0]
+            if colorful_tops:
+                base_item = random.choice(colorful_tops)
             else:
-                bottom = self._select_best_item(bottoms, weather)
-            outfit.append(bottom)
-            print(f"👖 Seçilen alt giyim: {bottom['name']}")
+                base_item = random.choice(tops)
+            outfit.append(base_item)
+            print(f"🎨 Ana renk bazı: {base_item['name']} - {base_item['colors']}")
             
-        # Dış giyim ekle (hava durumuna göre)
-        if self._needs_outerwear(weather) and outerwears:
-            outerwear = self._select_matching_item_for_outfit(outfit, outerwears)
-            outfit.append(outerwear)
-            print(f"🧥 Seçilen dış giyim: {outerwear['name']}")
-            
-        # Ayakkabı ekle
-        if shoes:
-            shoe = self._select_matching_item_for_outfit(outfit, shoes)
-            outfit.append(shoe)
-            print(f"👞 Seçilen ayakkabı: {shoe['name']}")
-            
-        print(f"✅ Kombin oluşturuldu: {len(outfit)} parça")
+            # Bu renkle uyumlu alt giyim bul
+            if bottoms:
+                matching_bottom = self._find_color_matching_item(base_item, bottoms)
+                outfit.append(matching_bottom)
+                
+            # Uyumlu ayakkabı ekle
+            if shoes:
+                matching_shoe = self._find_color_matching_item(base_item, shoes)
+                outfit.append(matching_shoe)
+                
+            # Gerekirse dış giyim ekle
+            if self._needs_outerwear(weather) and outerwears:
+                # Nötr renk dış giyim tercih et
+                neutral_outerwears = [item for item in outerwears 
+                                    if any(color.lower() in ['#000000', '#ffffff', '#808080'] 
+                                          for color in item['colors'])]
+                if neutral_outerwears:
+                    outfit.append(random.choice(neutral_outerwears))
+                else:
+                    outfit.append(random.choice(outerwears))
         
         return outfit
+    
+    def _strategy_style_based(self, user_items, weather):
+        """Stil bazlı strateji (casual, formal, sporty)"""
+        print("👔 Stil bazlı strateji kullanılıyor")
         
+        # Rastgele bir stil seç
+        styles = ['casual', 'formal', 'sporty']
+        target_style = random.choice(styles)
+        print(f"🎯 Hedef stil: {target_style}")
+        
+        # Hava durumuna uygun kıyafetleri filtrele
+        suitable_items = self._filter_by_weather(user_items, weather)
+        if not suitable_items:
+            suitable_items = user_items
+            
+        # Stile uygun kıyafetleri seç
+        style_items = self._filter_by_style(suitable_items, target_style)
+        if not style_items:
+            style_items = suitable_items
+            
+        return self._build_basic_outfit(style_items, weather)
+    
+    def _strategy_random_creative(self, user_items, weather):
+        """Yaratıcı rastgele strateji"""
+        print("🎲 Yaratıcı rastgele strateji kullanılıyor")
+        
+        # Hava durumuna uygun kıyafetleri filtrele
+        suitable_items = self._filter_by_weather(user_items, weather)
+        if not suitable_items:
+            suitable_items = user_items
+            
+        # Kategorilere ayır
+        tops = [item for item in suitable_items if self._is_upper_clothing(item)]
+        bottoms = [item for item in suitable_items if self._is_lower_clothing(item)]
+        shoes = [item for item in suitable_items if self._is_footwear(item)]
+        outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+        
+        outfit = []
+        
+        # Rastgele seçimler yap
+        if tops:
+            outfit.append(random.choice(tops))
+        if bottoms:
+            outfit.append(random.choice(bottoms))
+        if shoes:
+            outfit.append(random.choice(shoes))
+            
+        # %60 ihtimalle dış giyim ekle
+        if outerwears and (self._needs_outerwear(weather) or random.random() < 0.6):
+            outfit.append(random.choice(outerwears))
+            
+        # %30 ihtimalle aksesuar ekle (eğer varsa)
+        accessories = [item for item in suitable_items if item['type'] in ['accessory', 'hat', 'scarf']]
+        if accessories and random.random() < 0.3:
+            outfit.append(random.choice(accessories))
+        
+        return outfit
+    
+    def _filter_by_style(self, items, target_style):
+        """Stile göre kıyafetleri filtrele"""
+        style_mapping = {
+            'casual': ['tShirt', 'jeans', 'shorts', 'shoes'],
+            'formal': ['shirt', 'blouse', 'pants', 'skirt', 'dress', 'shoes'],
+            'sporty': ['tShirt', 'shorts', 'shoes', 'jacket']
+        }
+        
+        suitable_types = style_mapping.get(target_style, [])
+        return [item for item in items if item['type'] in suitable_types]
+    
+    def _find_color_matching_item(self, reference_item, candidates):
+        """Renk uyumlu kıyafet bul (geliştirilmiş)"""
+        if not candidates:
+            return None
+            
+        ref_colors = reference_item['colors']
+        scored_items = []
+        
+        for item in candidates:
+            score = self._calculate_advanced_color_match(ref_colors, item['colors'])
+            scored_items.append((item, score))
+        
+        # En iyi 3'ü arasından rastgele seç
+        scored_items.sort(key=lambda x: x[1], reverse=True)
+        top_candidates = scored_items[:min(3, len(scored_items))]
+        
+        return random.choice([item for item, _ in top_candidates])
+    
+    def _calculate_advanced_color_match(self, colors1, colors2):
+        """Gelişmiş renk uyumu hesaplama"""
+        if not colors1 or not colors2:
+            return random.random()  # Rastgele skor ver
+            
+        match_score = 0
+        
+        for c1 in colors1:
+            for c2 in colors2:
+                # Aynı renk
+                if c1.lower() == c2.lower():
+                    match_score += 5
+                    continue
+                
+                # Nötr renkler (siyah, beyaz, gri) her şeyle uyumlu
+                neutral_colors = ['#000000', '#ffffff', '#808080', '#c0c0c0']
+                if c1.lower() in neutral_colors or c2.lower() in neutral_colors:
+                    match_score += 3
+                
+                # Komplementer renkler (basit kontrol)
+                if self._are_complementary_colors(c1, c2):
+                    match_score += 4
+                
+                # Analog renkler
+                if self._are_analogous_colors(c1, c2):
+                    match_score += 2
+        
+        # Normalize et ve rastgelelik ekle
+        normalized_score = match_score / (len(colors1) * len(colors2)) if colors1 and colors2 else 0
+        return normalized_score + random.uniform(-0.1, 0.1)  # Küçük rastgelelik
+    
+    def _are_complementary_colors(self, color1, color2):
+        """Basit komplementer renk kontrolü"""
+        # Basitleştirilmiş komplementer renk çiftleri
+        complementary_pairs = [
+            ('#ff0000', '#00ff00'),  # Kırmızı-Yeşil
+            ('#0000ff', '#ffff00'),  # Mavi-Sarı
+            ('#ff00ff', '#00ffff'),  # Magenta-Cyan
+        ]
+        
+        c1, c2 = color1.lower(), color2.lower()
+        return any((c1, c2) == pair or (c2, c1) == pair for pair in complementary_pairs)
+    
+    def _are_analogous_colors(self, color1, color2):
+        """Basit analog renk kontrolü"""
+        # Bu gerçek uygulamada HSV renk uzayında hesaplanmalı
+        # Şimdilik basit bir yaklaşım
+        return random.random() < 0.3  # %30 ihtimalle analog kabul et
+    
     def _filter_by_weather(self, items, weather):
         temperature = weather['temperature']
         condition = weather['condition']
@@ -94,6 +277,7 @@ class OutfitRecommender:
         
     def _select_best_item(self, items, weather):
         # Kıyafeti hava durumuna göre seç (temel)
+        temperature = weather['temperature']
         
         # Kıyafetleri puanla
         scored_items = []
@@ -220,3 +404,44 @@ class OutfitRecommender:
         
         # Soğuk hava veya yağmurlu/karlı hava
         return temperature < 15 or any(c in condition.lower() for c in ['rain', 'snow', 'yağmur', 'kar']) 
+    
+    def _build_basic_outfit(self, suitable_items, weather):
+        """Temel kombin oluşturma algoritması"""
+        # Kategorilere ayır
+        tops = [item for item in suitable_items if self._is_upper_clothing(item)]
+        bottoms = [item for item in suitable_items if self._is_lower_clothing(item)]
+        shoes = [item for item in suitable_items if self._is_footwear(item)]
+        outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+        
+        print(f"👚 Üst giyim: {len(tops)}, 👖 Alt giyim: {len(bottoms)}, 👞 Ayakkabı: {len(shoes)}, 🧥 Dış giyim: {len(outerwears)}")
+        
+        outfit = []
+        
+        # Üst giyim ekle
+        if tops:
+            upper = self._select_best_item(tops, weather)
+            outfit.append(upper)
+            print(f"👚 Seçilen üst giyim: {upper['name']}")
+        
+        # Alt giyim ekle
+        if bottoms:
+            if outfit:  # Üst giyimle uyumlu alt giyim seç
+                bottom = self._select_matching_item(outfit[0], bottoms)
+            else:
+                bottom = self._select_best_item(bottoms, weather)
+            outfit.append(bottom)
+            print(f"👖 Seçilen alt giyim: {bottom['name']}")
+            
+        # Dış giyim ekle (hava durumuna göre)
+        if self._needs_outerwear(weather) and outerwears:
+            outerwear = self._select_matching_item_for_outfit(outfit, outerwears)
+            outfit.append(outerwear)
+            print(f"🧥 Seçilen dış giyim: {outerwear['name']}")
+            
+        # Ayakkabı ekle
+        if shoes:
+            shoe = self._select_matching_item_for_outfit(outfit, shoes)
+            outfit.append(shoe)
+            print(f"👞 Seçilen ayakkabı: {shoe['name']}")
+        
+        return outfit 

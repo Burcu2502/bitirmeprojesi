@@ -52,6 +52,36 @@ class ClothingItemModel {
     );
   }
 
+  // ML API'den gelen JSON formatı için özel metod
+  factory ClothingItemModel.fromApiJson(Map<String, dynamic> json) {
+    return ClothingItemModel(
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      name: json['name'] ?? '',
+      type: ClothingType.values.firstWhere(
+        (type) => type.toString() == 'ClothingType.${json['type']}',
+        orElse: () => ClothingType.other,
+      ),
+      colors: List<String>.from(json['colors'] ?? []),
+      seasons: (json['seasons'] as List? ?? [])
+          .map((season) => Season.values.firstWhere(
+                (s) => s.toString() == 'Season.${season}',
+                orElse: () => Season.all,
+              ))
+          .toList(),
+      material: json['material'],
+      brand: json['brand'], // null olabilir
+      imageUrl: json['imageUrl'],
+      metadata: null,
+      createdAt: json['createdAt'] != null 
+          ? DateTime.parse(json['createdAt']) 
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null 
+          ? DateTime.parse(json['updatedAt']) 
+          : DateTime.now(),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

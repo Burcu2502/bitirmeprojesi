@@ -58,5 +58,5 @@ def recommend_outfit():
 
 if __name__ == '__main__':
     print("🚀 Kıyafet Öneri API'si başlatılıyor...")
-    print("📂 Veri klasörü:", DATA_DIR)
-    app.run(debug=True, host='0.0.0.0', port=3000) 
+    print(f"📂 Veri klasörü: {DATA_DIR}")
+    app.run(debug=True, host='0.0.0.0', port=5000) 

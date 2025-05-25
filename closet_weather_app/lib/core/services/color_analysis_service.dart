@@ -1,56 +1,60 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class ColorAnalysisService {
   /// Bir görseldeki baskın renkleri çıkarır
-  Future<List<Color>> extractDominantColors(Uint8List imageBytes, {int maxColors = 5}) async {
+  Future<List<Color>> extractDominantColors(Uint8List imageBytes, {int maxColors = 3}) async {
     try {
-      final paletteGenerator = await PaletteGenerator.fromImageProvider(
-        MemoryImage(imageBytes),
+      // Resmi küçük boyutta decode et (performans için)
+      final codec = await ui.instantiateImageCodec(
+        imageBytes,
+        targetWidth: 150, // Daha küçük boyut
+        targetHeight: 150,
+      );
+      final frame = await codec.getNextFrame();
+      final image = frame.image;
+
+      // Palette generator'ı çalıştır
+      final paletteGenerator = await PaletteGenerator.fromImage(
+        image,
         maximumColorCount: maxColors,
       );
 
-      final List<Color> colors = [];
+      final colors = <Color>[];
       
+      // Dominant rengi ekle
       if (paletteGenerator.dominantColor != null) {
         colors.add(paletteGenerator.dominantColor!.color);
       }
       
-      for (var swatch in paletteGenerator.paletteColors) {
-        // Önceki renklerle benzer olmasın
-        if (!_isColorSimilar(swatch.color, colors)) {
-          colors.add(swatch.color);
-        }
-        
+      // Diğer renkleri ekle
+      for (final paletteColor in paletteGenerator.colors) {
         if (colors.length >= maxColors) break;
+        if (!colors.any((c) => _colorsAreSimilar(c, paletteColor))) {
+          colors.add(paletteColor);
+        }
       }
+
+      // Memory temizliği
+      image.dispose();
       
       return colors;
     } catch (e) {
-      return [Colors.grey]; // Hata durumunda gri döndür
+      debugPrint('❌ Renk analizi hatası: $e');
+      return [];
     }
   }
   
   /// İki rengin ne kadar benzer olduğunu kontrol eder
-  bool _isColorSimilar(Color newColor, List<Color> existingColors, {double threshold = 50.0}) {
-    for (var color in existingColors) {
-      final double distance = _calculateColorDistance(newColor, color);
-      if (distance < threshold) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  /// İki renk arasındaki mesafeyi hesaplar (Euclidean distance)
-  double _calculateColorDistance(Color c1, Color c2) {
-    final double rDiff = (c1.red - c2.red).abs().toDouble();
-    final double gDiff = (c1.green - c2.green).abs().toDouble();
-    final double bDiff = (c1.blue - c2.blue).abs().toDouble();
+  bool _colorsAreSimilar(Color color1, Color color2, {double threshold = 50.0}) {
+    final rDiff = (color1.red - color2.red).abs();
+    final gDiff = (color1.green - color2.green).abs();
+    final bDiff = (color1.blue - color2.blue).abs();
     
-    return (rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+    return (rDiff + gDiff + bDiff) < threshold;
   }
   
   /// Renk uyumu için öneriler sunar (Tamamlayıcı, Üçlü uyum, vb.)

@@ -11,13 +11,13 @@ class MLRecommendationService {
   // Aşağıdaki URL'lerden birini kullanabilirsiniz (yorumları kaldırın):
   
   // Android Emülatör için (localhost referansı):
-  final String apiUrl = 'http://10.0.2.2:3000/api/recommend';
+  // final String apiUrl = 'http://10.0.2.2:3000/api/recommend';
   
   // iOS Simulator için:
   // final String apiUrl = 'http://localhost:3000/api/recommend';
   
   // Fiziksel cihaz için (bilgisayarın gerçek IP adresi):
-  // final String apiUrl = 'http://192.168.1.X:3000/api/recommend';
+  final String apiUrl = 'http://172.20.10.2:3000/api/recommend';
   
   /// Hava durumuna göre kıyafet kombinasyonu önerileri al
   Future<List<ClothingItemModel>> getOutfitRecommendation(
@@ -55,7 +55,7 @@ class MLRecommendationService {
         final List<dynamic> data = jsonDecode(response.body);
         debugPrint('📦 API ${data.length} kıyafet önerdi');
         
-        final items = data.map((item) => ClothingItemModel.fromJson(item)).toList();
+        final items = data.map((item) => ClothingItemModel.fromApiJson(item)).toList();
         debugPrint('✅ Kıyafet önerileri başarıyla alındı');
         return items;
       } else {

@@ -49,5 +49,9 @@
 	<string>Bu uygulama, yerel hava durumu bilgilerini göstermek için konumunuza ihtiyaç duyar.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Bu uygulama, yerel hava durumu bilgilerini güncel tutmak için konumunuza ihtiyaç duyar.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Bu uygulama, kıyafet fotoğrafları çekmek için kameraya erişim gerektirir.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Bu uygulama, kıyafet fotoğraflarını seçmek için galerinize erişim gerektirir.</string>
 </dict>
 </plist>

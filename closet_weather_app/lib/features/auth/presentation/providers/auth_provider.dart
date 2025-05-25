@@ -129,58 +129,24 @@ class AuthNotifier extends StateNotifier<AuthState> {
     
     try {
       await _authService.signInWithGoogle();
-      debugPrint('✅ Google ile giriş başarılı, auth state listener dinleniyor');
+      debugPrint('✅ Google ile giriş başarılı');
       // Auth state listener otomatik olarak state'i güncelleyecek
     } catch (e) {
       debugPrint('❌ Google ile giriş hatası: $e');
       
-      // Özel hata kodumuzu kontrol et
-      if (e.toString().contains('pigeon-error-handled')) {
-        debugPrint('ℹ️ Pigeon hatası ele alındı, kullanıcı oturumu devam ediyor');
-        
-        // Otomatik olarak güncel kullanıcıyı al
-        final currentUser = _authService.currentUser;
-        if (currentUser != null) {
-          debugPrint('✅ Mevcut Firebase kullanıcısı bulundu: ${currentUser.uid}');
-          state = state.copyWith(
-            user: currentUser,
-            isLoading: false,
-            errorMessage: null,
-          );
-          
-          // Firestore verilerini arka planda almaya çalış (opsiyonel)
-          _loadUserDataInBackground(currentUser.uid);
-          return;
-        } else {
-          debugPrint('⚠️ Pigeon hatası ele alındı, fakat mevcut kullanıcı yok');
-        }
+      // Google Play Services hatası için özel mesaj
+      if (e.toString().contains('Google Play Services') || 
+          e.toString().contains('SecurityException')) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Google Play Services hatası. Lütfen cihazınızı güncelleyin.',
+        );
+      } else {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Google ile giriş yapılamadı. Lütfen tekrar deneyin.',
+        );
       }
-      
-      // PigeonUserDetails hatasını özel olarak ele al
-      if (e.toString().contains('PigeonUserDetails')) {
-        debugPrint('⚠️ PigeonUserDetails hatası tespit edildi, mevcut durumu kontrol ediyoruz');
-        
-        // Aktif kullanıcı var mı kontrol et
-        final currentUser = _authService.currentUser;
-        if (currentUser != null) {
-          debugPrint('✅ PigeonUserDetails hatası ele alındı, kullanıcı oturumu mevcut: ${currentUser.uid}');
-          state = state.copyWith(
-            user: currentUser,
-            isLoading: false,
-            errorMessage: null,
-          );
-          
-          // Firestore verilerini arka planda almaya çalış (opsiyonel)
-          _loadUserDataInBackground(currentUser.uid);
-          return;
-        }
-      }
-      
-      // Diğer hatalar için normal akış devam eder
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: 'Google ile giriş yapılamadı. Lütfen tekrar deneyin.',
-      );
     }
   }
 
