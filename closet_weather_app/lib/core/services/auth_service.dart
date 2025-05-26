@@ -111,25 +111,25 @@ class AuthService {
       // Firebase ile giriş yap
       final userCredential = await _auth.signInWithCredential(credential);
       debugPrint("✅ Firebase giriş başarılı: ${userCredential.user?.uid}");
-      
+          
       // Kullanıcı verilerini Firestore'da kontrol et ve oluştur
       if (userCredential.user != null) {
         final userData = await _firestoreService.getUser(userCredential.user!.uid);
-        
-        if (userData == null) {
-          // Kullanıcı Firestore'da yoksa oluştur
-          final newUser = UserModel(
-            id: userCredential.user!.uid,
-            email: googleUser.email,
-            name: googleUser.displayName ?? 'Google Kullanıcısı',
-            photoUrl: googleUser.photoUrl,
-            skinTone: null,
-            stylePreferences: [],
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          );
           
-          await _firestoreService.createUser(newUser);
+          if (userData == null) {
+            // Kullanıcı Firestore'da yoksa oluştur
+            final newUser = UserModel(
+            id: userCredential.user!.uid,
+              email: googleUser.email,
+              name: googleUser.displayName ?? 'Google Kullanıcısı',
+              photoUrl: googleUser.photoUrl,
+              skinTone: null,
+              stylePreferences: [],
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            );
+            
+            await _firestoreService.createUser(newUser);
           debugPrint("✅ Yeni kullanıcı Firestore'da oluşturuldu");
         }
       }
@@ -148,7 +148,7 @@ class AuthService {
       throw Exception('Google ile giriş yaparken bir hata oluştu: $e');
     }
   }
-  
+
   // Çıkış
   Future<void> signOut() async {
     try {
@@ -198,7 +198,7 @@ class AuthService {
       }
       
       debugPrint("🔄 Kullanıcı verileri getiriliyor: ${currentUser!.uid}");
-      final userData = await _firestoreService.getUser(currentUser!.uid);
+          final userData = await _firestoreService.getUser(currentUser!.uid);
       
       if (userData != null) {
         debugPrint("✅ Kullanıcı verileri başarıyla alındı: ${userData.name}");

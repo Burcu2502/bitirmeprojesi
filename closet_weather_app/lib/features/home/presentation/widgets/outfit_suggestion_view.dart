@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,7 +10,6 @@ import '../../../../core/services/outfit_recommendation_service.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../weather/presentation/providers/weather_provider.dart';
 import '../../../../core/providers/firestore_providers.dart';
-import 'dart:io';
 import '../../../../core/services/ml_recommendation_service.dart';
 
 // Kombin önerisi modeli
@@ -160,11 +161,11 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'weather.todayWeather'.tr(),
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                      'weather.todayWeather'.tr(),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
                             ),
-                      ),
+                          ),
                     ),
                   ],
                 ),
@@ -350,50 +351,50 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Column(
-          children: [
-            Container(
+      child: Column(
+        children: [
+          Container(
               width: 90,
               height: 90,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceVariant,
-                borderRadius: BorderRadius.circular(12),
-                image: imageUrl != null && imageUrl.isNotEmpty
-                    ? DecorationImage(
-                        image: _getImageProvider(imageUrl),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-              ),
-              child: imageUrl == null || imageUrl.isEmpty
-                  ? Icon(
-                      icon,
-                      size: 36,
-                      color: Theme.of(context).colorScheme.primary,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              borderRadius: BorderRadius.circular(12),
+              image: imageUrl != null && imageUrl.isNotEmpty
+                  ? DecorationImage(
+                      image: _getImageProvider(imageUrl),
+                      fit: BoxFit.cover,
                     )
                   : null,
             ),
-            const SizedBox(height: 8),
-            Text(
+            child: imageUrl == null || imageUrl.isEmpty
+                ? Icon(
+                    icon,
+                      size: 36,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                : null,
+          ),
+          const SizedBox(height: 8),
+          Text(
               label,
               style: const TextStyle(
                 fontSize: 13, 
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
-            ),
+          ),
             const SizedBox(height: 4),
-            Text(
-              description,
+          Text(
+            description,
               style: TextStyle(
                 fontSize: 11,
                 color: Colors.grey[600],
               ),
-              textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
               maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
         ),
       ),
     );
@@ -501,12 +502,12 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                   ],
                 ),
               );
-            }
+          }
             
             final suggestions = snapshot.data ?? [];
-            
-            if (suggestions.isEmpty) {
-              return Center(
+        
+        if (suggestions.isEmpty) {
+          return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -538,9 +539,9 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: suggestions.length,
-              itemBuilder: (context, index) {
-                final suggestion = suggestions[index];
+          itemCount: suggestions.length,
+          itemBuilder: (context, index) {
+            final suggestion = suggestions[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: _buildOutfitSuggestionCard(context, suggestion, index),
@@ -573,9 +574,9 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         ),
       ),
       error: (error, stack) => Center(
-        child: Column(
+              child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+                children: [
             Icon(
               Icons.error_outline,
               size: 64,
@@ -697,43 +698,43 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     final outfit = <ClothingItemModel>[];
     final temp = weather.temperature;
     
-    // Sıcaklığa göre üst giyim seç
+    // Sıcaklığa göre üst giyim seç - EN UYGUN OLANI SEÇ
     if (uppers.isNotEmpty) {
       if (temp > 25) {
         // Sıcak hava - hafif kıyafetler tercih et
         final lightUppers = uppers.where((item) => 
           item.type == ClothingType.tShirt || item.type == ClothingType.blouse).toList();
-        outfit.add(lightUppers.isNotEmpty ? lightUppers.first : uppers.first);
+        outfit.add(lightUppers.isNotEmpty ? _selectBestForWeather(lightUppers, temp) : _selectBestForWeather(uppers, temp));
       } else if (temp < 15) {
         // Soğuk hava - kalın kıyafetler tercih et
         final warmUppers = uppers.where((item) => 
           item.type == ClothingType.sweater).toList();
-        outfit.add(warmUppers.isNotEmpty ? warmUppers.first : uppers.first);
+        outfit.add(warmUppers.isNotEmpty ? _selectBestForWeather(warmUppers, temp) : _selectBestForWeather(uppers, temp));
       } else {
-        // Orta sıcaklık
-        outfit.add(uppers.first);
+        // Orta sıcaklık - en uygun olanı seç
+        outfit.add(_selectBestForWeather(uppers, temp));
       }
     }
     
-    // Alt giyim ekle
+    // Alt giyim ekle - EN UYGUN OLANI SEÇ
     if (lowers.isNotEmpty) {
       if (temp > 25) {
         // Sıcak hava - şort tercih et
         final shorts = lowers.where((item) => item.type == ClothingType.shorts).toList();
-        outfit.add(shorts.isNotEmpty ? shorts.first : lowers.first);
+        outfit.add(shorts.isNotEmpty ? _selectBestForWeather(shorts, temp) : _selectBestForWeather(lowers, temp));
       } else {
-        outfit.add(lowers.first);
+        outfit.add(_selectBestForWeather(lowers, temp));
       }
     }
     
-    // Ayakkabı ekle
+    // Ayakkabı ekle - EN UYGUN OLANI SEÇ
     if (shoes.isNotEmpty) {
-      outfit.add(shoes.first);
+      outfit.add(_selectBestForWeather(shoes, temp));
     }
     
-    // Soğuk havada dış giyim ekle
+    // Soğuk havada dış giyim ekle - EN UYGUN OLANI SEÇ
     if (temp < 15 && outerwear.isNotEmpty) {
-      outfit.add(outerwear.first);
+      outfit.add(_selectBestForWeather(outerwear, temp));
     }
     
     return outfit;
@@ -749,23 +750,33 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     final outfit = <ClothingItemModel>[];
     
     if (uppers.isNotEmpty && lowers.isNotEmpty) {
-      final baseItem = uppers.first;
+      // Renkli bir üst giyim seç (nötr olmayan)
+      final colorfulUppers = uppers.where((item) => 
+        item.colors.isNotEmpty && !_isNeutralColor(item.colors.first)).toList();
+      final baseItem = colorfulUppers.isNotEmpty ? 
+        _selectRandomFromList(colorfulUppers) : _selectRandomFromList(uppers);
       outfit.add(baseItem);
       
-      // Renk uyumlu alt giyim bul
-      ClothingItemModel? matchingLower;
-      for (final lower in lowers) {
-        if (_areColorsCompatible(baseItem.colors, lower.colors)) {
-          matchingLower = lower;
-          break;
-        }
+      // Renk uyumlu alt giyim bul - EN UYGUN OLANI SEÇ
+      final compatibleLowers = lowers.where((lower) => 
+        _areColorsCompatible(baseItem.colors, lower.colors)).toList();
+      
+      if (compatibleLowers.isNotEmpty) {
+        outfit.add(_selectRandomFromList(compatibleLowers));
+      } else {
+        // Uyumlu bulamazsa nötr renk alt giyim seç
+        final neutralLowers = lowers.where((lower) => 
+          lower.colors.any((color) => _isNeutralColor(color))).toList();
+        outfit.add(neutralLowers.isNotEmpty ? 
+          _selectRandomFromList(neutralLowers) : _selectRandomFromList(lowers));
       }
       
-      outfit.add(matchingLower ?? lowers.first);
-      
-      // Ayakkabı ekle
+      // Uyumlu ayakkabı ekle
       if (shoes.isNotEmpty) {
-        outfit.add(shoes.first);
+        final compatibleShoes = shoes.where((shoe) => 
+          _areColorsCompatible(baseItem.colors, shoe.colors)).toList();
+        outfit.add(compatibleShoes.isNotEmpty ? 
+          _selectRandomFromList(compatibleShoes) : _selectRandomFromList(shoes));
       }
     }
     
@@ -787,12 +798,14 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         if (uppers.isNotEmpty) {
           final casualUppers = uppers.where((item) => 
             item.type == ClothingType.tShirt).toList();
-          outfit.add(casualUppers.isNotEmpty ? casualUppers.first : uppers.first);
+          outfit.add(casualUppers.isNotEmpty ? 
+            _selectRandomFromList(casualUppers) : _selectRandomFromList(uppers));
         }
         if (lowers.isNotEmpty) {
           final casualLowers = lowers.where((item) => 
             item.type == ClothingType.jeans).toList();
-          outfit.add(casualLowers.isNotEmpty ? casualLowers.first : lowers.first);
+          outfit.add(casualLowers.isNotEmpty ? 
+            _selectRandomFromList(casualLowers) : _selectRandomFromList(lowers));
         }
         break;
         
@@ -800,29 +813,32 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         if (uppers.isNotEmpty) {
           final formalUppers = uppers.where((item) => 
             item.type == ClothingType.shirt || item.type == ClothingType.blouse).toList();
-          outfit.add(formalUppers.isNotEmpty ? formalUppers.first : uppers.first);
+          outfit.add(formalUppers.isNotEmpty ? 
+            _selectRandomFromList(formalUppers) : _selectRandomFromList(uppers));
         }
         if (lowers.isNotEmpty) {
           final formalLowers = lowers.where((item) => 
             item.type == ClothingType.pants).toList();
-          outfit.add(formalLowers.isNotEmpty ? formalLowers.first : lowers.first);
+          outfit.add(formalLowers.isNotEmpty ? 
+            _selectRandomFromList(formalLowers) : _selectRandomFromList(lowers));
         }
         break;
         
       case 2: // Sporty stil
         if (uppers.isNotEmpty) {
-          outfit.add(uppers.first);
+          outfit.add(_selectRandomFromList(uppers));
         }
         if (lowers.isNotEmpty) {
           final sportyLowers = lowers.where((item) => 
             item.type == ClothingType.shorts).toList();
-          outfit.add(sportyLowers.isNotEmpty ? sportyLowers.first : lowers.first);
+          outfit.add(sportyLowers.isNotEmpty ? 
+            _selectRandomFromList(sportyLowers) : _selectRandomFromList(lowers));
         }
         break;
     }
     
     if (shoes.isNotEmpty) {
-      outfit.add(shoes.first);
+      outfit.add(_selectRandomFromList(shoes));
     }
     
     return outfit;
@@ -856,6 +872,56 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     }
     
     return outfit;
+  }
+
+  // Hava durumuna göre en uygun kıyafeti seç
+  ClothingItemModel _selectBestForWeather(List<ClothingItemModel> items, double temperature) {
+    if (items.isEmpty) throw Exception('Kıyafet listesi boş');
+    
+    // Sıcaklığa göre puanlama
+    final scoredItems = items.map((item) {
+      double score = 0;
+      
+      // Mevsim uyumluluğu
+      if (temperature < 10) {
+        if (item.seasons.contains(Season.winter)) score += 3;
+        if (item.seasons.contains(Season.fall)) score += 2;
+      } else if (temperature < 20) {
+        if (item.seasons.contains(Season.spring)) score += 3;
+        if (item.seasons.contains(Season.fall)) score += 2;
+      } else {
+        if (item.seasons.contains(Season.summer)) score += 3;
+        if (item.seasons.contains(Season.spring)) score += 2;
+      }
+      
+      // Tüm sezon kıyafetleri her zaman uygun
+      if (item.seasons.contains(Season.all)) score += 1;
+      
+      // Rastgelelik ekle (aynı puanlı kıyafetler arasında çeşitlilik için)
+      score += (DateTime.now().millisecondsSinceEpoch % 100) / 100.0;
+      
+      return MapEntry(item, score);
+    }).toList();
+    
+    // En yüksek puanlı kıyafeti seç
+    scoredItems.sort((a, b) => b.value.compareTo(a.value));
+    return scoredItems.first.key;
+  }
+
+  // Listeden rastgele seçim yap
+  ClothingItemModel _selectRandomFromList(List<ClothingItemModel> items) {
+    if (items.isEmpty) throw Exception('Kıyafet listesi boş');
+    final random = Random(DateTime.now().millisecondsSinceEpoch);
+    return items[random.nextInt(items.length)];
+  }
+
+  // Nötr renk kontrolü
+  bool _isNeutralColor(String color) {
+    final neutralColors = [
+      '#000000', '#ffffff', '#808080', '#c0c0c0', '#f5f5f5', '#e0e0e0',
+      'black', 'white', 'gray', 'grey', 'beige', 'cream'
+    ];
+    return neutralColors.contains(color.toLowerCase());
   }
 
   // Renk uyumluluğunu kontrol et
@@ -897,10 +963,10 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           child: Row(
             children: [
               // Kombin önizlemesi - Sol taraf
-              Container(
+                  Container(
                 width: 120,
-                height: 120,
-                decoration: BoxDecoration(
+                    height: 120,
+                    decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceVariant,
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -981,21 +1047,21 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             image: item.imageUrl?.isNotEmpty == true
-                ? DecorationImage(
+                          ? DecorationImage(
                     image: _getImageProvider(item.imageUrl!),
-                    fit: BoxFit.cover,
-                  )
-                : null,
-          ),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
           child: item.imageUrl?.isEmpty != false
-              ? Center(
-                  child: Icon(
+                        ? Center(
+                            child: Icon(
                     _getClothingIcon(item.type),
                     size: 24,
                     color: Colors.grey[600],
-                  ),
-                )
-              : null,
+                            ),
+                          )
+                        : null,
         );
       },
     );
@@ -1016,9 +1082,9 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         builder: (context, scrollController) {
           return Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                 // Handle
                 Center(
                   child: Container(
@@ -1034,16 +1100,16 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                 const SizedBox(height: 20),
                 
                 // Başlık
-                Text(
+                        Text(
                   suggestion.title,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 
                 const SizedBox(height: 8),
                 
-                Text(
+                        Text(
                   suggestion.description,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[600],
@@ -1077,18 +1143,18 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                             child: item.imageUrl?.isEmpty != false
                                 ? Icon(_getClothingIcon(item.type))
                                 : null,
-                          ),
+                    ),
                           title: Text(item.name),
                           subtitle: Text(_getClothingTypeName(item.type)),
-                        ),
-                      );
-                    },
+              ),
+            );
+          },
                   ),
                 ),
               ],
             ),
-          );
-        },
+        );
+      },
       ),
     );
   }
@@ -1129,7 +1195,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   bool _isOuterwear(ClothingType type) {
     return type == ClothingType.jacket ||
            type == ClothingType.coat;
-  }
+    }
 
   // Kıyafet tipine göre ikon döndür
   IconData _getClothingIcon(ClothingType type) {

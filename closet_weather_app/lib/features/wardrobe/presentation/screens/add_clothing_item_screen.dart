@@ -131,31 +131,31 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
         }
       }
 
-      setState(() {
-        _detectedColors.clear();
+    setState(() {
+      _detectedColors.clear();
         _isLoading = true;
-      });
-
+    });
+    
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.camera,
         preferredCameraDevice: CameraDevice.rear,
         imageQuality: 80,
       );
-
-      if (pickedFile != null) {
+    
+    if (pickedFile != null) {
         // Önceki resmi temizle
         await _imageFile?.delete();
         
         if (mounted) {
-          setState(() {
-            _imageFile = File(pickedFile.path);
+      setState(() {
+        _imageFile = File(pickedFile.path);
             _isLoading = false;
             _isAnalyzingColors = true;
-          });
+      });
         }
-
-        // Renk analizi yap
-        await _analyzeImageColors();
+      
+      // Renk analizi yap
+      await _analyzeImageColors();
         
         if (mounted) {
           setState(() {
@@ -303,39 +303,39 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
         children: [
           // Ana içerik
           SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Resim seçme alanı
-                  Center(
-                    child: GestureDetector(
-                      onTap: _pickImage,
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12),
-                          image: _imageFile != null
-                              ? DecorationImage(
-                                  image: FileImage(_imageFile!),
-                                  fit: BoxFit.cover,
-                                )
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Resim seçme alanı
+                    Center(
+                      child: GestureDetector(
+                        onTap: _pickImage,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                            image: _imageFile != null
+                                ? DecorationImage(
+                                    image: FileImage(_imageFile!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
+                          ),
+                          child: _imageFile == null
+                              ? const Icon(Icons.add_a_photo, size: 50, color: Colors.grey)
                               : null,
                         ),
-                        child: _imageFile == null
-                            ? const Icon(Icons.add_a_photo, size: 50, color: Colors.grey)
-                            : null,
                       ),
                     ),
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Resim seçme butonları
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Resim seçme butonları
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
@@ -371,140 +371,140 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
                         ),
                       ],
                     ),
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Algılanan renkler
-                  if (_detectedColors.isNotEmpty) ...[
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Algılanan renkler
+                    if (_detectedColors.isNotEmpty) ...[
+                      Text(
+                        'wardrobe.clothingDetails.detectedColors'.tr(),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: _detectedColors.map((color) {
+                          return Container(
+                            width: 50,
+                            height: 50,
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: color,
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    
+                    // Kıyafet bilgileri
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.clothingName'.tr(),
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'wardrobe.clothingDetails.pleaseEnterName'.tr();
+                        }
+                        return null;
+                      },
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Kıyafet tipi seçimi
+                    DropdownButtonFormField<ClothingType>(
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.clothingType'.tr(),
+                        border: const OutlineInputBorder(),
+                      ),
+                      value: _selectedType,
+                      items: ClothingType.values.map((type) {
+                        return DropdownMenuItem<ClothingType>(
+                          value: type,
+                          child: Text(_getClothingTypeName(type)),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            _selectedType = value;
+                          });
+                        }
+                      },
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Mevsim seçimi
                     Text(
-                      'wardrobe.clothingDetails.detectedColors'.tr(),
+                      'wardrobe.clothingDetails.seasons'.tr(),
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _detectedColors.map((color) {
-                        return Container(
-                          width: 50,
-                          height: 50,
-                          margin: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: color,
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(color: Colors.grey),
-                          ),
+                    Wrap(
+                      spacing: 8.0,
+                      children: Season.values.map((season) {
+                        final isSelected = _selectedSeasons.contains(season);
+                        return FilterChip(
+                          label: Text(_getSeasonName(season)),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() {
+                              if (selected) {
+                                _selectedSeasons.add(season);
+                              } else {
+                                _selectedSeasons.remove(season);
+                              }
+                            });
+                          },
                         );
                       }).toList(),
                     ),
+                    
                     const SizedBox(height: 16),
-                  ],
-                  
-                  // Kıyafet bilgileri
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: 'wardrobe.clothingDetails.clothingName'.tr(),
-                      border: const OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'wardrobe.clothingDetails.pleaseEnterName'.tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Kıyafet tipi seçimi
-                  DropdownButtonFormField<ClothingType>(
-                    decoration: InputDecoration(
-                      labelText: 'wardrobe.clothingDetails.clothingType'.tr(),
-                      border: const OutlineInputBorder(),
-                    ),
-                    value: _selectedType,
-                    items: ClothingType.values.map((type) {
-                      return DropdownMenuItem<ClothingType>(
-                        value: type,
-                        child: Text(_getClothingTypeName(type)),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedType = value;
-                        });
-                      }
-                    },
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Mevsim seçimi
-                  Text(
-                    'wardrobe.clothingDetails.seasons'.tr(),
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  Wrap(
-                    spacing: 8.0,
-                    children: Season.values.map((season) {
-                      final isSelected = _selectedSeasons.contains(season);
-                      return FilterChip(
-                        label: Text(_getSeasonName(season)),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() {
-                            if (selected) {
-                              _selectedSeasons.add(season);
-                            } else {
-                              _selectedSeasons.remove(season);
-                            }
-                          });
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Marka (opsiyonel)
-                  TextFormField(
-                    controller: _brandController,
-                    decoration: InputDecoration(
-                      labelText: 'wardrobe.clothingDetails.brand'.tr(),
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Materyal (opsiyonel)
-                  TextFormField(
-                    controller: _materialController,
-                    decoration: InputDecoration(
-                      labelText: 'wardrobe.clothingDetails.material'.tr(),
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  
-                  // Kaydet butonu
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: _saveClothingItem,
-                      child: Text(
-                        'wardrobe.clothingDetails.saveClothing'.tr(),
-                        style: const TextStyle(fontSize: 16),
+                    
+                    // Marka (opsiyonel)
+                    TextFormField(
+                      controller: _brandController,
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.brand'.tr(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
-                  ),
-                ],
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Materyal (opsiyonel)
+                    TextFormField(
+                      controller: _materialController,
+                      decoration: InputDecoration(
+                        labelText: 'wardrobe.clothingDetails.material'.tr(),
+                        border: const OutlineInputBorder(),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Kaydet butonu
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _saveClothingItem,
+                        child: Text(
+                          'wardrobe.clothingDetails.saveClothing'.tr(),
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ),
           // Yüklenme işlemi için overlay
           if (_isLoading)
@@ -543,7 +543,7 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
               ),
             ),
         ],
-      ),
+            ),
     );
   }
   

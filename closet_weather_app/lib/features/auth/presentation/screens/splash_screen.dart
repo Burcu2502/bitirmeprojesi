@@ -67,7 +67,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
     try {
       // Minimum splash süresi (çok kısa)
       await Future.delayed(const Duration(milliseconds: 500));
-      
+    
       // Firebase hazır mı kontrol et
       await _waitForFirebase();
       
@@ -184,8 +184,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                               Icon(
                                 Icons.psychology,
                                 size: size.width * 0.15,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                               // Küçük hava durumu ikonu
                               Positioned(
                                 top: size.width * 0.08,

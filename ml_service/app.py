@@ -5,7 +5,7 @@ import os
 from models.outfit_model import OutfitRecommender
 
 app = Flask(__name__)
-CORS(app)  # Cross-origin isteklerine izin ver
+CORS(app) 
 
 # Verileri yükle
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')

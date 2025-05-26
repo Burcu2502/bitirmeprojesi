@@ -137,15 +137,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Google Play Services hatası için özel mesaj
       if (e.toString().contains('Google Play Services') || 
           e.toString().contains('SecurityException')) {
-        state = state.copyWith(
-          isLoading: false,
+          state = state.copyWith(
+            isLoading: false,
           errorMessage: 'Google Play Services hatası. Lütfen cihazınızı güncelleyin.',
-        );
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: 'Google ile giriş yapılamadı. Lütfen tekrar deneyin.',
-        );
+          );
+        } else {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Google ile giriş yapılamadı. Lütfen tekrar deneyin.',
+      );
       }
     }
   }

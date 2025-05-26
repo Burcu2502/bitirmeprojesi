@@ -20,9 +20,9 @@ void main() async {
   
   // Firebase'i basit şekilde başlat (Google Play Services hatası için)
   try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
     debugPrint("✅ Firebase başlatıldı");
   } catch (e) {
     debugPrint("❌ Firebase başlatma hatası: $e");
@@ -86,18 +86,18 @@ class _ClosetWeatherAppState extends ConsumerState<ClosetWeatherApp> {
     
     return ScaffoldMessenger(
       child: MaterialApp(
-        title: 'appTitle'.tr(),
-        debugShowCheckedModeBanner: false,
+      title: 'appTitle'.tr(),
+      debugShowCheckedModeBanner: false,
         scaffoldMessengerKey: GlobalKey<ScaffoldMessengerState>(),
-        
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: flutterThemeMode,
-        
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        
+      
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: flutterThemeMode,
+      
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      
         home: Builder(
           builder: (context) {
             // ConnectivityService'i burada başlat

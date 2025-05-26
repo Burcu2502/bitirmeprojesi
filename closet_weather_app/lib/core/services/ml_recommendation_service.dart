@@ -17,7 +17,7 @@ class MLRecommendationService {
   // final String apiUrl = 'http://localhost:3000/api/recommend';
   
   // Fiziksel cihaz için (bilgisayarın gerçek IP adresi):
-  final String apiUrl = 'http://172.20.10.2:3000/api/recommend';
+  final String apiUrl = 'http://192.168.1.229:5000/api/recommend';
   
   /// Hava durumuna göre kıyafet kombinasyonu önerileri al
   Future<List<ClothingItemModel>> getOutfitRecommendation(
