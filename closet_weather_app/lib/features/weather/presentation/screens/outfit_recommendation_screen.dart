@@ -78,7 +78,8 @@ class _OutfitRecommendationScreenState extends ConsumerState<OutfitRecommendatio
         try {
           // ML API'den öneri al
           debugPrint('🧠 Yapay zeka servisi kullanılıyor...');
-          recommendedOutfit = await _mlRecommendationService.getOutfitRecommendation(
+          // Hava durumu ekranında demo verilerle çalış (genel katalog)
+          recommendedOutfit = await _mlRecommendationService.getOutfitRecommendationFromCatalog(
             userId,
             widget.weather,
           );

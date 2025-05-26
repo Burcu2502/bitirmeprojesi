@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -63,25 +64,6 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     try {
       // Kullanıcının kıyafetlerini al
       final clothingItemsAsync = await ref.read(userClothingItemsProvider.future);
-      debugPrint("🧮 Kıyafet sayısı: ${clothingItemsAsync.length}");
-      
-      // Kıyafet tiplerini say
-      final upperCount = clothingItemsAsync.where((item) => 
-        item.type == ClothingType.tShirt || 
-        item.type == ClothingType.shirt || 
-        item.type == ClothingType.blouse || 
-        item.type == ClothingType.sweater
-      ).length;
-      
-      final lowerCount = clothingItemsAsync.where((item) => 
-        item.type == ClothingType.pants || 
-        item.type == ClothingType.jeans || 
-        item.type == ClothingType.shorts || 
-        item.type == ClothingType.skirt
-      ).length;
-      
-      debugPrint("👚 Üst giyim sayısı: $upperCount");
-      debugPrint("👖 Alt giyim sayısı: $lowerCount");
       
       // Hava durumu bilgilerini al
       final weatherState = ref.read(weatherStateProvider);
@@ -94,16 +76,13 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           currentWeather,
         );
         
-        debugPrint("👕 Önerilen kombin sayısı: ${suggestions.length}");
-        
         if (mounted) {
           setState(() {
             _suggestedOutfit = suggestions;
             _isLoading = false;
           });
         }
-      } else {
-        debugPrint("⚠️ Kombin oluşturulamadı: Kıyafet veya hava durumu bilgisi yok");
+              } else {
         if (mounted) {
           setState(() {
             _suggestedOutfit = null;
@@ -112,7 +91,6 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         }
       }
     } catch (e) {
-      debugPrint('❌ Kombin önerisi oluşturulurken hata: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -617,7 +595,6 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
       return [];
     }
 
-    final suggestions = <OutfitSuggestion>[];
     final authState = ref.read(authProvider);
     
     if (!authState.isAuthenticated || authState.user?.uid == null) {
@@ -626,6 +603,40 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     }
 
     try {
+      // ML API'den çoklu öneriler al (kullanıcının dolabından)
+      final mlService = MLRecommendationService();
+      final apiRecommendations = await mlService.getMultipleOutfitRecommendations(
+        authState.user!.uid,
+        weather,
+        clothingItems, // ← KULLANICININ GERÇEK KIYAFETLERİNİ GÖNDER
+      );
+      
+      if (apiRecommendations.isNotEmpty) {
+        // API'den gelen önerileri OutfitSuggestion'a dönüştür
+        final suggestions = apiRecommendations.map((rec) => OutfitSuggestion(
+          title: rec['title'] as String,
+          description: rec['description'] as String,
+          items: rec['items'] as List<ClothingItemModel>,
+        )).toList();
+        
+        return suggestions;
+      } else {
+        return _generateFallbackSuggestions(clothingItems, weather);
+      }
+      
+    } catch (e) {
+      return _generateFallbackSuggestions(clothingItems, weather);
+    }
+  }
+
+  // Fallback: ML API çalışmazsa kullanılacak yerel algoritmalar
+  Future<List<OutfitSuggestion>> _generateFallbackSuggestions(
+    List<ClothingItemModel> clothingItems, 
+    WeatherModel weather
+  ) async {
+    final suggestions = <OutfitSuggestion>[];
+    
+    try {
       // Kullanıcının kıyafetlerini kategorilere ayır
       final uppers = clothingItems.where((item) => _isUpperClothing(item.type)).toList();
       final lowers = clothingItems.where((item) => _isLowerClothing(item.type)).toList();
@@ -633,9 +644,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         item.type == ClothingType.shoes || item.type == ClothingType.boots).toList();
       final outerwear = clothingItems.where((item) => _isOuterwear(item.type)).toList();
       
-      debugPrint('👚 Üst giyim: ${uppers.length}, Alt giyim: ${lowers.length}, Ayakkabı: ${shoes.length}, Dış giyim: ${outerwear.length}');
-
-      // 4 farklı AI stratejisi ile kombin oluştur
+      // 4 farklı fallback stratejisi ile kombin oluştur
       for (int i = 0; i < 4; i++) {
         final outfit = <ClothingItemModel>[];
         String title = 'AI Önerisi';
@@ -670,19 +679,12 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
             description: description,
             items: outfit,
           ));
-          
-          debugPrint('✅ AI önerisi ${i + 1} oluşturuldu: ${outfit.length} parça');
-        } else {
-          debugPrint('⚠️ AI önerisi ${i + 1} boş döndü');
         }
       }
-      
-      debugPrint('🎯 Toplam ${suggestions.length} AI önerisi oluşturuldu');
       return suggestions;
       
     } catch (e) {
-      debugPrint('❌ AI algoritması hatası: $e');
-      // Hata durumunda boş liste döndür
+      debugPrint('❌ Fallback algoritması hatası: $e');
       return [];
     }
   }

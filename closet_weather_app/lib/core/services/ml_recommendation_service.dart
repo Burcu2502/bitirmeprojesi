@@ -18,14 +18,29 @@ class MLRecommendationService {
   
   // Fiziksel cihaz için (bilgisayarın gerçek IP adresi):
   final String apiUrl = 'http://192.168.1.229:5000/api/recommend';
+  final String multipleApiUrl = 'http://192.168.1.229:5000/api/recommend-multiple';
   
   /// Hava durumuna göre kıyafet kombinasyonu önerileri al
   Future<List<ClothingItemModel>> getOutfitRecommendation(
     String userId, 
     WeatherModel weather,
+    List<ClothingItemModel> userClothingItems,
   ) async {
     debugPrint('🧠 ML API\'sine istek gönderiliyor...');
     debugPrint('📌 URL: $apiUrl');
+    debugPrint('👕 Gönderilen kıyafet sayısı: ${userClothingItems.length}');
+    
+    // Kullanıcının kıyafetlerini API formatına dönüştür
+    final clothingItemsJson = userClothingItems.map((item) => {
+      'id': item.id,
+      'userId': item.userId,
+      'name': item.name,
+      'type': item.type.toString().split('.').last,
+      'colors': item.colors,
+      'brand': item.brand,
+      'seasons': item.seasons.map((s) => s.toString().split('.').last).toList(),
+      'imageUrl': item.imageUrl,
+    }).toList();
     
     final requestBody = {
       'userId': userId,
@@ -34,6 +49,7 @@ class MLRecommendationService {
         'condition': weather.condition.toString().split('.').last.toLowerCase(),
         'description': weather.description,
       },
+      'userClothingItems': clothingItemsJson,
     };
     
     // Debug: İstek gövdesini yazdır
@@ -79,6 +95,127 @@ class MLRecommendationService {
   
   // Yanıt uzunluğunu sınırlamak için min fonksiyonu
   int min(int a, int b) => a < b ? a : b;
+
+  /// Genel katalogdan (demo veriler) kıyafet önerisi al - Hava durumu ekranı için
+  Future<List<ClothingItemModel>> getOutfitRecommendationFromCatalog(
+    String userId, 
+    WeatherModel weather,
+  ) async {
+    debugPrint('🧠 ML API\'sine katalog önerisi isteği gönderiliyor...');
+    debugPrint('📌 URL: $apiUrl');
+    debugPrint('🏪 Genel katalog kullanılıyor (demo veriler)');
+    
+    final requestBody = {
+      'userId': userId,
+      'weather': {
+        'temperature': weather.temperature,
+        'condition': weather.condition.toString().split('.').last.toLowerCase(),
+        'description': weather.description,
+      },
+      // userClothingItems gönderme - API demo verileri kullanacak
+    };
+    
+    debugPrint('📤 İstek: ${jsonEncode(requestBody)}');
+    
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      ).timeout(const Duration(seconds: 10));
+      
+      debugPrint('📡 Katalog API yanıtı: ${response.statusCode}');
+      
+      if (response.statusCode == 200) {
+        debugPrint('📥 Yanıt gövdesi: ${response.body.substring(0, min(100, response.body.length))}...');
+        
+        final List<dynamic> data = jsonDecode(response.body);
+        debugPrint('📦 Katalog API ${data.length} kıyafet önerdi');
+        
+        final items = data.map((item) => ClothingItemModel.fromApiJson(item)).toList();
+        debugPrint('✅ Katalog önerileri başarıyla alındı');
+        return items;
+      } else {
+        debugPrint('❌ Katalog API hatası: ${response.statusCode}');
+        debugPrint('Yanıt: ${response.body}');
+        
+        // Demo moduna geç
+        debugPrint('⚠️ Demo modu kullanılıyor...');
+        return _getDemoOutfit(weather);
+      }
+    } catch (e) {
+      debugPrint('❌ Katalog API bağlantı hatası: $e');
+      debugPrint('⚠️ Demo modu kullanılıyor...');
+      
+      return _getDemoOutfit(weather);
+    }
+  }
+
+  /// Çoklu strateji ile kıyafet önerileri al (4 farklı algoritma)
+  Future<List<Map<String, dynamic>>> getMultipleOutfitRecommendations(
+    String userId, 
+    WeatherModel weather,
+    List<ClothingItemModel> userClothingItems,
+  ) async {
+    // Sadece kritik bilgileri logla
+    debugPrint('🧠 ML API çoklu öneri isteği: ${userClothingItems.length} kıyafet');
+    
+    // Kullanıcının kıyafetlerini API formatına dönüştür
+    final clothingItemsJson = userClothingItems.map((item) => {
+      'id': item.id,
+      'userId': item.userId,
+      'name': item.name,
+      'type': item.type.toString().split('.').last,
+      'colors': item.colors,
+      'brand': item.brand,
+      'seasons': item.seasons.map((s) => s.toString().split('.').last).toList(),
+      'imageUrl': item.imageUrl,
+    }).toList();
+    
+    final requestBody = {
+      'userId': userId,
+      'weather': {
+        'temperature': weather.temperature,
+        'condition': weather.condition.toString().split('.').last.toLowerCase(),
+        'description': weather.description,
+      },
+      'userClothingItems': clothingItemsJson, // ← KULLANICININ GERÇEK KIYAFETLERİ
+    };
+    
+    try {
+      final response = await http.post(
+        Uri.parse(multipleApiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      ).timeout(const Duration(seconds: 15)); // 15 saniye zaman aşımı
+      
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        
+        // Her strateji için kıyafetleri Flutter modellerine dönüştür
+        final recommendations = <Map<String, dynamic>>[];
+        
+        for (final strategy in data) {
+          final items = (strategy['items'] as List<dynamic>)
+              .map((item) => ClothingItemModel.fromApiJson(item))
+              .toList();
+          
+          recommendations.add({
+            'title': strategy['title'] ?? 'AI Önerisi',
+            'description': strategy['description'] ?? 'AI ile oluşturulan kombin',
+            'strategy': strategy['strategy'] ?? 'unknown',
+            'items': items,
+          });
+        }
+        
+        return recommendations;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+  }
   
   /// API bağlantısı olmadığında kullanılacak demo kombini
   List<ClothingItemModel> _getDemoOutfit(WeatherModel weather) {
