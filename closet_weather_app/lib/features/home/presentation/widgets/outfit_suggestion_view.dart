@@ -38,6 +38,11 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   bool _isLoading = false;
   List<ClothingItemModel>? _suggestedOutfit;
   
+  // ML önerilerini cache'lemek için
+  Future<List<OutfitSuggestion>>? _mlSuggestionsFuture;
+  List<ClothingItemModel>? _lastClothingItems;
+  WeatherModel? _lastWeather;
+  
   @override
   void initState() {
     super.initState();
@@ -52,6 +57,10 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     super.didChangeDependencies();
     // Sayfa her görünür olduğunda provider'ı yenile
     ref.invalidate(userClothingItemsProvider);
+    // Cache'i temizle
+    _mlSuggestionsFuture = null;
+    _lastClothingItems = null;
+    _lastWeather = null;
   }
   
   Future<void> _generateNewOutfit() async {
@@ -59,6 +68,11 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
       setState(() {
         _isLoading = true;
       });
+      
+      // Cache'i temizle ki yeni öneriler oluşturulsun
+      _mlSuggestionsFuture = null;
+      _lastClothingItems = null;
+      _lastWeather = null;
     }
     
     try {
@@ -426,7 +440,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         
         // ML API ile farklı kombin önerileri oluştur
         return FutureBuilder<List<OutfitSuggestion>>(
-          future: _generateMLOutfitSuggestions(clothingItems, weatherState.currentWeather),
+          future: _getCachedMLSuggestions(clothingItems, weatherState.currentWeather),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -578,6 +592,45 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
         ),
       ),
     );
+  }
+
+  // Cache'lenmiş ML önerilerini al
+  Future<List<OutfitSuggestion>> _getCachedMLSuggestions(
+    List<ClothingItemModel> clothingItems, 
+    WeatherModel? weather
+  ) {
+    // Eğer veriler değişmemişse cache'lenmiş sonucu döndür
+    if (_mlSuggestionsFuture != null && 
+        _lastClothingItems != null && 
+        _lastWeather != null &&
+        _areClothingItemsEqual(_lastClothingItems!, clothingItems) &&
+        _areWeatherModelsEqual(_lastWeather!, weather)) {
+      return _mlSuggestionsFuture!;
+    }
+    
+    // Yeni verilerle öneri oluştur ve cache'le
+    _lastClothingItems = List.from(clothingItems);
+    _lastWeather = weather;
+    _mlSuggestionsFuture = _generateMLOutfitSuggestions(clothingItems, weather);
+    
+    return _mlSuggestionsFuture!;
+  }
+
+  // Kıyafet listelerinin eşit olup olmadığını kontrol et
+  bool _areClothingItemsEqual(List<ClothingItemModel> list1, List<ClothingItemModel> list2) {
+    if (list1.length != list2.length) return false;
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i].id != list2[i].id) return false;
+    }
+    return true;
+  }
+
+  // Hava durumu modellerinin eşit olup olmadığını kontrol et
+  bool _areWeatherModelsEqual(WeatherModel? weather1, WeatherModel? weather2) {
+    if (weather1 == null && weather2 == null) return true;
+    if (weather1 == null || weather2 == null) return false;
+    return weather1.temperature == weather2.temperature && 
+           weather1.condition == weather2.condition;
   }
 
   // ML API ile çoklu kombin önerileri oluştur (kullanıcının gerçek kıyafetleri ile)
@@ -881,7 +934,9 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     if (items.isEmpty) throw Exception('Kıyafet listesi boş');
     
     // Sıcaklığa göre puanlama
-    final scoredItems = items.map((item) {
+    final scoredItems = items.asMap().entries.map((entry) {
+      final index = entry.key;
+      final item = entry.value;
       double score = 0;
       
       // Mevsim uyumluluğu
@@ -899,8 +954,8 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
       // Tüm sezon kıyafetleri her zaman uygun
       if (item.seasons.contains(Season.all)) score += 1;
       
-      // Rastgelelik ekle (aynı puanlı kıyafetler arasında çeşitlilik için)
-      score += (DateTime.now().millisecondsSinceEpoch % 100) / 100.0;
+      // Deterministik rastgelelik ekle (index bazlı)
+      score += (index * 0.1);
       
       return MapEntry(item, score);
     }).toList();
@@ -913,7 +968,9 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   // Listeden rastgele seçim yap
   ClothingItemModel _selectRandomFromList(List<ClothingItemModel> items) {
     if (items.isEmpty) throw Exception('Kıyafet listesi boş');
-    final random = Random(DateTime.now().millisecondsSinceEpoch);
+    // Daha stabil rastgelelik için items'ın hash'ini kullan
+    final seed = items.map((item) => item.id).join().hashCode;
+    final random = Random(seed + DateTime.now().hour);
     return items[random.nextInt(items.length)];
   }
 
