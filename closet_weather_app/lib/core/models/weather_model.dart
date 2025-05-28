@@ -11,6 +11,9 @@ class WeatherModel {
   final String icon;
   final DateTime timestamp;
   final String location;
+  final String? country;
+  final double? latitude;
+  final double? longitude;
 
   WeatherModel({
     required this.temperature,
@@ -22,6 +25,9 @@ class WeatherModel {
     required this.icon,
     required this.timestamp,
     required this.location,
+    this.country,
+    this.latitude,
+    this.longitude,
   });
 
   // copyWith metodu - nesneyi değişikliklerle kopyalamak için
@@ -35,6 +41,9 @@ class WeatherModel {
     String? icon,
     DateTime? timestamp,
     String? location,
+    String? country,
+    double? latitude,
+    double? longitude,
   }) {
     return WeatherModel(
       temperature: temperature ?? this.temperature,
@@ -46,6 +55,9 @@ class WeatherModel {
       icon: icon ?? this.icon,
       timestamp: timestamp ?? this.timestamp,
       location: location ?? this.location,
+      country: country ?? this.country,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
     );
   }
 
@@ -61,6 +73,9 @@ class WeatherModel {
       icon: '02d',
       timestamp: DateTime.now(),
       location: 'İstanbul',
+      country: 'TR',
+      latitude: 41.0082,
+      longitude: 28.9784,
     );
   }
 
@@ -75,6 +90,9 @@ class WeatherModel {
       icon: json['icon'],
       timestamp: DateTime.parse(json['timestamp']),
       location: json['location'],
+      country: json['country'],
+      latitude: json['latitude']?.toDouble(),
+      longitude: json['longitude']?.toDouble(),
     );
   }
 
@@ -89,6 +107,9 @@ class WeatherModel {
       'icon': icon,
       'timestamp': timestamp.toIso8601String(),
       'location': location,
+      'country': country,
+      'latitude': latitude,
+      'longitude': longitude,
     };
   }
 

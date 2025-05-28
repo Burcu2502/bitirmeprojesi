@@ -32,7 +32,13 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
             icon: const Icon(Icons.refresh),
             onPressed: weatherState.isLoading
                 ? null
-                : () => ref.read(weatherStateProvider.notifier).fetchWeatherData(),
+                : () => ref.read(weatherStateProvider.notifier).refreshWeather(),
+          ),
+          IconButton(
+            icon: const Icon(Icons.my_location),
+            onPressed: weatherState.isLoading
+                ? null
+                : () => ref.read(weatherStateProvider.notifier).getWeatherByCurrentLocation(),
           ),
         ],
       ),
@@ -42,16 +48,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
   
   Widget _buildBody(BuildContext context, WeatherState state) {
     if (state.isLoading) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 16),
-            Text('general.loading'.tr()),
-          ],
-        ),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
     
     if (state.error != null) {
@@ -59,25 +56,14 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.cloud_off,
-              size: 72,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'weather.weatherUnavailable'.tr(),
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
             Text(
               state.error!,
-              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => ref.read(weatherStateProvider.notifier).fetchWeatherData(),
+              onPressed: () => ref.read(weatherStateProvider.notifier).refreshWeather(),
               child: Text('weather.retry'.tr()),
             ),
           ],
@@ -87,69 +73,51 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     
     if (state.currentWeather == null) {
       return Center(
-        child: Text('weather.weatherUnavailable'.tr()),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('weather.weatherUnavailable'.tr()),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => ref.read(weatherStateProvider.notifier).getWeatherByCurrentLocation(),
+              child: Text('weather.retry'.tr()),
+            ),
+          ],
+        ),
       );
     }
     
     return RefreshIndicator(
-      onRefresh: () => ref.read(weatherStateProvider.notifier).fetchWeatherData(),
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Mevcut hava durumu
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: WeatherDisplay(weather: state.currentWeather!),
-              ),
-              
-              const Divider(height: 32),
-              
-              // Hava tahmini
-              if (state.forecast != null && state.forecast!.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'weather.fiveDayForecast'.tr(),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                WeatherForecastList(forecast: state.forecast!),
-                
-                const Divider(height: 32),
-              ],
-              
-              // Kıyafet önerileri
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'weather.suitableOutfits'.tr(),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const OutfitSuggestionList(), // TODO: Implement this widget
-              
-              const SizedBox(height: 16),
-            ],
+      onRefresh: () => ref.read(weatherStateProvider.notifier).refreshWeather(),
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          WeatherDisplay(weather: state.currentWeather!),
+          const SizedBox(height: 24),
+          if (state.forecast != null && state.forecast!.isNotEmpty) ...[
+            Text(
+              'weather.forecast'.tr(),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 16),
+            WeatherForecastList(forecast: state.forecast!),
+            const SizedBox(height: 24),
+          ],
+          Text(
+            'wardrobe.suggestedOutfit'.tr(),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-        ),
+          const SizedBox(height: 16),
+          OutfitSuggestionList(weather: state.currentWeather!),
+        ],
       ),
     );
   }
   
-  void _showSearchLocationDialog(BuildContext context) {
+  Future<void> _showSearchLocationDialog(BuildContext context) async {
     final TextEditingController controller = TextEditingController();
     
-    showDialog(
+    return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('weather.searchLocation'.tr()),
@@ -157,12 +125,11 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
           controller: controller,
           decoration: InputDecoration(
             hintText: 'weather.enterCity'.tr(),
-            prefixIcon: const Icon(Icons.location_city),
           ),
-          autofocus: true,
+          textCapitalization: TextCapitalization.words,
           onSubmitted: (value) {
             if (value.isNotEmpty) {
-              ref.read(weatherStateProvider.notifier).updateLocation(value);
+              ref.read(weatherStateProvider.notifier).getWeatherByCity(value);
               Navigator.of(context).pop();
             }
           },
@@ -170,12 +137,12 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('general.cancel'.tr()),
+            child: Text('weather.cancel'.tr()),
           ),
           TextButton(
             onPressed: () {
               if (controller.text.isNotEmpty) {
-                ref.read(weatherStateProvider.notifier).updateLocation(controller.text);
+                ref.read(weatherStateProvider.notifier).getWeatherByCity(controller.text);
                 Navigator.of(context).pop();
               }
             },

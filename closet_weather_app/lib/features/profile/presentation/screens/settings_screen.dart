@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/providers/theme_provider.dart' as app_theme;
 import '../../../../shared/theme/app_theme.dart';
+import 'privacy_policy_screen.dart';
+import 'terms_of_service_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -30,13 +32,6 @@ class SettingsScreen extends ConsumerWidget {
           _buildSectionHeader(context, 'settings.language'),
           
           _buildLanguageOption(context),
-          
-          const SizedBox(height: 24),
-          
-          // Bildirim Ayarları
-          _buildSectionHeader(context, 'settings.notifications'),
-          
-          _buildNotificationOption(context),
           
           const SizedBox(height: 24),
           
@@ -173,65 +168,6 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
   
-  Widget _buildNotificationOption(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Bildirimler
-            SwitchListTile(
-              title: Text(
-                'settings.enableNotifs'.tr(),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                'settings.notifsDesc'.tr(),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
-                ),
-              ),
-              value: false, // Şimdilik kapalı
-              secondary: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiaryContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.notifications,
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-              ),
-              onChanged: (value) {
-                // Bildirim izinlerini yönet - şimdilik dummy
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('general.featureNotAvailable'.tr()),
-                    duration: const Duration(seconds: 2),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                );
-              },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  
   Widget _buildAboutOption(BuildContext context) {
     return Card(
       elevation: 0,
@@ -240,7 +176,7 @@ class SettingsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -255,21 +191,17 @@ class SettingsScreen extends ConsumerWidget {
               leading: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   Icons.info_outline,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
-            Divider(
-              indent: 24,
-              endIndent: 24,
-              color: Theme.of(context).dividerTheme.color,
-            ),
+            const Divider(),
             ListTile(
               title: Text(
                 'settings.privacy'.tr(),
@@ -280,33 +212,26 @@ class SettingsScreen extends ConsumerWidget {
               leading: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
-                  Icons.shield_outlined,
-                  color: Theme.of(context).colorScheme.secondary,
+                  Icons.privacy_tip_outlined,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 18),
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('settings.privacyNotReady'.tr()),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PrivacyPolicyScreen(),
                   ),
                 );
               },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
-            Divider(
-              indent: 24,
-              endIndent: 24,
-              color: Theme.of(context).dividerTheme.color,
-            ),
+            const Divider(),
             ListTile(
               title: Text(
                 'settings.terms'.tr(),
@@ -327,17 +252,14 @@ class SettingsScreen extends ConsumerWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios, size: 18),
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('settings.termsNotReady'.tr()),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TermsOfServiceScreen(),
                   ),
                 );
               },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
           ],
         ),
@@ -348,49 +270,28 @@ class SettingsScreen extends ConsumerWidget {
   void _showLanguageSelectDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('settings.appLanguage'.tr()),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: const Text('Türkçe'),
-                leading: Radio<String>(
-                  value: 'tr',
-                  groupValue: context.locale.languageCode,
-                  onChanged: (value) {
-                    context.setLocale(const Locale('tr', 'TR'));
-                    Navigator.pop(context);
-                  },
-                ),
-                contentPadding: EdgeInsets.zero,
-              ),
-              ListTile(
-                title: const Text('English'),
-                leading: Radio<String>(
-                  value: 'en',
-                  groupValue: context.locale.languageCode,
-                  onChanged: (value) {
-                    context.setLocale(const Locale('en', 'US'));
-                    Navigator.pop(context);
-                  },
-                ),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('general.cancel'.tr()),
+      builder: (context) => AlertDialog(
+        title: Text('settings.appLanguage'.tr()),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text('Türkçe'),
+              onTap: () {
+                context.setLocale(const Locale('tr', 'TR'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('English'),
+              onTap: () {
+                context.setLocale(const Locale('en', 'US'));
+                Navigator.pop(context);
+              },
             ),
           ],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 } 

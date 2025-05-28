@@ -182,13 +182,54 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          Image.network(
+                            'https://openweathermap.org/img/wn/${weatherState.currentWeather!.icon}@2x.png',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${weatherState.currentWeather!.temperature.toStringAsFixed(1)}°C',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '${weatherState.currentWeather!.location}, ${weatherState.currentWeather!.country ?? ''}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
                       Text(
-                        '${weatherState.currentWeather!.temperature}°C, ${weatherState.currentWeather!.description}',
+                        weatherState.currentWeather!.description,
                         style: const TextStyle(fontSize: 14),
                       ),
-                      Text(
-                        _getWeatherAdvice(weatherState.currentWeather!),
-                        style: const TextStyle(fontSize: 12),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Icon(Icons.thermostat_outlined, size: 16),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Hissedilen: ${weatherState.currentWeather!.feelsLike.toStringAsFixed(1)}°C',
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          const SizedBox(width: 12),
+                          const Icon(Icons.water_drop_outlined, size: 16),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Nem: ${weatherState.currentWeather!.humidity}%',
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ],
                       ),
                     ],
                   )

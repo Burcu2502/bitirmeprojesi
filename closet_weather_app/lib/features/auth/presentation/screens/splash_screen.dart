@@ -228,7 +228,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                         
                         // Uygulama adı
                         Text(
-                          'AI Dolap Asistanı',
+                          'Bugün Ne Giysem',
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
