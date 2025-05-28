@@ -12,6 +12,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../weather/presentation/providers/weather_provider.dart';
 import '../../../../core/providers/firestore_providers.dart';
 import '../../../../core/services/ml_recommendation_service.dart';
+import '../../../wardrobe/presentation/screens/wardrobe_screen.dart';
 
 // Kombin önerisi modeli
 class OutfitSuggestion {
@@ -271,25 +272,63 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   Widget _buildSuggestedOutfit(BuildContext context) {
     // Eğer önerilmiş bir kombin yoksa, boş bir mesaj göster
     if (_suggestedOutfit == null || _suggestedOutfit!.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Column(
-            children: [
-              const Icon(Icons.sentiment_dissatisfied, size: 48, color: Colors.grey),
-              const SizedBox(height: 16),
-              Text(
-                'wardrobe.noOutfitToCreate'.tr(),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'wardrobe.addClothingItems'.tr(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.3),
             ],
           ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.style_outlined,
+                size: 48,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'wardrobe.noOutfitToCreate'.tr(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'wardrobe.addClothingItems'.tr(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 24),
+            FilledButton.tonal(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const WardrobeScreen(),
+                  ),
+                );
+              },
+              child: Text('wardrobe.addClothes'.tr()),
+            ),
+          ],
         ),
       );
     }
@@ -421,13 +460,13 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'wardrobe.noClothingItems'.tr(),
+                  'wardrobe.emptyStateTitle'.tr(),
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Kıyafet ekleyerek kişiselleştirilmiş öneriler alın',
+                  'wardrobe.personalizedSuggestionsEmpty'.tr(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[600],
                   ),
@@ -443,22 +482,22 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           future: _getCachedMLSuggestions(clothingItems, weatherState.currentWeather),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
+              return Center(
                 child: Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 24,
                         width: 24,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       Text(
-                        'AI ile kişiselleştirilmiş öneriler hazırlanıyor...',
-                        style: TextStyle(fontSize: 14),
+                        'wardrobe.aiGenerating'.tr(),
+                        style: const TextStyle(fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -479,7 +518,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'AI önerileri yüklenirken hata oluştu',
+                      'wardrobe.aiError'.tr(),
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -494,7 +533,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                   ],
                 ),
               );
-          }
+            }
             
             final suggestions = snapshot.data ?? [];
         
@@ -510,13 +549,13 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'AI henüz kombin önerisi oluşturamadı',
+                      'wardrobe.aiNoSuggestions'.tr(),
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Daha fazla kıyafet ekleyerek AI\'nin daha iyi öneriler vermesini sağlayın',
+                      'wardrobe.aiAddMore'.tr(),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),

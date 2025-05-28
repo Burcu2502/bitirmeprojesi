@@ -124,27 +124,75 @@ class _WardrobeScreenState extends ConsumerState<WardrobeScreen> {
   // Kıyafet ızgarası
   Widget _buildClothingGrid(List<ClothingItemModel> items) {
     if (items.isEmpty) {
-      return Center(
+      return Container(
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.mood_bad,
-              size: 64,
-              color: Colors.grey[400],
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                shape: BoxShape.circle,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(
+                    Icons.checkroom_outlined,
+                    size: 48,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  Positioned(
+                    right: 20,
+                    bottom: 20,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        size: 24,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'wardrobe.emptyStateTitle'.tr(),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
-              'wardrobe.noClothingItems'.tr(),
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              'wardrobe.emptyStateDescription'.tr(),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'wardrobe.addClothingItems'.tr(),
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            FilledButton.icon(
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddClothingItemScreen()),
+                );
+                if (result == true) {
+                  ref.invalidate(clothingItemsProvider);
+                }
+              },
+              icon: const Icon(Icons.add),
+              label: Text('wardrobe.addFirstItem'.tr()),
             ),
           ],
         ),

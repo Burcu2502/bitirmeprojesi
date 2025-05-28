@@ -142,7 +142,21 @@
     "notEnoughItems": "Yeterli sayıda kıyafet bulunamadığından kombin önerileri oluşturulamadı.",
     "outfit": "Kombin",
     "errorLoadingItems": "Kıyafet verileri alınırken hata oluştu",
-    "addClothingItem": "Kıyafet Ekle",
+    "addClothes": "Kıyafet Ekle",
+    "addFirstItem": "İlk Kıyafetini Ekle",
+    "loginRequired": "Lütfen giriş yapın",
+    "emptyStateTitle": "Dolaplarınız Boş",
+    "emptyStateDescription": "Kombin önerileri almak için kıyafet eklemeye başlayın",
+    "personalizedSuggestionsEmpty": "Kişiselleştirilmiş öneriler için kıyafet ekleyin",
+    "aiSuggestion": "Yapay Zeka Önerisi",
+    "aiWeatherSuggestion": "Hava Durumuna Özel Öneri",
+    "aiColorSuggestion": "Renk Uyumu Önerisi",
+    "aiStyleSuggestion": "Stil Önerisi",
+    "aiCreativeSuggestion": "Yaratıcı Öneri",
+    "aiGenerating": "AI ile kişiselleştirilmiş öneriler hazırlanıyor...",
+    "aiError": "AI önerileri yüklenirken hata oluştu",
+    "aiNoSuggestions": "AI henüz kombin önerisi oluşturamadı",
+    "aiAddMore": "Daha fazla kıyafet ekleyerek AI'nin daha iyi öneriler vermesini sağlayın",
     "imageSection": {
       "selectFromGallery": "Galeriden Seç",
       "takePhoto": "Fotoğraf Çek",
@@ -260,6 +274,6 @@
     "clearFilters": "Filtreleri Temizle",
     "noResults": "Sonuç bulunamadı",
     "featureNotAvailable": "Bu özellik henüz mevcut değil",
-    "loginRequired": "Giriş yapmanız gerekiyor"
+    "loginRequired": "Bu özelliği kullanmak için giriş yapmalısınız"
   }
 } 

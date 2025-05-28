@@ -191,7 +191,22 @@
       "edit": {
         "comingSoon": "Edit feature coming soon"
       }
-    }
+    },
+    "addClothes": "Add Clothes",
+    "addFirstItem": "Add Your First Item",
+    "loginRequired": "Please login",
+    "emptyStateTitle": "Your Closets Are Empty",
+    "emptyStateDescription": "Start adding clothes to get outfit recommendations",
+    "personalizedSuggestionsEmpty": "Add clothes to get personalized suggestions",
+    "aiSuggestion": "AI Suggestion",
+    "aiWeatherSuggestion": "Weather-Based Suggestion",
+    "aiColorSuggestion": "Color Harmony Suggestion",
+    "aiStyleSuggestion": "Style Suggestion",
+    "aiCreativeSuggestion": "Creative Suggestion",
+    "aiGenerating": "Generating personalized suggestions with AI...",
+    "aiError": "Error loading AI suggestions",
+    "aiNoSuggestions": "AI couldn't generate outfit suggestions yet",
+    "aiAddMore": "Add more clothes to help AI make better suggestions"
   },
   
   "clothing": {
@@ -259,6 +274,6 @@
     "clearFilters": "Clear Filters",
     "noResults": "No results found",
     "featureNotAvailable": "This feature is not available yet",
-    "loginRequired": "Login required"
+    "loginRequired": "You need to login to use this feature"
   }
 } 
