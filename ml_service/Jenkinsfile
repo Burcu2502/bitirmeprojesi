@@ -10,7 +10,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('ml_service') {
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    sh '''
+                        echo "📂 Dizin içeriği:"
+                        ls -la
+                        echo "📂 Models klasörü içeriği:"
+                        ls -la models/
+                        echo "🔨 Docker image oluşturuluyor..."
+                        docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    '''
                 }
             }
         }
