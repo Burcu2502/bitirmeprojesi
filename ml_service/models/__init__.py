@@ -1,0 +1,1 @@
+# Bu dosya models klasörünü bir Python modülü yapar 
