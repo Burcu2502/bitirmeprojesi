@@ -2,6 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import os
+import sys
+
+# Python modül yolunu ayarla
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from models.outfit_model import OutfitRecommender
 from datetime import datetime
 
