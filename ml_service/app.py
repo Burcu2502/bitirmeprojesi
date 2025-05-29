@@ -5,7 +5,7 @@ import os
 import sys
 
 # Python modül yolunu ayarla
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from models.outfit_model import OutfitRecommender
 from datetime import datetime

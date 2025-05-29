@@ -24,6 +24,7 @@ RUN chmod -R 755 /app
 
 # Python modül yolunu ayarla
 ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
 
 # Port'u expose et
 EXPOSE 5000
