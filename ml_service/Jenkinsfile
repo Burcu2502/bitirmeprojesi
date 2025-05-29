@@ -38,11 +38,17 @@ pipeline {
                         -v /opt/ml-service/data:/app/data \
                         ${DOCKER_IMAGE}:${DOCKER_TAG}
                     
+                    # Veri dosyasını oluştur
+                    echo "📊 Veri dosyası oluşturuluyor..."
+                    docker exec ml-service python data_generator.py
+                    
                     # Container içeriğini kontrol et
                     echo "📂 Container içeriği:"
                     docker exec ml-service ls -la /app
                     echo "📂 Models klasörü içeriği:"
                     docker exec ml-service ls -la /app/models
+                    echo "📂 Data klasörü içeriği:"
+                    docker exec ml-service ls -la /app/data
                 '''
             }
         }
