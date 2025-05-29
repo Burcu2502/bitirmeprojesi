@@ -45,9 +45,9 @@
     "language": "Language Settings",
     "appLanguage": "App Language",
     "currentLang": "Current language:",
-    "notifications": "Notification Settings", 
+    "notifications": "Notification Settings",
     "enableNotifs": "Enable Notifications",
-    "notifsDesc": "Weather, recommendations and other notifications",
+    "notifsDesc": "Weather, suggestions and other notifications",
     "about": "About App",
     "version": "App Version",
     "privacy": "Privacy Policy",
@@ -58,7 +58,7 @@
   
   "stylePreferences": {
     "myStylePreferences": "My Style Preferences",
-    "selectStyles": "Select styles that best represent your fashion taste",
+    "selectStyles": "Select styles that best represent your fashion",
     "selectedCount": "Selected:",
     "save": "Save"
   },
@@ -91,7 +91,7 @@
     "wind": "Wind",
     "recommendation": "Recommendation",
     "todaysWeather": "Today's Weather",
-    "weatherUnavailable": "Weather information unavailable",
+    "weatherUnavailable": "Weather information not available",
     "loading": "Loading...",
     "retry": "Retry",
     "searchLocation": "Search Location",
@@ -110,43 +110,78 @@
     "friday": "Friday",
     "saturday": "Saturday",
     "sunday": "Sunday",
-    "unavailable": "Weather information unavailable",
+    "unavailable": "Weather information not available",
     "advice": {
       "veryHot": "Very hot, wear light clothes",
       "hot": "Hot, wear light clothes",
-      "mild": "Mild, wear medium clothes",
+      "mild": "Mild, wear medium-weight clothes",
       "cool": "Cool, wear warm clothes",
       "cold": "Cold, wear very warm clothes",
       "rainy": "Rainy, take an umbrella",
-      "stormy": "Stormy, avoid going outside",
-      "snowy": "Snowy, wear warm and waterproof clothes",
+      "stormy": "Stormy, stay indoors",
+      "snowy": "Snowy, wear thick and waterproof clothes",
       "windy": "Windy, wear a windbreaker",
       "foggy": "Foggy, be careful",
       "drinkWater": "Very hot, drink plenty of water",
-      "veryCold": "Very cold, dress warmly",
-      "sunny": "Sunny, wear a hat and sunscreen",
+      "veryCold": "Very cold, dress well",
+      "sunny": "Sunny, use hat and sunscreen",
       "normal": "Normal weather conditions",
       "dressAccordingly": "Dress according to the weather"
     }
   },
   
   "wardrobe": {
-    "whatToWearToday": "What To Wear Today?",
+    "whatToWearToday": "What to Wear Today?",
     "suggestedOutfit": "Suggested Outfit",
     "generateNewOutfit": "Generate New Outfit",
+    "suggestions": "Outfit Suggestions",
+    "refreshSuggestions": "Refresh Suggestions",
+    "generatingSuggestions": "Generating outfit suggestions...",
+    "pleaseWait": "Please wait...",
+    "noClothes": "No Clothes Found in Your Closets",
+    "addClothesFirst": "Add clothes first to get outfit suggestions",
+    "addClothes": "Add Clothes",
     "personalizedSuggestions": "Personalized Suggestions",
     "clickForDetails": "Click for details",
-    "noOutfitToCreate": "Not enough clothing items in your closet to create an outfit",
-    "addClothingItems": "Please make sure you have at least one top and one bottom item",
-    "noClothingItems": "No clothing items in your closet yet. Add some to get outfit recommendations.",
-    "notEnoughItems": "Not enough clothing items to create outfit recommendations.",
+    "noOutfitToCreate": "Not enough clothes to create an outfit",
+    "addClothingItems": "Please make sure you add at least one top and one bottom",
+    "noClothingItems": "No clothes added to your closet yet. Add clothes for outfits.",
+    "notEnoughItems": "Not enough clothes to generate outfit suggestions.",
     "outfit": "Outfit",
     "errorLoadingItems": "Error loading clothing items",
-    "addClothingItem": "Add Clothing Item",
+    "addFirstItem": "Add Your First Item",
+    "loginRequired": "Please login",
+    "emptyStateTitle": "Your Closets are Empty",
+    "emptyStateDescription": "Start adding clothes to get outfit suggestions",
+    "personalizedSuggestionsEmpty": "Add clothes for personalized suggestions",
+    "aiSuggestion": "AI Suggestion",
+    "aiWeatherSuggestion": "Weather-Specific AI Suggestion",
+    "aiColorSuggestion": "Color Harmony AI Suggestion",
+    "aiStyleSuggestion": "Style AI Suggestion",
+    "aiCreativeSuggestion": "Creative AI Suggestion",
+    "aiGenerating": "Generating AI personalized suggestions...",
+    "aiError": "Error loading AI suggestions",
+    "aiNoSuggestions": "AI couldn't generate outfit suggestions yet",
+    "aiAddMore": "Add more clothes to help AI make better suggestions",
+    "errors": {
+      "outfitGenerationError": "Error generating outfit suggestions",
+      "checkLogs": "Check logs for details"
+    },
+    "debug": {
+      "generatingOutfits": "Generating outfit suggestions",
+      "updatingRecommendations": "Updating recommendations",
+      "cachingMLSuggestions": "Caching ML suggestions"
+    },
+    "loading": {
+      "initial": "Loading initial outfit suggestions...",
+      "recommendations": "Preparing personalized recommendations...",
+      "pleaseWait": "Please wait..."
+    },
     "imageSection": {
       "selectFromGallery": "Select from Gallery",
       "takePhoto": "Take Photo",
-      "pleaseSelectImage": "Please select an image"
+      "pleaseSelectImage": "Please select an image",
+      "analyzingColors": "Analyzing colors..."
     },
     "clothingDetails": {
       "detectedColors": "Detected Colors:",
@@ -154,19 +189,19 @@
       "pleaseEnterName": "Please enter a name",
       "clothingType": "Clothing Type",
       "seasons": "Seasons:",
-      "pleaseSelectSeason": "Please select at least one season", 
+      "pleaseSelectSeason": "Please select at least one season",
       "brand": "Brand (Optional)",
       "material": "Material (Optional)",
-      "saveClothing": "Save Clothing Item",
-      "clothingSaved": "Clothing item saved successfully",
-      "errorSavingClothing": "Failed to save clothing item",
+      "saveClothing": "Save Clothing",
+      "clothingSaved": "Clothing saved successfully",
+      "errorSavingClothing": "Could not save clothing",
       "userSessionNotFound": "User session not found"
     },
     "list": {
       "myClosets": "My Closets",
-      "emptyCloset": "No clothing items found in your closets. Click the \"+\" button to add some.",
-      "loadingError": "Error loading clothing items: {error}",
-      "itemAdded": "Clothing item added successfully",
+      "emptyCloset": "No clothes found in your closets. Click \"+\" to add.",
+      "loadingError": "Error loading clothes: {error}",
+      "itemAdded": "Item added successfully",
       "itemDetails": {
         "type": "Type: {type}",
         "seasons": "Seasons: {seasons}",
@@ -177,36 +212,21 @@
       "close": "Close",
       "edit": "Edit",
       "delete": {
-        "title": "Delete Clothing Item",
-        "message": "Are you sure you want to delete this clothing item?",
+        "title": "Delete Clothing",
+        "message": "Are you sure you want to delete this clothing?",
         "cancel": "Cancel",
         "confirm": "Delete",
-        "success": "Clothing item deleted successfully",
-        "error": "Error deleting clothing item: {error}"
+        "success": "Clothing deleted successfully",
+        "error": "Error deleting clothing: {error}"
       },
       "filter": {
         "title": "Filter Options",
-        "comingSoon": "Filter feature coming soon"
+        "comingSoon": "Filtering feature coming soon"
       },
       "edit": {
         "comingSoon": "Edit feature coming soon"
       }
-    },
-    "addClothes": "Add Clothes",
-    "addFirstItem": "Add Your First Item",
-    "loginRequired": "Please login",
-    "emptyStateTitle": "Your Closets Are Empty",
-    "emptyStateDescription": "Start adding clothes to get outfit recommendations",
-    "personalizedSuggestionsEmpty": "Add clothes to get personalized suggestions",
-    "aiSuggestion": "AI Suggestion",
-    "aiWeatherSuggestion": "Weather-Based Suggestion",
-    "aiColorSuggestion": "Color Harmony Suggestion",
-    "aiStyleSuggestion": "Style Suggestion",
-    "aiCreativeSuggestion": "Creative Suggestion",
-    "aiGenerating": "Generating personalized suggestions with AI...",
-    "aiError": "Error loading AI suggestions",
-    "aiNoSuggestions": "AI couldn't generate outfit suggestions yet",
-    "aiAddMore": "Add more clothes to help AI make better suggestions"
+    }
   },
   
   "clothing": {
@@ -274,6 +294,7 @@
     "clearFilters": "Clear Filters",
     "noResults": "No results found",
     "featureNotAvailable": "This feature is not available yet",
-    "loginRequired": "You need to login to use this feature"
+    "loginRequired": "You need to login to use this feature",
+    "tryAgain": "Try Again"
   }
 } 

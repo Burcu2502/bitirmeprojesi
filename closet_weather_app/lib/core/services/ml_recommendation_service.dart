@@ -4,21 +4,13 @@ import 'package:http/http.dart' as http;
 import '../models/clothing_item_model.dart';
 import '../models/weather_model.dart';
 import '../models/outfit_model.dart';
+import '../config/env.dart';
 
 /// Makine öğrenmesi API'sine bağlanarak akıllı kıyafet önerileri sunan servis
 class MLRecommendationService {
-  // Localde çalışan API URL - API'nin çalıştığı bilgisayarın gerçek IP adresi kullanılmalı
-  // Aşağıdaki URL'lerden birini kullanabilirsiniz (yorumları kaldırın):
-  
-  // Android Emülatör için (localhost referansı):
-  // final String apiUrl = 'http://10.0.2.2:3000/api/recommend';
-  
-  // iOS Simulator için:
-  // final String apiUrl = 'http://localhost:3000/api/recommend';
-  
-  // Fiziksel cihaz için (bilgisayarın gerçek IP adresi):
-  final String apiUrl = 'http://192.168.1.68:5000/api/recommend';
-  final String multipleApiUrl = 'http://192.168.1.68:5000/api/recommend-multiple';
+  // Eski endpoint'leri kaldırıp Environment'tan alıyoruz
+  final String apiUrl = Environment.mlRecommendationApi;
+  final String multipleApiUrl = Environment.mlMultipleRecommendationApi;
   
   /// Hava durumuna göre kıyafet kombinasyonu önerileri al
   Future<List<ClothingItemModel>> getOutfitRecommendation(

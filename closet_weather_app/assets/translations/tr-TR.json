@@ -134,6 +134,13 @@
     "whatToWearToday": "Bugün Ne Giysem?",
     "suggestedOutfit": "Önerilen Kombin",
     "generateNewOutfit": "Yeni Kombin Oluştur",
+    "suggestions": "Kombin Önerileri",
+    "refreshSuggestions": "Önerileri Yenile",
+    "generatingSuggestions": "Kombin önerileri hazırlanıyor...",
+    "pleaseWait": "Lütfen bekleyin...",
+    "noClothes": "Dolaplarınızda Kıyafet Bulunamadı",
+    "addClothesFirst": "Kombin önerileri için önce kıyafet eklemelisiniz",
+    "addClothes": "Kıyafet Ekle",
     "personalizedSuggestions": "Kişiselleştirilmiş Öneriler",
     "clickForDetails": "Detayları görmek için tıklayın",
     "noOutfitToCreate": "Dolaplarınızda yeterli kıyafet bulunmadığından kombin oluşturulamadı",
@@ -142,7 +149,6 @@
     "notEnoughItems": "Yeterli sayıda kıyafet bulunamadığından kombin önerileri oluşturulamadı.",
     "outfit": "Kombin",
     "errorLoadingItems": "Kıyafet verileri alınırken hata oluştu",
-    "addClothes": "Kıyafet Ekle",
     "addFirstItem": "İlk Kıyafetini Ekle",
     "loginRequired": "Lütfen giriş yapın",
     "emptyStateTitle": "Dolaplarınız Boş",
@@ -206,6 +212,20 @@
       "edit": {
         "comingSoon": "Düzenleme özelliği yakında eklenecek"
       }
+    },
+    "errors": {
+      "outfitGenerationError": "Kombin önerileri oluşturulurken hata oluştu",
+      "checkLogs": "Detaylar için logları kontrol edin"
+    },
+    "debug": {
+      "generatingOutfits": "Kombin önerileri oluşturuluyor",
+      "updatingRecommendations": "Öneriler güncelleniyor",
+      "cachingMLSuggestions": "ML önerileri önbelleğe alınıyor"
+    },
+    "loading": {
+      "initial": "İlk kombin önerileri yükleniyor...",
+      "recommendations": "Kişiselleştirilmiş öneriler hazırlanıyor...",
+      "pleaseWait": "Lütfen bekleyin..."
     }
   },
   
@@ -274,6 +294,7 @@
     "clearFilters": "Filtreleri Temizle",
     "noResults": "Sonuç bulunamadı",
     "featureNotAvailable": "Bu özellik henüz mevcut değil",
-    "loginRequired": "Bu özelliği kullanmak için giriş yapmalısınız"
+    "loginRequired": "Bu özelliği kullanmak için giriş yapmalısınız",
+    "tryAgain": "Tekrar Dene"
   }
 } 

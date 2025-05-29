@@ -6,6 +6,9 @@ import '../providers/auth_provider.dart';
 import '../../../home/presentation/screens/home_screen.dart';
 import 'login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:http/http.dart' as http;
+import '../../../../core/config/env.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,6 +24,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
   
   bool _isLoading = true;
   bool _isAnimationComplete = false;
+  String? _errorMessage;
+  bool _isRetrying = false;
 
   @override
   void initState() {
@@ -54,20 +59,27 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
         _initializeApp();
       }
     });
-
-    // 3 saniye sonra bir sonraki ekrana geçiş yapacak
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        _initializeApp();
-      }
-    });
   }
   
   Future<void> _initializeApp() async {
-    try {
-      // Minimum splash süresi (çok kısa)
-      await Future.delayed(const Duration(milliseconds: 500));
+    if (_isRetrying) return;
     
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+      _isRetrying = true;
+    });
+
+    try {
+      // İnternet bağlantısını kontrol et
+      final connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        throw Exception("İnternet bağlantısı bulunamadı");
+      }
+
+      // API'lerin çalışıp çalışmadığını kontrol et
+      await _checkApiStatus();
+      
       // Firebase hazır mı kontrol et
       await _waitForFirebase();
       
@@ -77,13 +89,48 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
     } catch (e) {
       debugPrint("❌ Uygulama başlatma hatası: $e");
       if (mounted) {
-        _navigateToLogin();
+        setState(() {
+          _isLoading = false;
+          _errorMessage = _getErrorMessage(e);
+          _isRetrying = false;
+        });
       }
     }
   }
 
+  String _getErrorMessage(dynamic error) {
+    if (error is Exception) {
+      if (error.toString().contains("İnternet bağlantısı bulunamadı")) {
+        return "İnternet bağlantınızı kontrol edip tekrar deneyin";
+      } else if (error.toString().contains("API")) {
+        return "Sunucu bağlantısı kurulamadı. Lütfen daha sonra tekrar deneyin";
+      } else if (error.toString().contains("Firebase")) {
+        return "Uygulama servisleri başlatılamadı. Lütfen tekrar deneyin";
+      }
+    }
+    return "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin";
+  }
+
+  Future<void> _checkApiStatus() async {
+    try {
+      // API sağlık kontrolü
+      final response = await http.get(
+        Uri.parse(Environment.healthCheckEndpoint),
+      ).timeout(
+        Environment.connectionTimeout,
+        onTimeout: () => throw Exception("API yanıt vermiyor"),
+      );
+      
+      if (response.statusCode != 200) {
+        throw Exception("API bağlantı hatası: HTTP ${response.statusCode}");
+      }
+      
+    } catch (e) {
+      throw Exception("API bağlantı hatası: $e");
+    }
+  }
+
   Future<void> _waitForFirebase() async {
-    // Firebase'in hazır olmasını bekle (maksimum 3 saniye)
     int attempts = 0;
     while (Firebase.apps.isEmpty && attempts < 30) {
       await Future.delayed(const Duration(milliseconds: 100));
@@ -101,15 +148,17 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
       debugPrint("🔄 SplashScreen: Firebase kullanıcı kontrolü: ${currentUser != null ? 'Oturum açık' : 'Oturum kapalı'}");
       
       if (currentUser != null) {
-        // Kullanıcı oturum açmış, ana sayfaya git
         _navigateToHome();
       } else {
-        // Oturum kapalı, login'e git
         _navigateToLogin();
       }
     } catch (e) {
       debugPrint("❌ Auth kontrol hatası: $e");
-      _navigateToLogin();
+      setState(() {
+        _isLoading = false;
+        _errorMessage = "Oturum kontrolü yapılamadı. Lütfen tekrar deneyin";
+        _isRetrying = false;
+      });
     }
   }
 
@@ -155,7 +204,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                     scale: _scaleAnimation,
                     child: Column(
                       children: [
-                        // Logo ikonu - AI + Hava durumu + Kıyafet kombinasyonu
+                        // Logo ikonu
                         Container(
                           width: size.width * 0.4,
                           height: size.width * 0.4,
@@ -203,19 +252,52 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                 
                 const SizedBox(height: 60),
                 
-                // Yükleniyor indikatörü
-                if (_isLoading)
-                  FadeTransition(
-                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: _controller,
-                        curve: const Interval(0.6, 1.0, curve: Curves.easeIn),
+                // Hata mesajı veya yükleniyor
+                if (_errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Column(
+                      children: [
+                        Text(
+                          _errorMessage!,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.9),
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: _isRetrying ? null : _initializeApp,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Theme.of(context).colorScheme.primary,
+                            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: Text(_isRetrying ? 'Tekrar Deneniyor...' : 'Tekrar Dene'),
+                        ),
+                      ],
+                    ),
+                  )
+                else if (_isLoading)
+                  Column(
+                    children: [
+                      const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 3,
                       ),
-                    ),
-                    child: const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      strokeWidth: 3,
-                    ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Uygulama Başlatılıyor...',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
               ],
             ),

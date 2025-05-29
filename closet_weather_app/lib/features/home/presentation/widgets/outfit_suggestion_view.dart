@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:async'; // StreamController ve Timer için gerekli
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,38 +44,83 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   Future<List<OutfitSuggestion>>? _mlSuggestionsFuture;
   List<ClothingItemModel>? _lastClothingItems;
   WeatherModel? _lastWeather;
+
+  // Önerileri dinlemek için StreamController
+  late StreamController<void> _suggestionsStreamController;
+  Timer? _suggestionTimer;
   
   @override
   void initState() {
     super.initState();
-    // Sayfa yüklendiğinde ilk öneriyi getir
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _generateNewOutfit();
+    _suggestionsStreamController = StreamController<void>.broadcast();
+    
+    // Stream'i dinle ve önerileri güncelle
+    _suggestionsStreamController.stream.listen((_) {
+      if (mounted) {
+        _generateNewOutfit();
+      }
     });
+    
+    // Sayfa yüklendiğinde ilk öneriyi getir
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        await Future.delayed(const Duration(milliseconds: 500)); // UI'ın yerleşmesi için kısa bir gecikme
+        _startSuggestionTimer();
+        _suggestionsStreamController.add(null);
+      }
+    });
+  }
+
+  void _startSuggestionTimer() {
+    // Her 30 saniyede bir önerileri güncelle
+    _suggestionTimer?.cancel();
+    _suggestionTimer = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (mounted) {
+        _suggestionsStreamController.add(null);
+      }
+    });
+  }
+  
+  @override
+  void dispose() {
+    _suggestionTimer?.cancel();
+    _suggestionsStreamController.close();
+    super.dispose();
   }
   
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Sayfa her görünür olduğunda provider'ı yenile
-    ref.invalidate(userClothingItemsProvider);
-    // Cache'i temizle
-    _mlSuggestionsFuture = null;
-    _lastClothingItems = null;
-    _lastWeather = null;
+    
+    // Önceki timer'ı iptal et
+    _suggestionTimer?.cancel();
+    
+    // Provider'ları yenile
+    if (mounted) {
+      Future.microtask(() {
+        ref.invalidate(userClothingItemsProvider);
+        // Cache'i temizle
+        _mlSuggestionsFuture = null;
+        _lastClothingItems = null;
+        _lastWeather = null;
+        // Timer'ı yeniden başlat
+        _startSuggestionTimer();
+        // Yeni öneriler iste
+        _suggestionsStreamController.add(null);
+      });
+    }
   }
   
   Future<void> _generateNewOutfit() async {
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-      
-      // Cache'i temizle ki yeni öneriler oluşturulsun
+    if (!mounted) return;
+
+    setState(() {
+      _isLoading = true;
+      // Cache'i temizle
       _mlSuggestionsFuture = null;
       _lastClothingItems = null;
       _lastWeather = null;
-    }
+    });
     
     try {
       // Kullanıcının kıyafetlerini al
@@ -84,6 +130,9 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
       final weatherState = ref.read(weatherStateProvider);
       final currentWeather = weatherState.currentWeather;
       
+      // Eğer widget hala mount edilmiş değilse işlemi iptal et
+      if (!mounted) return;
+
       // Kıyafet ve hava durumu varsa öneri oluştur
       if (clothingItemsAsync.isNotEmpty && currentWeather != null) {
         final suggestions = _recommendationService.recommendOutfitForWeather(
@@ -91,13 +140,19 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           currentWeather,
         );
         
-        if (mounted) {
-          setState(() {
-            _suggestedOutfit = suggestions;
-            _isLoading = false;
-          });
+        // Son bir kez daha mount kontrolü
+        if (!mounted) return;
+
+        setState(() {
+          _suggestedOutfit = suggestions;
+          _isLoading = false;
+        });
+
+        // Öneriler başarıyla oluşturulduysa ML önerilerini de güncelle
+        if (suggestions.isNotEmpty) {
+          _mlSuggestionsFuture = _generateMLOutfitSuggestions(clothingItemsAsync, currentWeather);
         }
-              } else {
+      } else {
         if (mounted) {
           setState(() {
             _suggestedOutfit = null;
@@ -105,9 +160,11 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           });
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('${tr('wardrobe.errors.outfitGenerationError')}: $e\n$stackTrace');
       if (mounted) {
         setState(() {
+          _suggestedOutfit = null;
           _isLoading = false;
         });
       }
@@ -118,13 +175,27 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final weatherState = ref.watch(weatherStateProvider);
+    final clothingItemsAsyncValue = ref.watch(userClothingItemsProvider);
     
     if (!authState.isAuthenticated) {
       return Center(
         child: Text('general.loginRequired'.tr()),
       );
     }
-    
+
+    // Hava durumu ve kıyafet verilerini izle
+    ref.listen(weatherStateProvider, (previous, next) {
+      if (previous?.currentWeather != next.currentWeather) {
+        _suggestionsStreamController.add(null);
+      }
+    });
+
+    ref.listen(userClothingItemsProvider, (previous, next) {
+      if (previous != next) {
+        _suggestionsStreamController.add(null);
+      }
+    });
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -138,7 +209,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           ),
           const SizedBox(height: 16),
           
-          // Hava durumuna göre kombin önerisi - Daha kompakt
+          // Hava durumu kartı
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -154,29 +225,54 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                      'weather.todayWeather'.tr(),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        'weather.todayWeather'.tr(),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 
-                // Hava durumu bilgileri - Kompakt
+                // Hava durumu bilgileri
                 if (weatherState.isLoading)
-                  const Center(
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'weather.loading'.tr(),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
                   )
                 else if (weatherState.error != null)
-                  Text(
-                    'weather.unavailable'.tr() + ': ${weatherState.error}',
-                    style: const TextStyle(fontSize: 12),
+                  Center(
+                    child: Column(
+                      children: [
+                        const Icon(Icons.error_outline, color: Colors.red, size: 24),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${'weather.unavailable'.tr()}: ${weatherState.error}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed: () {
+                            ref.invalidate(weatherStateProvider);
+                          },
+                          child: Text('general.tryAgain'.tr()),
+                        ),
+                      ],
+                    ),
                   )
                 else if (weatherState.currentWeather != null)
                   Column(
@@ -219,14 +315,14 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                           const Icon(Icons.thermostat_outlined, size: 16),
                           const SizedBox(width: 4),
                           Text(
-                            'Hissedilen: ${weatherState.currentWeather!.feelsLike.toStringAsFixed(1)}°C',
+                            '${'weather.feelsLike'.tr()}: ${weatherState.currentWeather!.feelsLike.toStringAsFixed(1)}°C',
                             style: const TextStyle(fontSize: 12),
                           ),
                           const SizedBox(width: 12),
                           const Icon(Icons.water_drop_outlined, size: 16),
                           const SizedBox(width: 4),
                           Text(
-                            'Nem: ${weatherState.currentWeather!.humidity}%',
+                            '${'weather.humidity'.tr()}: ${weatherState.currentWeather!.humidity}%',
                             style: const TextStyle(fontSize: 12),
                           ),
                         ],
@@ -251,23 +347,97 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
                 ),
                 const SizedBox(height: 12),
                 
-                _isLoading
-                    ? const Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
+                clothingItemsAsyncValue.when(
+                  loading: () => Center(
+                    child: Column(
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 16),
+                        Text(
+                          'wardrobe.loading.initial'.tr(),
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
                         ),
-                      )
-                    : _buildSuggestedOutfit(context),
+                      ],
+                    ),
+                  ),
+                  error: (error, stackTrace) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                        const SizedBox(height: 16),
+                        Text(
+                          'wardrobe.errors.outfitGenerationError'.tr(),
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Colors.red,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'wardrobe.errors.checkLogs'.tr(),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            ref.invalidate(userClothingItemsProvider);
+                          },
+                          child: Text('general.tryAgain'.tr()),
+                        ),
+                      ],
+                    ),
+                  ),
+                  data: (clothingItems) {
+                    if (clothingItems.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.checkroom_outlined, size: 64, color: Colors.grey),
+                            const SizedBox(height: 16),
+                            Text(
+                              'wardrobe.noClothes'.tr(),
+                              style: Theme.of(context).textTheme.titleMedium,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'wardrobe.addClothesFirst'.tr(),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Colors.grey,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const WardrobeScreen(),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.add),
+                              label: Text('wardrobe.addClothes'.tr()),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    
+                    // Kıyafet önerileri widget'ı
+                    return _buildOutfitSuggestions(clothingItems);
+                  },
+                ),
                 
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
-                  height: 48, // Daha da büyük buton
+                  height: 48,
                   child: ElevatedButton(
                     onPressed: _generateNewOutfit,
                     style: ElevatedButton.styleFrom(
@@ -301,12 +471,71 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           ),
           const SizedBox(height: 16),
           
-          // Kullanıcının kıyafetleriyle dinamik öneriler - Büyük alan
+          // Kullanıcının kıyafetleriyle dinamik öneriler
           _buildPersonalizedSuggestions(context),
           
-          const SizedBox(height: 20), // Alt boşluk
+          const SizedBox(height: 20),
         ],
       ),
+    );
+  }
+  
+  Widget _buildOutfitSuggestions(List<ClothingItemModel> clothingItems) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Başlık
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'wardrobe.suggestions'.tr(),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (_isLoading)
+              const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _generateNewOutfit,
+                tooltip: 'wardrobe.refreshSuggestions'.tr(),
+              ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        
+        // Öneriler
+        if (_suggestedOutfit == null || _suggestedOutfit!.isEmpty)
+          Center(
+            child: Column(
+              children: [
+                const Icon(Icons.auto_awesome, size: 48, color: Colors.grey),
+                const SizedBox(height: 16),
+                Text(
+                  'wardrobe.loading.recommendations'.tr(),
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'wardrobe.loading.pleaseWait'.tr(),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          )
+        else
+          _buildSuggestedOutfit(context),
+      ],
     );
   }
   

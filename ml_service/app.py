@@ -3,6 +3,7 @@ from flask_cors import CORS
 import json
 import os
 from models.outfit_model import OutfitRecommender
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app) 
@@ -22,13 +23,59 @@ def load_data():
 # Model yükleme
 recommender = OutfitRecommender()
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    """API sağlık kontrolü endpoint'i"""
+    try:
+        # Veri dosyasını kontrol et
+        clothing_items = load_data()
+        data_status = len(clothing_items) > 0
+        
+        # Model durumunu kontrol et
+        model_status = recommender is not None
+        
+        if data_status and model_status:
+            return jsonify({
+                "status": "healthy",
+                "message": "API ve servisler çalışıyor",
+                "details": {
+                    "data": "ok",
+                    "model": "ok",
+                    "timestamp": datetime.now().isoformat()
+                }
+            }), 200
+        else:
+            issues = []
+            if not data_status:
+                issues.append("Veri dosyası yüklenemedi")
+            if not model_status:
+                issues.append("Model başlatılamadı")
+                
+            return jsonify({
+                "status": "unhealthy",
+                "message": "Bazı servisler çalışmıyor",
+                "details": {
+                    "issues": issues,
+                    "timestamp": datetime.now().isoformat()
+                }
+            }), 503
+            
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e),
+            "timestamp": datetime.now().isoformat()
+        }), 500
+
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({
         "status": "success",
         "message": "Kıyafet Öneri API'si çalışıyor",
         "endpoints": {
-            "/api/recommend": "POST - Kıyafet önerisi almak için"
+            "/health": "GET - API sağlık kontrolü",
+            "/api/recommend": "POST - Kıyafet önerisi almak için",
+            "/api/recommend-multiple": "POST - Çoklu strateji ile kıyafet önerileri"
         }
     })
 
