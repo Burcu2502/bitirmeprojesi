@@ -38,6 +38,12 @@ pipeline {
                         -v /opt/ml-service/data:/app/data \
                         -v /opt/ml-service/models:/app/models \
                         ${DOCKER_IMAGE}:${DOCKER_TAG}
+                    
+                    # Container içeriğini kontrol et
+                    echo "📂 Container içeriği:"
+                    docker exec ml-service ls -la /app
+                    echo "📂 Models klasörü içeriği:"
+                    docker exec ml-service ls -la /app/models
                 '''
             }
         }
