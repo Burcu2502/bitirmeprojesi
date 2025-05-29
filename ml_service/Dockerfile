@@ -16,6 +16,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Uygulama kodlarını kopyala
 COPY . .
 
+# Python modül yolunu ayarla
+ENV PYTHONPATH=/app
+
 # Port'u expose et
 EXPOSE 5000
 

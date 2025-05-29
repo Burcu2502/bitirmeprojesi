@@ -2,23 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import os
-import sys
-from models import OutfitRecommender
+from models.outfit_model import OutfitRecommender
 from datetime import datetime
-
-# Python modül yolunu ayarla
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, current_dir)
-
-try:
-    from models.outfit_model import OutfitRecommender
-except ImportError as e:
-    print(f"Import hatası: {e}")
-    print(f"Python path: {sys.path}")
-    print(f"Current directory: {current_dir}")
-    print(f"Directory contents: {os.listdir(current_dir)}")
-    print(f"Models directory contents: {os.listdir(os.path.join(current_dir, 'models'))}")
-    raise
 
 app = Flask(__name__)
 CORS(app) 
