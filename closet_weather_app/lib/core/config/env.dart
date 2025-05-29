@@ -1,5 +1,5 @@
 class Environment {
-  static const String baseApiUrl = 'http://172.20.10.3:5000';
+  static const String baseApiUrl = 'http://89.252.179.156:5000';
   
   // ML API Endpoints
   static const String mlRecommendationApi = '$baseApiUrl/api/recommend';
