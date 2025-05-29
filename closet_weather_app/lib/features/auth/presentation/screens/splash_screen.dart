@@ -160,14 +160,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                           width: size.width * 0.4,
                           height: size.width * 0.4,
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.white,
-                                Colors.blue.shade50,
-                              ],
-                            ),
+                            color: Colors.white,
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
@@ -177,97 +170,31 @@ class _SplashScreenState extends ConsumerState<SplashScreen> with SingleTickerPr
                               ),
                             ],
                           ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Ana ikon - AI brain
-                              Icon(
-                                Icons.psychology,
-                                size: size.width * 0.15,
-                              color: Theme.of(context).colorScheme.primary,
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/logo/app_logo.png',
+                              fit: BoxFit.cover,
                             ),
-                              // Küçük hava durumu ikonu
-                              Positioned(
-                                top: size.width * 0.08,
-                                right: size.width * 0.08,
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange.shade400,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.wb_sunny,
-                                    size: size.width * 0.06,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              // Küçük kıyafet ikonu
-                              Positioned(
-                                bottom: size.width * 0.08,
-                                left: size.width * 0.08,
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.purple.shade400,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.checkroom,
-                                    size: size.width * 0.06,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ),
-                        
-                        const SizedBox(height: 30),
-                        
-                        // Uygulama adı
+                        const SizedBox(height: 24),
+                        // Uygulama ismi
                         Text(
-                          'Bugün Ne Giysem',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
+                          'BNG',
+                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             color: Colors.white,
-                            letterSpacing: 1.2,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 5.0,
-                                color: Colors.black.withOpacity(0.3),
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
                           ),
                         ),
-                        
-                        const SizedBox(height: 15),
-                        
-                        // Ana slogan
-                        Text(
-                          '🤖 Yapay Zeka ile Akıllı Kombin Önerileri',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white.withOpacity(0.95),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        
                         const SizedBox(height: 8),
-                        
-                        // Alt slogan
                         Text(
-                          'Hava durumuna uygun • Renk uyumlu • Stil bazlı',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
+                          'Yapay Zeka Destekli\nGardırop Asistanı',
                           textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Colors.white.withOpacity(0.9),
+                            height: 1.3,
+                          ),
                         ),
                       ],
                     ),
