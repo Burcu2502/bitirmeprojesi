@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../providers/weather_provider.dart';
 
 class CitySelectionWidget extends ConsumerStatefulWidget {
@@ -66,7 +67,7 @@ class _CitySelectionWidgetState extends ConsumerState<CitySelectionWidget> {
           controller: _controller,
           focusNode: _focusNode,
           decoration: InputDecoration(
-            hintText: 'Şehir ara veya seç...',
+            hintText: 'weather.citySelection.searchPlaceholder'.tr(),
             prefixIcon: const Icon(Icons.search),
             suffixIcon: _controller.text.isNotEmpty
                 ? IconButton(
@@ -112,7 +113,7 @@ class _CitySelectionWidgetState extends ConsumerState<CitySelectionWidget> {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  'Şu an: ${weatherState.currentCity}',
+                  'weather.citySelection.currentCity'.tr() + ' ${weatherState.currentCity}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
@@ -126,7 +127,7 @@ class _CitySelectionWidgetState extends ConsumerState<CitySelectionWidget> {
         // Öneriler veya favori şehirler
         if (_showSuggestions && _suggestions.isNotEmpty) ...[
           Text(
-            'Öneriler:',
+            'weather.citySelection.suggestions'.tr(),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
             ),
@@ -150,7 +151,7 @@ class _CitySelectionWidgetState extends ConsumerState<CitySelectionWidget> {
           Row(
             children: [
               Text(
-                'Popüler Şehirler:',
+                'weather.citySelection.popularCities'.tr(),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),

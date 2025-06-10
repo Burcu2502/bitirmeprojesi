@@ -127,6 +127,19 @@
       "sunny": "Güneşli, şapka ve güneş kremi kullan",
       "normal": "Normal hava koşulları",
       "dressAccordingly": "Hava durumuna uygun giyinin"
+    },
+    "citySelection": {
+      "title": "Şehir Seç",
+      "searchPlaceholder": "Şehir ara veya seç...",
+      "suggestions": "Öneriler:",
+      "popularCities": "Popüler Şehirler:",
+      "currentCity": "Şu an:",
+      "selectCity": "Şehir Seç",
+      "useCurrentLocation": "Mevcut Konumu Kullan",
+      "locationFailedMessage": "Konum bilgisi alınamadı. Lütfen bir şehir seçin veya konum izinlerini kontrol edin.",
+      "tip": "İpucu: Şehir adını yazarken otomatik öneriler gösterilecektir.",
+      "change": "Değiştir",
+      "locationNotAvailable": "Konum bilgisi alınamadı. {city} şehri için hava durumu gösteriliyor."
     }
   },
   

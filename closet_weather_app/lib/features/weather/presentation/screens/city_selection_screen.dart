@@ -18,7 +18,7 @@ class _CitySelectionScreenState extends ConsumerState<CitySelectionScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Şehir Seç'),
+        title: Text('weather.citySelection.title'.tr()),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -27,7 +27,7 @@ class _CitySelectionScreenState extends ConsumerState<CitySelectionScreen> {
           // Mevcut konumu kullan butonu
           IconButton(
             icon: const Icon(Icons.my_location),
-            tooltip: 'Mevcut Konumu Kullan',
+            tooltip: 'weather.citySelection.useCurrentLocation'.tr(),
             onPressed: weatherState.isLoading 
                 ? null 
                 : () async {
@@ -61,7 +61,7 @@ class _CitySelectionScreenState extends ConsumerState<CitySelectionScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Konum bilgisi alınamadı. Lütfen bir şehir seçin veya konum izinlerini kontrol edin.',
+                            'weather.citySelection.locationFailedMessage'.tr(),
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: Theme.of(context).colorScheme.onErrorContainer,
                             ),
@@ -106,7 +106,7 @@ class _CitySelectionScreenState extends ConsumerState<CitySelectionScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'İpucu: Şehir adını yazarken otomatik öneriler gösterilecektir.',
+                        'weather.citySelection.tip'.tr(),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),

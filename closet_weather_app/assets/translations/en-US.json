@@ -127,6 +127,19 @@
       "sunny": "Sunny, use hat and sunscreen",
       "normal": "Normal weather conditions",
       "dressAccordingly": "Dress according to the weather"
+    },
+    "citySelection": {
+      "title": "Select City",
+      "searchPlaceholder": "Search or select city...",
+      "suggestions": "Suggestions:",
+      "popularCities": "Popular Cities:",
+      "currentCity": "Current:",
+      "selectCity": "Select City",
+      "useCurrentLocation": "Use Current Location",
+      "locationFailedMessage": "Location information could not be obtained. Please select a city or check location permissions.",
+      "tip": "Tip: Automatic suggestions will be shown while typing city name.",
+      "change": "Change",
+      "locationNotAvailable": "Location information not available. Showing weather for {city}."
     }
   },
   

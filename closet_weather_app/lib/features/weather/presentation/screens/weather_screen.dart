@@ -85,7 +85,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Konum bilgisi alınamadı. ${state.currentCity} şehri için hava durumu gösteriliyor.',
+              'weather.citySelection.locationNotAvailable'.tr(namedArgs: {'city': state.currentCity}),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
@@ -100,7 +100,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
               );
             },
             child: Text(
-              'Değiştir',
+              'weather.citySelection.change'.tr(),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 12,
@@ -156,7 +156,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                       );
                     },
                     icon: const Icon(Icons.search),
-                    label: const Text('Şehir Seç'),
+                    label: Text('weather.citySelection.selectCity'.tr()),
                   ),
                 ],
               ),
@@ -190,7 +190,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                   ElevatedButton.icon(
                     onPressed: () => ref.read(weatherStateProvider.notifier).getWeatherByCurrentLocation(),
                     icon: const Icon(Icons.my_location),
-                    label: const Text('Konum Kullan'),
+                    label: Text('weather.citySelection.useCurrentLocation'.tr()),
                   ),
                   OutlinedButton.icon(
                     onPressed: () {
@@ -201,7 +201,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                       );
                     },
                     icon: const Icon(Icons.search),
-                    label: const Text('Şehir Seç'),
+                    label: Text('weather.citySelection.selectCity'.tr()),
                   ),
                 ],
               ),
