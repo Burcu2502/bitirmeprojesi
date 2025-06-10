@@ -63,6 +63,34 @@ class AuthService {
       return userCredential;
     } catch (e) {
       debugPrint("❌ Kayıt olurken hata: $e");
+      
+      // Pigeon/register spesifik hatalarını yakala
+      final errorString = e.toString();
+      if (errorString.contains('PigeonUserDetails') || 
+          errorString.contains('type \'List<Object?>\' is not a subtype') ||
+          errorString.contains('pigeon')) {
+        debugPrint("⚠️ Register sırasında Pigeon hatası yakalandı - Firebase Auth durumunu kontrol ediliyor");
+        
+        // Firebase Auth durumunu kontrol et
+        final currentUser = _auth.currentUser;
+        if (currentUser != null) {
+          debugPrint("✅ Pigeon hatası olmasına rağmen kullanıcı kayıt olmuş: ${currentUser.uid}");
+          
+          // Firestore'da kullanıcı verisini kontrol et/oluştur (manuel isim ile)
+          try {
+            await _ensureUserDataExists(currentUser, manualName: name);
+          } catch (firestoreError) {
+            debugPrint("⚠️ Firestore kontrol hatası (Register Pigeon sonrası): $firestoreError");
+          }
+          
+          // Mock UserCredential oluştur (Pigeon hatası nedeniyle)
+          return MockUserCredential(currentUser);
+        } else {
+          debugPrint("❌ Pigeon hatası ve kullanıcı da kayıt olmamış - gerçek hata");
+          throw Exception('Kayıt işlemi başarısız oldu');
+        }
+      }
+      
       throw Exception('Kayıt olurken bir hata oluştu: $e');
     }
   }
@@ -139,20 +167,9 @@ class AuthService {
           final userData = await _firestoreService.getUser(userCredential.user!.uid);
           
           if (userData == null) {
-            // Kullanıcı Firestore'da yoksa oluştur
-            final newUser = UserModel(
-              id: userCredential.user!.uid,
-              email: googleUser.email,
-              name: googleUser.displayName ?? 'Google Kullanıcısı',
-              photoUrl: googleUser.photoUrl,
-              skinTone: null,
-              stylePreferences: [],
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
-            );
-            
-            await _firestoreService.createUser(newUser);
-            debugPrint("✅ Yeni kullanıcı Firestore'da oluşturuldu");
+            // Kullanıcı Firestore'da yoksa oluştur (Google displayName ile)
+            await _ensureUserDataExists(userCredential.user!, manualName: googleUser.displayName);
+            debugPrint("✅ Yeni Google kullanıcısı Firestore'da oluşturuldu");
           }
         } catch (e) {
           debugPrint("⚠️ Firestore kullanıcı kontrol/oluşturma hatası: $e");
@@ -202,8 +219,8 @@ class AuthService {
     }
   }
 
-  // Kullanıcı verilerinin Firestore'da var ol
-  Future<void> _ensureUserDataExists(User user) async {
+  // Kullanıcı verilerinin Firestore'da var olduğundan emin ol
+  Future<void> _ensureUserDataExists(User user, {String? manualName}) async {
     try {
       debugPrint("🔍 Kullanıcı verileri kontrol ediliyor: ${user.uid}");
       
@@ -212,10 +229,14 @@ class AuthService {
       if (userData == null) {
         debugPrint("📝 Kullanıcı Firestore'da bulunamadı, oluşturuluyor...");
         
+        // İsim önceliği: manualName > user.displayName > 'Kullanıcı'
+        String userName = manualName ?? user.displayName ?? 'Kullanıcı';
+        debugPrint("📝 Kullanılacak isim: $userName (manualName: $manualName, displayName: ${user.displayName})");
+        
         final newUser = UserModel(
           id: user.uid,
           email: user.email ?? '',
-          name: user.displayName ?? 'Kullanıcı',
+          name: userName,
           photoUrl: user.photoURL,
           skinTone: null,
           stylePreferences: [],
@@ -224,7 +245,7 @@ class AuthService {
         );
         
         await _firestoreService.createUser(newUser);
-        debugPrint("✅ Kullanıcı profili Firestore'da oluşturuldu");
+        debugPrint("✅ Kullanıcı profili Firestore'da oluşturuldu: $userName");
       } else {
         debugPrint("✅ Kullanıcı verileri zaten mevcut: ${userData.name}");
       }

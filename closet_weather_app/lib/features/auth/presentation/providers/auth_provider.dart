@@ -115,6 +115,30 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Auth state listener zaten state'i güncelleyecek
     } catch (e) {
       debugPrint('❌ Email/Şifre ile kayıt hata: $e');
+      
+      final errorString = e.toString();
+      
+      // Pigeon hatalarını kontrol et
+      if (errorString.contains('PigeonUserDetails') || 
+          errorString.contains('type \'List<Object?>\' is not a subtype') ||
+          errorString.contains('pigeon')) {
+        debugPrint('ℹ️ Kayıt sırasında Pigeon hatası yakalandı - Firebase Auth durumu kontrol ediliyor');
+        
+        // Firebase Auth durumunu kontrol et
+        final currentUser = _authService.currentUser;
+        if (currentUser != null) {
+          debugPrint('✅ Pigeon hatası olmasına rağmen kullanıcı kayıt olmuş: ${currentUser.uid}');
+          // State'i başarılı olarak güncelle
+          state = state.copyWith(
+            user: currentUser,
+            isLoading: false,
+            errorMessage: null,
+          );
+          return;
+        }
+      }
+      
+      // Diğer hatalar için normal hata mesajı
       state = state.copyWith(
         isLoading: false,
         errorMessage: e.toString(),

@@ -79,9 +79,44 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         }
       });
     } catch (e) {
-      setState(() {
-        _errorMessage = 'Beklenmeyen bir hata oluştu: $e';
-      });
+      debugPrint("❌ Kayıt hatası: $e");
+      
+      if (mounted) {
+        final errorString = e.toString();
+        
+        // Pigeon hatalarını özel olarak ele al
+        if (errorString.contains('PigeonUserDetails') || 
+            errorString.contains('type \'List<Object?>\' is not a subtype') ||
+            errorString.contains('pigeon')) {
+          
+          debugPrint('ℹ️ Kayıt sırasında Pigeon hatası yakalandı, Firebase Auth durumu kontrol ediliyor');
+          
+          // Firebase Auth durumunu kontrol et
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            debugPrint("✅ Pigeon hatası olmasına rağmen kullanıcı kayıt olmuş: ${user.uid}");
+            
+            // Başarılı mesaj göster
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Kayıt başarılı! Hoş geldiniz!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            
+            // Ana sayfaya yönlendir
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+            return;
+          }
+        }
+        
+        // Diğer hatalar için genel mesaj
+        setState(() {
+          _errorMessage = 'Kayıt olurken bir hata oluştu. Lütfen tekrar deneyin.';
+        });
+      }
     } finally {
       if (mounted) {
         setState(() {
