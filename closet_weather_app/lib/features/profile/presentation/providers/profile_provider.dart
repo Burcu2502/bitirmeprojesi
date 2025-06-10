@@ -224,28 +224,21 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   // Şifre değiştir
   Future<bool> changePassword(String currentPassword, String newPassword) async {
     try {
+      debugPrint('🔐 Şifre değiştirme işlemi başlatılıyor...');
       final success = await _repository.changePassword(currentPassword, newPassword);
-      return success;
-    } catch (e) {
-      debugPrint('❌ Şifre değiştirme hatası: $e');
-      return false;
-    }
-  }
-
-  // Hesabı sil
-  Future<bool> deleteAccount(String password) async {
-    try {
-      final success = await _repository.deleteAccount(password);
       
       if (success) {
-        // Auth provider'ı sıfırla
-        _ref.read(authProvider.notifier).signOut();
+        debugPrint('✅ Şifre başarıyla değiştirildi (ProfileProvider)');
+      } else {
+        debugPrint('❌ Şifre değiştirilemedi (ProfileProvider)');
       }
       
       return success;
     } catch (e) {
-      debugPrint('❌ Hesap silme hatası: $e');
-      return false;
+      debugPrint('❌ ProfileProvider şifre değiştirme hatası: $e');
+      
+      // Exception'ı yeniden fırlat ki UI katmanında yakalanabilsin
+      rethrow;
     }
   }
 } 

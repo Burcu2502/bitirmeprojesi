@@ -118,6 +118,34 @@ class AuthService {
       return result;
     } catch (e) {
       debugPrint("❌ Email/şifre ile giriş yaparken hata: $e");
+      
+      // Pigeon/login spesifik hatalarını yakala
+      final errorString = e.toString();
+      if (errorString.contains('PigeonUserDetails') || 
+          errorString.contains('type \'List<Object?>\' is not a subtype') ||
+          errorString.contains('pigeon')) {
+        debugPrint("⚠️ Login sırasında Pigeon hatası yakalandı - Firebase Auth durumunu kontrol ediliyor");
+        
+        // Firebase Auth durumunu kontrol et
+        final currentUser = _auth.currentUser;
+        if (currentUser != null) {
+          debugPrint("✅ Pigeon hatası olmasına rağmen kullanıcı giriş yapmış: ${currentUser.uid}");
+          
+          // Firestore'da kullanıcı verisini kontrol et/oluştur
+          try {
+            await _ensureUserDataExists(currentUser);
+          } catch (firestoreError) {
+            debugPrint("⚠️ Firestore kontrol hatası (Login Pigeon sonrası): $firestoreError");
+          }
+          
+          // Mock UserCredential oluştur (Pigeon hatası nedeniyle)
+          return MockUserCredential(currentUser);
+        } else {
+          debugPrint("❌ Pigeon hatası ve kullanıcı da giriş yapmamış - gerçek hata");
+          throw Exception('Kullanıcı adı veya şifre yanlış');
+        }
+      }
+      
       throw Exception('Giriş yaparken bir hata oluştu: $e');
     }
   }

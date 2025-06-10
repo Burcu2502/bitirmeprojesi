@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/services/auth_service.dart';
 import '../providers/auth_provider.dart';
 import 'register_screen.dart';
@@ -52,31 +53,74 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
+      debugPrint('❌ Firebase Auth hatası: ${e.code} - ${e.message}');
       setState(() {
         switch (e.code) {
           case 'user-not-found':
-            _errorMessage = 'Bu e-posta ile kayıtlı kullanıcı bulunamadı.';
+            _errorMessage = 'auth.userNotFound'.tr();
             break;
           case 'wrong-password':
-            _errorMessage = 'Yanlış şifre girdiniz.';
+            _errorMessage = 'auth.wrongCredentials'.tr();
             break;
           case 'invalid-email':
-            _errorMessage = 'Geçersiz e-posta adresi.';
+            _errorMessage = 'auth.invalidEmail'.tr();
             break;
           case 'user-disabled':
-            _errorMessage = 'Bu kullanıcı hesabı devre dışı bırakılmış.';
+            _errorMessage = 'auth.userDisabled'.tr();
             break;
           case 'invalid-credential':
-            _errorMessage = 'Geçersiz kimlik bilgileri. Lütfen e-posta ve şifrenizi kontrol edin.';
+            _errorMessage = 'auth.wrongCredentials'.tr();
+            break;
+          case 'too-many-requests':
+            _errorMessage = 'auth.tooManyRequests'.tr();
+            break;
+          case 'network-request-failed':
+            _errorMessage = 'auth.checkConnection'.tr();
             break;
           default:
-            _errorMessage = 'Giriş yaparken bir hata oluştu: ${e.message}';
+            debugPrint('❌ Bilinmeyen Firebase Auth hatası: ${e.code}');
+            _errorMessage = 'auth.loginError'.tr();
         }
       });
     } catch (e) {
-      setState(() {
-        _errorMessage = 'Beklenmeyen bir hata oluştu: $e';
-      });
+      debugPrint('❌ Genel login hatası: $e');
+      
+      if (mounted) {
+        final errorString = e.toString();
+        
+        // Pigeon hatalarını özel olarak ele al
+        if (errorString.contains('PigeonUserDetails') || 
+            errorString.contains('type \'List<Object?>\' is not a subtype') ||
+            errorString.contains('pigeon')) {
+          
+          debugPrint('ℹ️ Login sırasında Pigeon hatası yakalandı, Firebase Auth durumu kontrol ediliyor');
+          
+          // Firebase Auth durumunu kontrol et
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            debugPrint("✅ Pigeon hatası olmasına rağmen kullanıcı giriş yapmış: ${user.uid}");
+            
+            // Başarılı mesaj göster
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('✅ Giriş başarılı! (Pigeon bypass)'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            
+            // Ana sayfaya yönlendir
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+            return;
+          }
+        }
+        
+        setState(() {
+          // Daha kullanıcı dostu genel hata mesajı
+          _errorMessage = 'auth.loginError'.tr();
+        });
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -130,8 +174,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             
             // Başarılı mesaj göster
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Google ile giriş başarılı!'),
+              SnackBar(
+                content: Text('auth.googleLoginSuccess'.tr()),
                 backgroundColor: Colors.green,
               ),
             );
@@ -155,7 +199,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         
         // Diğer hatalar için genel mesaj
         setState(() {
-          _errorMessage = 'Google ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.';
+          _errorMessage = 'auth.googleLoginError'.tr();
         });
         
         ScaffoldMessenger.of(context).showSnackBar(
@@ -195,7 +239,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Dolap & Hava Durumu',
+                        'appTitle'.tr(),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -204,7 +248,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Hesabınıza giriş yapın',
+                        'auth.loginToAccount'.tr(),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
@@ -237,20 +281,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'E-posta',
-                                hintText: 'E-posta adresinizi girin',
-                                prefixIcon: Icon(Icons.email_outlined),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: 'auth.email'.tr(),
+                                hintText: 'auth.enterEmail'.tr(),
+                                prefixIcon: const Icon(Icons.email_outlined),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Lütfen e-posta adresinizi girin';
+                                  return 'auth.pleaseEnterEmail'.tr();
                                 }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                    .hasMatch(value)) {
-                                  return 'Geçerli bir e-posta adresi girin';
+                                
+                                // Basit email formatı - gerisi Firebase'e kalsın
+                                final emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+                                if (!emailRegex.hasMatch(value.trim())) {
+                                  return 'auth.enterValidEmail'.tr();
                                 }
+                                
                                 return null;
                               },
                             ),
@@ -261,8 +308,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _passwordController,
                               obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
-                                labelText: 'Şifre',
-                                hintText: 'Şifrenizi girin',
+                                labelText: 'auth.password'.tr(),
+                                hintText: 'auth.enterPassword'.tr(),
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -280,10 +327,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Lütfen şifrenizi girin';
+                                  return 'auth.pleaseEnterPassword'.tr();
                                 }
                                 if (value.length < 6) {
-                                  return 'Şifre en az 6 karakter olmalıdır';
+                                  return 'auth.passwordMinLength'.tr();
                                 }
                                 return null;
                               },
@@ -302,7 +349,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     ),
                                   );
                                 },
-                                child: const Text('Şifremi Unuttum'),
+                                child: Text('auth.forgotPassword'.tr()),
                               ),
                             ),
                             const SizedBox(height: 24),
@@ -312,9 +359,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: _signInWithEmailAndPassword,
-                                child: const Text(
-                                  'Giriş Yap',
-                                  style: TextStyle(fontSize: 16),
+                                child: Text(
+                                  'auth.login'.tr(),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                             ),
@@ -326,13 +373,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                       // VEYA ayırıcı
                       Row(
-                        children: const [
-                          Expanded(child: Divider()),
+                        children: [
+                          const Expanded(child: Divider()),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Text('VEYA'),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text('auth.or'.tr()),
                           ),
-                          Expanded(child: Divider()),
+                          const Expanded(child: Divider()),
                         ],
                       ),
 
@@ -369,7 +416,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ),
                               ),
                               const SizedBox(width: 12),
-                              const Text('Google ile Giriş Yap'),
+                              Text('auth.loginWithGoogle'.tr()),
                             ],
                           ),
                         ),
@@ -381,13 +428,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Center(
                         child: RichText(
                           text: TextSpan(
-                            text: 'Hesabınız yok mu? ',
+                            text: 'auth.noAccount'.tr(),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                             children: [
                               TextSpan(
-                                text: 'Kayıt Ol',
+                                text: 'auth.register'.tr(),
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../home/presentation/screens/home_screen.dart';
 
@@ -40,7 +41,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     // Şifrelerin uyumunu kontrol et
     if (_passwordController.text != _confirmPasswordController.text) {
       setState(() {
-        _errorMessage = 'Şifreler eşleşmiyor.';
+        _errorMessage = 'auth.passwordMismatch'.tr();
       });
       return;
     }
@@ -63,19 +64,30 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
+      debugPrint('❌ Firebase Auth kayıt hatası: ${e.code} - ${e.message}');
       setState(() {
         switch (e.code) {
           case 'email-already-in-use':
-            _errorMessage = 'Bu e-posta adresi zaten kullanılıyor.';
+            _errorMessage = 'auth.emailAlreadyInUse'.tr();
             break;
           case 'invalid-email':
-            _errorMessage = 'Geçersiz e-posta adresi.';
+            _errorMessage = 'auth.invalidEmail'.tr();
             break;
           case 'weak-password':
-            _errorMessage = 'Şifre çok zayıf. Daha güçlü bir şifre seçin.';
+            _errorMessage = 'auth.weakPassword'.tr();
+            break;
+          case 'operation-not-allowed':
+            _errorMessage = 'auth.operationNotAllowed'.tr();
+            break;
+          case 'too-many-requests':
+            _errorMessage = 'auth.tooManyRequests'.tr();
+            break;
+          case 'network-request-failed':
+            _errorMessage = 'auth.checkConnection'.tr();
             break;
           default:
-            _errorMessage = 'Kayıt olurken bir hata oluştu: ${e.message}';
+            debugPrint('❌ Bilinmeyen Firebase Auth kayıt hatası: ${e.code}');
+            _errorMessage = 'auth.registerError'.tr();
         }
       });
     } catch (e) {
@@ -98,8 +110,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             
             // Başarılı mesaj göster
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Kayıt başarılı! Hoş geldiniz!'),
+              SnackBar(
+                content: Text('auth.registerSuccess'.tr()),
                 backgroundColor: Colors.green,
               ),
             );
@@ -114,7 +126,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         
         // Diğer hatalar için genel mesaj
         setState(() {
-          _errorMessage = 'Kayıt olurken bir hata oluştu. Lütfen tekrar deneyin.';
+          _errorMessage = 'auth.registerError'.tr();
         });
       }
     } finally {
@@ -130,7 +142,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kayıt Ol'),
+        title: Text('auth.register'.tr()),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -150,7 +162,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Dolap & Hava Durumu',
+                        'appTitle'.tr(),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -159,7 +171,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Yeni hesap oluşturun',
+                        'auth.createAccount'.tr(),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
@@ -193,15 +205,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: _nameController,
                               keyboardType: TextInputType.name,
                               textCapitalization: TextCapitalization.words,
-                              decoration: const InputDecoration(
-                                labelText: 'Ad Soyad',
-                                hintText: 'Adınızı ve soyadınızı girin',
-                                prefixIcon: Icon(Icons.person_outline),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: 'auth.fullName'.tr(),
+                                hintText: 'auth.enterFullName'.tr(),
+                                prefixIcon: const Icon(Icons.person_outline),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Lütfen adınızı ve soyadınızı girin';
+                                  return 'auth.pleaseEnterFullName'.tr();
                                 }
                                 return null;
                               },
@@ -212,20 +224,23 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'E-posta',
-                                hintText: 'E-posta adresinizi girin',
-                                prefixIcon: Icon(Icons.email_outlined),
-                                border: OutlineInputBorder(),
+                              decoration: InputDecoration(
+                                labelText: 'auth.email'.tr(),
+                                hintText: 'auth.enterEmail'.tr(),
+                                prefixIcon: const Icon(Icons.email_outlined),
+                                border: const OutlineInputBorder(),
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Lütfen e-posta adresinizi girin';
+                                  return 'auth.pleaseEnterEmail'.tr();
                                 }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                    .hasMatch(value)) {
-                                  return 'Geçerli bir e-posta adresi girin';
+                                
+                                // Basit email formatı - gerisi Firebase'e kalsın
+                                final emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+                                if (!emailRegex.hasMatch(value.trim())) {
+                                  return 'auth.enterValidEmail'.tr();
                                 }
+                                
                                 return null;
                               },
                             ),
@@ -236,8 +251,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: _passwordController,
                               obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
-                                labelText: 'Şifre',
-                                hintText: 'Şifrenizi girin',
+                                labelText: 'auth.password'.tr(),
+                                hintText: 'auth.enterPassword'.tr(),
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -255,10 +270,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Lütfen şifrenizi girin';
+                                  return 'auth.pleaseEnterPassword'.tr();
                                 }
                                 if (value.length < 6) {
-                                  return 'Şifre en az 6 karakter olmalıdır';
+                                  return 'auth.passwordMinLength'.tr();
                                 }
                                 return null;
                               },
@@ -270,8 +285,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: _confirmPasswordController,
                               obscureText: !_isConfirmPasswordVisible,
                               decoration: InputDecoration(
-                                labelText: 'Şifre Tekrar',
-                                hintText: 'Şifrenizi tekrar girin',
+                                labelText: 'auth.confirmPassword'.tr(),
+                                hintText: 'auth.enterPasswordAgain'.tr(),
                                 prefixIcon: const Icon(Icons.lock_outline),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -289,10 +304,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Lütfen şifrenizi tekrar girin';
+                                  return 'auth.pleaseEnterPasswordAgain'.tr();
                                 }
                                 if (value != _passwordController.text) {
-                                  return 'Şifreler eşleşmiyor';
+                                  return 'auth.passwordMismatch'.tr();
                                 }
                                 return null;
                               },
@@ -304,9 +319,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: _register,
-                                child: const Text(
-                                  'Kayıt Ol',
-                                  style: TextStyle(fontSize: 16),
+                                child: Text(
+                                  'auth.register'.tr(),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                             ),
@@ -321,7 +336,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('Giriş ekranına dön'),
+                        child: Text('auth.backToLogin'.tr()),
                       ),
                     ],
                   ),
