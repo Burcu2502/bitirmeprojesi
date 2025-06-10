@@ -5,6 +5,7 @@ import '../../presentation/providers/weather_provider.dart';
 import '../widgets/weather_display.dart';
 import '../widgets/weather_forecast_list.dart';
 import '../../../wardrobe/presentation/widgets/outfit_suggestion_list.dart';
+import 'city_selection_screen.dart';
 
 class WeatherScreen extends ConsumerStatefulWidget {
   const WeatherScreen({super.key});
@@ -17,6 +18,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     final weatherState = ref.watch(weatherStateProvider);
+    final favoriteCities = ref.watch(favoriteCitiesProvider);
     
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +27,11 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              _showSearchLocationDialog(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CitySelectionScreen(),
+                ),
+              );
             },
           ),
           IconButton(
@@ -42,7 +48,67 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
           ),
         ],
       ),
-      body: _buildBody(context, weatherState),
+      body: Column(
+        children: [
+          // Konum durumu bilgilendirme banner'ı
+          if (weatherState.locationFailed && weatherState.currentWeather != null)
+            _buildLocationFallbackBanner(context, weatherState),
+          
+          // Ana içerik
+          Expanded(
+            child: _buildBody(context, weatherState),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildLocationFallbackBanner(BuildContext context, WeatherState state) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.7),
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.info_outline,
+            size: 20,
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Konum bilgisi alınamadı. ${state.currentCity} şehri için hava durumu gösteriliyor.',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CitySelectionScreen(),
+                ),
+              );
+            },
+            child: Text(
+              'Değiştir',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
   
@@ -53,36 +119,94 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     
     if (state.error != null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              state.error!,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => ref.read(weatherStateProvider.notifier).refreshWeather(),
-              child: Text('weather.retry'.tr()),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 64,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                state.error!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => ref.read(weatherStateProvider.notifier).refreshWeather(),
+                    icon: const Icon(Icons.refresh),
+                    label: Text('weather.retry'.tr()),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CitySelectionScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.search),
+                    label: const Text('Şehir Seç'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
     
     if (state.currentWeather == null) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('weather.weatherUnavailable'.tr()),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => ref.read(weatherStateProvider.notifier).getWeatherByCurrentLocation(),
-              child: Text('weather.retry'.tr()),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.location_off,
+                size: 64,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'weather.weatherUnavailable'.tr(),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () => ref.read(weatherStateProvider.notifier).getWeatherByCurrentLocation(),
+                    icon: const Icon(Icons.my_location),
+                    label: const Text('Konum Kullan'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CitySelectionScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.search),
+                    label: const Text('Şehir Seç'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -109,45 +233,6 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
           ),
           const SizedBox(height: 16),
           OutfitSuggestionList(weather: state.currentWeather!),
-        ],
-      ),
-    );
-  }
-  
-  Future<void> _showSearchLocationDialog(BuildContext context) async {
-    final TextEditingController controller = TextEditingController();
-    
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('weather.searchLocation'.tr()),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: 'weather.enterCity'.tr(),
-          ),
-          textCapitalization: TextCapitalization.words,
-          onSubmitted: (value) {
-            if (value.isNotEmpty) {
-              ref.read(weatherStateProvider.notifier).getWeatherByCity(value);
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('weather.cancel'.tr()),
-          ),
-          TextButton(
-            onPressed: () {
-              if (controller.text.isNotEmpty) {
-                ref.read(weatherStateProvider.notifier).getWeatherByCity(controller.text);
-                Navigator.of(context).pop();
-              }
-            },
-            child: Text('weather.search'.tr()),
-          ),
         ],
       ),
     );

@@ -11,27 +11,52 @@ class LocationService {
 
   Future<LocationData?> getCurrentLocation() async {
     try {
+      debugPrint('📍 LocationService: Konum alma işlemi başlatılıyor...');
+      
+      // Konum servislerinin aktif olup olmadığını kontrol et
       bool serviceEnabled = await location.serviceEnabled();
+      debugPrint('📍 LocationService: Konum servisleri aktif mi? $serviceEnabled');
+      
       if (!serviceEnabled) {
+        debugPrint('📍 LocationService: Konum servisleri kapalı, açılması isteniyor...');
         serviceEnabled = await location.requestService();
         if (!serviceEnabled) {
-          debugPrint('Konum servisleri devre dışı');
+          debugPrint('❌ LocationService: Konum servisleri açılamadı');
           return null;
         }
+        debugPrint('✅ LocationService: Konum servisleri başarıyla açıldı');
       }
 
+      // İzin durumunu kontrol et
       PermissionStatus permission = await location.hasPermission();
+      debugPrint('📍 LocationService: Mevcut izin durumu: $permission');
+      
       if (permission == PermissionStatus.denied) {
+        debugPrint('📍 LocationService: İzin reddedilmiş, izin isteniyor...');
         permission = await location.requestPermission();
+        debugPrint('📍 LocationService: Yeni izin durumu: $permission');
+        
         if (permission != PermissionStatus.granted) {
-          debugPrint('Konum izni reddedildi');
+          debugPrint('❌ LocationService: Konum izni verilmedi');
           return null;
         }
+        debugPrint('✅ LocationService: Konum izni başarıyla verildi');
       }
 
-      return await location.getLocation();
+      // Konum verilerini al
+      debugPrint('📍 LocationService: Konum verisi alınıyor...');
+      final locationData = await location.getLocation();
+      
+      if (locationData.latitude != null && locationData.longitude != null) {
+        debugPrint('✅ LocationService: Konum başarıyla alındı: ${locationData.latitude}, ${locationData.longitude}');
+        return locationData;
+      } else {
+        debugPrint('❌ LocationService: Konum verisi geçersiz (lat/lon null)');
+        return null;
+      }
+      
     } catch (e) {
-      debugPrint('Konum alınırken hata: $e');
+      debugPrint('❌ LocationService: Konum alınırken hata: $e');
       return null;
     }
   }
