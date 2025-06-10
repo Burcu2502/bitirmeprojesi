@@ -201,14 +201,6 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'wardrobe.whatToWearToday'.tr(),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 16),
-          
           // Hava durumu kartı
           Container(
             padding: const EdgeInsets.all(16),

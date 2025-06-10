@@ -3,9 +3,12 @@
   
   "navigation": {
     "home": "Ana Sayfa",
+    "outfitSuggestions": "Kombin Önerileri",
     "myClosets": "Dolaplarım",
+    "myWardrobe": "Dolabım",
     "createOutfit": "Kombin Oluştur",
     "profile": "Profil",
+    "weather": "Hava Durumu",
     "weatherForecast": "Hava Durumu"
   },
   
@@ -85,6 +88,8 @@
   
   "weather": {
     "weather": "Hava Durumu",
+    "weatherAndOutfit": "Hava & Kombin",
+    "selectCity": "Şehir Seç",
     "forecast": "Tahmin",
     "feelsLike": "Hissedilen:",
     "humidity": "Nem",

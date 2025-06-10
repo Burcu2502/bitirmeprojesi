@@ -69,15 +69,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String _getAppBarTitle() {
     switch (_currentIndex) {
       case 0:
-        return 'navigation.home'.tr();
+        return 'navigation.outfitSuggestions'.tr();
       case 1:
-        return 'navigation.myClosets'.tr();
+        return 'navigation.myWardrobe'.tr();
       case 2:
-        return 'navigation.weatherForecast'.tr();
+        return 'navigation.weather'.tr();
       case 3:
         return 'navigation.profile'.tr();
       default:
-        return 'navigation.home'.tr();
+        return 'navigation.outfitSuggestions'.tr();
     }
   }
   

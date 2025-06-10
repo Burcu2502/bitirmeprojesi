@@ -22,7 +22,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('weather.weather'.tr()),
+        title: Text('weather.weatherAndOutfit'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),

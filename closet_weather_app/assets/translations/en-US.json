@@ -3,9 +3,12 @@
   
   "navigation": {
     "home": "Home",
+    "outfitSuggestions": "Outfit Suggestions",
     "myClosets": "My Closets",
+    "myWardrobe": "My Wardrobe",
     "createOutfit": "Create Outfit",
     "profile": "Profile",
+    "weather": "Weather",
     "weatherForecast": "Weather Forecast"
   },
   
@@ -85,6 +88,8 @@
   
   "weather": {
     "weather": "Weather",
+    "weatherAndOutfit": "Weather & Outfit",
+    "selectCity": "Select City",
     "forecast": "Forecast",
     "feelsLike": "Feels like:",
     "humidity": "Humidity",

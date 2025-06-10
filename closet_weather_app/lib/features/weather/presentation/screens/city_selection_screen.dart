@@ -18,7 +18,7 @@ class _CitySelectionScreenState extends ConsumerState<CitySelectionScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('weather.citySelection.title'.tr()),
+        title: Text('weather.selectCity'.tr()),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
