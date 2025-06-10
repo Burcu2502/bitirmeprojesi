@@ -25,20 +25,45 @@ class FirestoreService {
   // Kullanıcı işlemleri
   Future<void> createUser(UserModel user) async {
     try {
-      await _usersCollection.doc(user.id).set(user.toJson());
+      debugPrint("📝 Firestore'da kullanıcı oluşturuluyor: ${user.id} - ${user.name}");
+      debugPrint("   - Email: ${user.email}");
+      debugPrint("   - Photo URL: ${user.photoUrl}");
+      
+      final userData = user.toJson();
+      debugPrint("   - JSON verisi: ${userData.toString().substring(0, userData.toString().length > 200 ? 200 : userData.toString().length)}...");
+      
+      await _usersCollection.doc(user.id).set(userData);
+      debugPrint("✅ Kullanıcı başarıyla Firestore'da oluşturuldu: ${user.id}");
     } catch (e) {
+      debugPrint("❌ Firestore kullanıcı oluşturma hatası: $e");
+      debugPrint("❌ User ID: ${user.id}");
+      debugPrint("❌ User Name: ${user.name}");
       throw Exception('Failed to create user: $e');
     }
   }
 
   Future<UserModel?> getUser(String userId) async {
     try {
+      debugPrint("🔍 Firestore'dan kullanıcı getiriliyor: $userId");
+      
       final doc = await _usersCollection.doc(userId).get();
+      debugPrint("   - Doküman var mı: ${doc.exists}");
+      debugPrint("   - Data null mu: ${doc.data() == null}");
+      
       if (doc.exists && doc.data() != null) {
-        return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+        final data = doc.data() as Map<String, dynamic>;
+        debugPrint("   - Alınan veri: ${data.toString().substring(0, data.toString().length > 200 ? 200 : data.toString().length)}...");
+        
+        final user = UserModel.fromJson(data);
+        debugPrint("✅ Kullanıcı Firestore'dan başarıyla getirildi: ${user.name}");
+        return user;
+      } else {
+        debugPrint("⚠️ Kullanıcı Firestore'da bulunamadı: $userId");
+        return null;
       }
-      return null;
     } catch (e) {
+      debugPrint("❌ Firestore kullanıcı getirme hatası: $e");
+      debugPrint("❌ User ID: $userId");
       throw Exception('Failed to get user: $e');
     }
   }

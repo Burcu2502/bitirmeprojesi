@@ -134,18 +134,50 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } catch (e) {
       debugPrint('❌ Google ile giriş hatası: $e');
       
-      // Google Play Services hatası için özel mesaj
-      if (e.toString().contains('Google Play Services') || 
-          e.toString().contains('SecurityException')) {
+      final errorString = e.toString();
+      
+      // Pigeon hatalarını kontrol et
+      if (errorString.contains('PigeonUserDetails') || 
+          errorString.contains('type \'List<Object?>\' is not a subtype') ||
+          errorString.contains('pigeon')) {
+        debugPrint('ℹ️ Pigeon hatası yakalandı - Firebase Auth durumu kontrol ediliyor');
+        
+        // Firebase Auth durumunu kontrol et
+        final currentUser = _authService.currentUser;
+        if (currentUser != null) {
+          debugPrint('✅ Pigeon hatası olmasına rağmen kullanıcı giriş yapmış: ${currentUser.uid}');
+          // State'i başarılı olarak güncelle
           state = state.copyWith(
+            user: currentUser,
             isLoading: false,
-          errorMessage: 'Google Play Services hatası. Lütfen cihazınızı güncelleyin.',
+            errorMessage: null,
           );
-        } else {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: 'Google ile giriş yapılamadı. Lütfen tekrar deneyin.',
-      );
+          return;
+        }
+      }
+      
+      // İptal durumu kontrol et
+      if (errorString.contains('iptal') || errorString.contains('cancel')) {
+        debugPrint('ℹ️ Kullanıcı Google girişini iptal etti');
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: null, // İptal durumunda hata mesajı gösterme
+        );
+        return;
+      }
+      
+      // Google Play Services hatası için özel mesaj
+      if (errorString.contains('Google Play Services') || 
+          errorString.contains('SecurityException')) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Google Play Services hatası. Lütfen cihazınızı güncelleyin.',
+        );
+      } else {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Google ile giriş yapılamadı. Lütfen tekrar deneyin.',
+        );
       }
     }
   }

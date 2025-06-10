@@ -21,6 +21,7 @@ class AuthService {
   Future<UserCredential> registerWithEmailAndPassword(String email, String password, String name) async {
     try {
       debugPrint("🔐 Email/Şifre ile kayıt başlatılıyor: $email");
+      
       // Önce kullanıcıyı oluştur
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -36,6 +37,26 @@ class AuthService {
         } catch (e) {
           debugPrint("⚠️ Kullanıcı adı güncellenemedi: $e");
           // Devam et, kritik hata değil
+        }
+
+        // Firestore'da kullanıcı profili oluştur
+        final newUser = UserModel(
+          id: userCredential.user!.uid,
+          email: email,
+          name: name,
+          photoUrl: null,
+          skinTone: null,
+          stylePreferences: [],
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        
+        try {
+          await _firestoreService.createUser(newUser);
+          debugPrint("✅ Kullanıcı profili Firestore'da oluşturuldu");
+        } catch (e) {
+          debugPrint("⚠️ Firestore'da kullanıcı profili oluşturulamadı: $e");
+          // Firebase Auth hesabı zaten oluştuğu için devam et
         }
       }
 
@@ -56,12 +77,12 @@ class AuthService {
       );
       debugPrint("✅ Firebase Authentication başarılı: ${result.user?.uid}");
       
-      // Kullanıcı verilerini Firestore'dan al
+      // Kullanıcı verilerini Firestore'dan al ve yoksa oluştur
       if (result.user != null) {
         try {
-          await getCurrentUserData();
+          await _ensureUserDataExists(result.user!);
         } catch (e) {
-          debugPrint("⚠️ Kullanıcı verileri alınırken hata: $e");
+          debugPrint("⚠️ Kullanıcı verileri kontrol edilirken hata: $e");
           // Bu hatayı yut, kritik değil
         }
       }
@@ -114,12 +135,13 @@ class AuthService {
           
       // Kullanıcı verilerini Firestore'da kontrol et ve oluştur
       if (userCredential.user != null) {
-        final userData = await _firestoreService.getUser(userCredential.user!.uid);
+        try {
+          final userData = await _firestoreService.getUser(userCredential.user!.uid);
           
           if (userData == null) {
             // Kullanıcı Firestore'da yoksa oluştur
             final newUser = UserModel(
-            id: userCredential.user!.uid,
+              id: userCredential.user!.uid,
               email: googleUser.email,
               name: googleUser.displayName ?? 'Google Kullanıcısı',
               photoUrl: googleUser.photoUrl,
@@ -130,7 +152,11 @@ class AuthService {
             );
             
             await _firestoreService.createUser(newUser);
-          debugPrint("✅ Yeni kullanıcı Firestore'da oluşturuldu");
+            debugPrint("✅ Yeni kullanıcı Firestore'da oluşturuldu");
+          }
+        } catch (e) {
+          debugPrint("⚠️ Firestore kullanıcı kontrol/oluşturma hatası: $e");
+          // Firebase Auth başarılı olduğu için devam et
         }
       }
       
@@ -138,14 +164,73 @@ class AuthService {
     } catch (e) {
       debugPrint("❌ Google ile giriş yaparken genel hata: $e");
       
+      // Pigeon/Google Sign-In spesifik hatalarını yakala
+      final errorString = e.toString();
+      if (errorString.contains('PigeonUserDetails') || 
+          errorString.contains('type \'List<Object?>\' is not a subtype') ||
+          errorString.contains('pigeon')) {
+        debugPrint("⚠️ Pigeon hatası yakalandı - Firebase Auth durumunu kontrol ediliyor");
+        
+        // Firebase Auth durumunu kontrol et
+        final currentUser = _auth.currentUser;
+        if (currentUser != null) {
+          debugPrint("✅ Pigeon hatası olmasına rağmen kullanıcı giriş yapmış: ${currentUser.uid}");
+          
+          // Firestore'da kullanıcı verisini kontrol et/oluştur
+          try {
+            await _ensureUserDataExists(currentUser);
+          } catch (firestoreError) {
+            debugPrint("⚠️ Firestore kontrol hatası (Pigeon sonrası): $firestoreError");
+          }
+          
+          // Mock UserCredential oluştur (Pigeon hatası nedeniyle)
+          return MockUserCredential(currentUser);
+        } else {
+          debugPrint("❌ Pigeon hatası ve kullanıcı da giriş yapmamış - gerçek hata");
+          throw Exception('Google ile giriş başarısız oldu');
+        }
+      }
+      
       // Google Play Services hatası için özel kontrol
-      if (e.toString().contains('SecurityException') || 
-          e.toString().contains('Unknown calling package')) {
+      if (errorString.contains('SecurityException') || 
+          errorString.contains('Unknown calling package')) {
         debugPrint("⚠️ Google Play Services güvenlik hatası tespit edildi");
         throw Exception('Google Play Services hatası. Lütfen cihazınızın Google Play Services güncel olduğundan emin olun.');
       }
       
       throw Exception('Google ile giriş yaparken bir hata oluştu: $e');
+    }
+  }
+
+  // Kullanıcı verilerinin Firestore'da var ol
+  Future<void> _ensureUserDataExists(User user) async {
+    try {
+      debugPrint("🔍 Kullanıcı verileri kontrol ediliyor: ${user.uid}");
+      
+      final userData = await _firestoreService.getUser(user.uid);
+      
+      if (userData == null) {
+        debugPrint("📝 Kullanıcı Firestore'da bulunamadı, oluşturuluyor...");
+        
+        final newUser = UserModel(
+          id: user.uid,
+          email: user.email ?? '',
+          name: user.displayName ?? 'Kullanıcı',
+          photoUrl: user.photoURL,
+          skinTone: null,
+          stylePreferences: [],
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        
+        await _firestoreService.createUser(newUser);
+        debugPrint("✅ Kullanıcı profili Firestore'da oluşturuldu");
+      } else {
+        debugPrint("✅ Kullanıcı verileri zaten mevcut: ${userData.name}");
+      }
+    } catch (e) {
+      debugPrint("❌ Kullanıcı veri kontrolü hatası: $e");
+      throw e;
     }
   }
 
@@ -198,12 +283,16 @@ class AuthService {
       }
       
       debugPrint("🔄 Kullanıcı verileri getiriliyor: ${currentUser!.uid}");
-          final userData = await _firestoreService.getUser(currentUser!.uid);
+      final userData = await _firestoreService.getUser(currentUser!.uid);
       
       if (userData != null) {
         debugPrint("✅ Kullanıcı verileri başarıyla alındı: ${userData.name}");
       } else {
         debugPrint("⚠️ Kullanıcı verileri Firestore'da bulunamadı");
+        // Kullanıcı verisi yoksa oluştur
+        await _ensureUserDataExists(currentUser!);
+        // Tekrar dene
+        return await _firestoreService.getUser(currentUser!.uid);
       }
       
       return userData;
@@ -212,4 +301,20 @@ class AuthService {
       return null;
     }
   }
+}
+
+// Mock UserCredential sınıfı (Pigeon hatasını aşmak için)
+class MockUserCredential implements UserCredential {
+  final User _user;
+  
+  MockUserCredential(this._user);
+  
+  @override
+  AdditionalUserInfo? get additionalUserInfo => null;
+  
+  @override
+  AuthCredential? get credential => null;
+  
+  @override
+  User? get user => _user;
 } 

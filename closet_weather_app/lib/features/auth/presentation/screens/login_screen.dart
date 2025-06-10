@@ -96,74 +96,71 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await _authService.signInWithGoogle();
 
       if (mounted) {
-        // Başarılı giriş sonrası Firebase oturumunu bir kez daha kontrol edelim
+        // Başarılı giriş sonrası Firebase oturumunu kontrol et
         final user = FirebaseAuth.instance.currentUser;
         if (user != null) {
           debugPrint("✅ Google ile giriş başarılı, kullanıcı: ${user.uid}, ${user.email}");
-          
-          // Mobil platformlarda oturum bilgisi otomatik olarak kalıcı saklanır
           
           // Ana ekrana yönlendir
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
         } else {
-          debugPrint("⚠️ Google giriş aşamasında başarılı olmasına rağmen kullanıcı bulunamadı");
-          // Başarılı mesajı göster
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Giriş başarılı!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-          
-          // Ana ekrana yönlendir
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
+          debugPrint("⚠️ Google giriş başarılı olmasına rağmen kullanıcı bulunamadı");
+          throw Exception('Giriş doğrulanamadı');
         }
       }
     } catch (e) {
+      debugPrint("❌ Google ile giriş hatası: $e");
+      
       if (mounted) {
-        // PigeonUserDetails veya pigeon-error-handled hatası alırsak, bu aslında başarılı bir girişi gösteriyor
-        // Bu durumda kullanıcıyı Ana Ekrana yönlendirelim
-        if (e.toString().contains('PigeonUserDetails') || 
-            e.toString().contains('pigeon-error-handled')) {
+        final errorString = e.toString();
+        
+        // Pigeon hatalarını özel olarak ele al
+        if (errorString.contains('PigeonUserDetails') || 
+            errorString.contains('type \'List<Object?>\' is not a subtype') ||
+            errorString.contains('pigeon')) {
           
-          // Mobil platformlarda oturum bilgisi otomatik olarak kalıcı saklanır
+          debugPrint('ℹ️ Pigeon hatası yakalandı, Firebase Auth durumu kontrol ediliyor');
           
-          // Kullanıcı zaten giriş yapmış demektir
+          // Firebase Auth durumunu kontrol et
           final user = FirebaseAuth.instance.currentUser;
           if (user != null) {
-            debugPrint("✅ PigeonUserDetails hatası alındı, ama kullanıcı giriş yapmış: ${user.uid}");
+            debugPrint("✅ Pigeon hatası olmasına rağmen kullanıcı giriş yapmış: ${user.uid}");
+            
+            // Başarılı mesaj göster
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Google ile giriş başarılı!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            
+            // Ana sayfaya yönlendir
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+            return;
           }
-          
-          debugPrint('ℹ️ Pigeon hatası görmezden geliniyor, kullanıcı oturumu açık kabul ediliyor');
-          
-          // Kullanıcıya başarılı bir mesaj göster
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Google ile giriş başarılı!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-          
-          // Ana sayfaya yönlendir
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
+        }
+        
+        // İptal durumu kontrol et
+        if (errorString.contains('iptal') || errorString.contains('cancel')) {
+          debugPrint('ℹ️ Kullanıcı Google girişini iptal etti');
+          setState(() {
+            _errorMessage = null; // İptal durumunda hata mesajı gösterme
+          });
           return;
         }
         
-        // Diğer hatalar için normal hata mesajı
+        // Diğer hatalar için genel mesaj
         setState(() {
-          _errorMessage = 'Google ile giriş yaparken bir hata oluştu: $e';
+          _errorMessage = 'Google ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.';
         });
         
-        // Hatayı göster
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Google ile giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.'),
+          SnackBar(
+            content: Text('Google ile giriş hatası: ${e.toString().length > 100 ? e.toString().substring(0, 100) + "..." : e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
