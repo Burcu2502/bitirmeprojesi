@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules
+// Bu kurallar Firebase Console'da Storage > Rules sekmesinde uygulanmalıdır
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Test klasörü - bağlantı testleri için
+    match /test/{userId}/{testFile} {
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+    
+    // Profil fotoğrafları - sadece giriş yapmış kullanıcılar
+    match /profile_photos/{imageId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Kıyafet resimleri - sadece kendi resimlerini görebilir/yükleyebilir
+    match /clothing_images/{userId}/{imageId} {
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+    
+    // Kombin resimleri - sadece kendi resimlerini görebilir/yükleyebilir
+    match /outfit_images/{userId}/{imageId} {
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+    
+    // Diğer tüm dosyalar için erişim engelle
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+} 

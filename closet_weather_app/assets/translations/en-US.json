@@ -149,6 +149,7 @@
   },
   
   "wardrobe": {
+    "addClothingItem": "Add Clothing Item",
     "whatToWearToday": "What to Wear Today?",
     "suggestedOutfit": "Suggested Outfit",
     "generateNewOutfit": "Generate New Outfit",
@@ -199,7 +200,11 @@
       "selectFromGallery": "Select from Gallery",
       "takePhoto": "Take Photo",
       "pleaseSelectImage": "Please select an image",
-      "analyzingColors": "Analyzing colors..."
+      "analyzingColors": "Analyzing colors...",
+      "cameraPermissionDenied": "Camera permission denied",
+      "openSettings": "Open Settings",
+      "cameraError": "Camera error",
+      "retry": "Retry"
     },
     "clothingDetails": {
       "detectedColors": "Detected Colors:",

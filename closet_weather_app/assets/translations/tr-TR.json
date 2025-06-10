@@ -149,6 +149,7 @@
   },
   
   "wardrobe": {
+    "addClothingItem": "Kıyafet Ekle",
     "whatToWearToday": "Bugün Ne Giysem?",
     "suggestedOutfit": "Önerilen Kombin",
     "generateNewOutfit": "Yeni Kombin Oluştur",
@@ -185,7 +186,11 @@
       "selectFromGallery": "Galeriden Seç",
       "takePhoto": "Fotoğraf Çek",
       "pleaseSelectImage": "Lütfen bir resim seçin",
-      "analyzingColors": "Renkler ayrıştırılıyor..."
+      "analyzingColors": "Renkler ayrıştırılıyor...",
+      "cameraPermissionDenied": "Kamera izni reddedildi",
+      "openSettings": "Ayarları Aç",
+      "cameraError": "Kamera hatası",
+      "retry": "Tekrar Dene"
     },
     "clothingDetails": {
       "detectedColors": "Algılanan Renkler:",

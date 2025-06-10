@@ -5,10 +5,12 @@ import '../models/outfit_model.dart';
 import '../models/user_model.dart';
 import 'package:flutter/foundation.dart';
 import 'connectivity_service.dart';
+import 'storage_service.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final ConnectivityService _connectivityService = ConnectivityService();
+  final StorageService _storageService = StorageService();
   
   // Koleksiyon referansları
   CollectionReference get _usersCollection => _firestore.collection('users');
@@ -142,9 +144,31 @@ class FirestoreService {
 
   Future<void> deleteClothingItem(String userId, String itemId) async {
     try {
+      // Önce kıyafet bilgilerini al (resim URL'sini almak için)
+      final doc = await _clothingItemsCollection(userId).doc(itemId).get();
+      
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        final imageUrl = data['image_url'] as String?;
+        
+        // Firebase Storage'dan resmi sil
+        if (imageUrl != null && imageUrl.isNotEmpty) {
+          try {
+            await _storageService.deleteImage(imageUrl);
+            debugPrint("✅ Kıyafet resmi Firebase Storage'dan silindi: $imageUrl");
+          } catch (e) {
+            debugPrint("⚠️ Firebase Storage'dan resim silinirken hata: $e");
+            // Storage hatası Firestore silme işlemini engellemez
+          }
+        }
+      }
+      
+      // Firestore'dan kıyafeti sil
       await _clothingItemsCollection(userId).doc(itemId).delete();
+      debugPrint("✅ Kıyafet Firestore'dan silindi: $itemId");
     } catch (e) {
-      throw Exception('Failed to delete clothing item: $e');
+      debugPrint("❌ Kıyafet silme hatası: $e");
+      throw Exception('Kıyafet silinemedi: $e');
     }
   }
 
@@ -187,9 +211,48 @@ class FirestoreService {
 
   Future<void> deleteOutfit(String userId, String outfitId) async {
     try {
+      // Firestore'dan kombini sil
       await _outfitsCollection(userId).doc(outfitId).delete();
+      debugPrint("✅ Kombin Firestore'dan silindi: $outfitId");
+      
+      // Not: Kombin resimleri genellikle kıyafet resimlerinin kombinasyonudur
+      // Eğer özel kombin resimleri varsa burada silinebilir
     } catch (e) {
-      throw Exception('Failed to delete outfit: $e');
+      debugPrint("❌ Kombin silme hatası: $e");
+      throw Exception('Kombin silinemedi: $e');
+    }
+  }
+  
+  // Kullanıcı hesabını tamamen sil (tüm veriler ve resimler dahil)
+  Future<void> deleteUserAccount(String userId) async {
+    try {
+      debugPrint("🗑️ Kullanıcı hesabı siliniyor: $userId");
+      
+      // Tüm kıyafet resimlerini Firebase Storage'dan sil
+      await _storageService.deleteAllUserClothingImages(userId);
+      
+      // Tüm kombin resimlerini Firebase Storage'dan sil
+      await _storageService.deleteAllUserOutfitImages(userId);
+      
+      // Tüm kıyafetleri Firestore'dan sil
+      final clothingSnapshot = await _clothingItemsCollection(userId).get();
+      for (final doc in clothingSnapshot.docs) {
+        await doc.reference.delete();
+      }
+      
+      // Tüm kombinleri Firestore'dan sil
+      final outfitsSnapshot = await _outfitsCollection(userId).get();
+      for (final doc in outfitsSnapshot.docs) {
+        await doc.reference.delete();
+      }
+      
+      // Kullanıcı profilini sil
+      await _usersCollection.doc(userId).delete();
+      
+      debugPrint("✅ Kullanıcı hesabı tamamen silindi: $userId");
+    } catch (e) {
+      debugPrint("❌ Kullanıcı hesabı silme hatası: $e");
+      throw Exception('Kullanıcı hesabı silinemedi: $e');
     }
   }
 } 

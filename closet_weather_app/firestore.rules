@@ -1,0 +1,32 @@
+rules_version = '2';
+
+// Firebase Firestore Security Rules
+// Bu kurallar Firebase Console'da Firestore > Rules sekmesinde uygulanmalıdır
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Kullanıcı profilleri - sadece kendi profilini okuyabilir/düzenleyebilir
+    match /users/{userId} {
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+    
+    // Kıyafet öğeleri - sadece kendi kıyafetlerini okuyabilir/düzenleyebilir
+    match /users/{userId}/clothing_items/{itemId} {
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+    
+    // Kombinler - sadece kendi kombinlerini okuyabilir/düzenleyebilir
+    match /users/{userId}/outfits/{outfitId} {
+      allow read, write: if request.auth != null 
+                        && request.auth.uid == userId;
+    }
+    
+    // Diğer tüm koleksiyonlar için erişim engelle
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 

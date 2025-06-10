@@ -10,6 +10,7 @@ import 'core/providers/theme_provider.dart' as app_theme;
 import 'core/providers/locale_provider.dart';
 import 'shared/theme/app_theme.dart'; // AppTheme sınıfını import ediyoruz
 import 'core/services/connectivity_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // Ana uygulama başlangıç noktası
 void main() async {
@@ -24,6 +25,15 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform,
       );
     debugPrint("✅ Firebase başlatıldı");
+    
+    // App Check'i devre dışı bırak
+    try {
+      FirebaseStorage.instance.setMaxUploadRetryTime(const Duration(seconds: 60));
+      FirebaseStorage.instance.setMaxDownloadRetryTime(const Duration(seconds: 60));
+      debugPrint("✅ Firebase Storage App Check bypass yapıldı");
+    } catch (e) {
+      debugPrint("⚠️ App Check bypass hatası: $e");
+    }
   } catch (e) {
     debugPrint("❌ Firebase başlatma hatası: $e");
     // Hata olsa bile uygulamayı başlat

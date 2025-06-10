@@ -231,6 +231,14 @@ class _AddClothingItemScreenState extends ConsumerState<AddClothingItemScreen> {
         throw Exception('wardrobe.clothingDetails.userSessionNotFound'.tr());
       }
       
+      // Firebase Storage bağlantısını test et
+      debugPrint("🔍 Firebase Storage bağlantısını test ediyoruz...");
+      final storageTestResult = await _storageService.testStorageConnection(userId);
+      if (!storageTestResult) {
+        throw Exception('Firebase Storage bağlantısı kurulamadı. İnternet bağlantınızı ve Firebase ayarlarınızı kontrol edin.');
+      }
+      debugPrint("✅ Firebase Storage bağlantı testi başarılı");
+      
       // Debug log ekleyelim
       debugPrint("📸 Resim yükleme başlıyor...");
       
