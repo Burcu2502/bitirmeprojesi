@@ -5,6 +5,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../profile/presentation/screens/style_preferences_screen.dart';
 import '../../../profile/presentation/screens/settings_screen.dart';
+import '../../../profile/presentation/screens/help_and_support_screen.dart';
 
 class UserProfileView extends ConsumerWidget {
   const UserProfileView({Key? key}) : super(key: key);
@@ -112,11 +113,9 @@ class UserProfileView extends ConsumerWidget {
             title: 'profile.helpAndSupport'.tr(),
             onTap: () {
               // Yardım ve destek sayfasına git
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('general.featureNotAvailable'.tr()),
-                  duration: const Duration(seconds: 2),
-                ),
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const HelpAndSupportScreen())
               );
             },
           ),

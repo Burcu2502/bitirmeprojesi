@@ -1,5 +1,5 @@
 {
-  "appTitle": "Dolap Hava Durumu",
+  "appTitle": "BNG",
   
   "navigation": {
     "home": "Ana Sayfa",
@@ -68,6 +68,65 @@
     "settings": "Ayarlar",
     "helpAndSupport": "Yardım ve Destek",
     "user": "Kullanıcı"
+  },
+  
+  "helpAndSupport": {
+    "title": "Yardım ve Destek",
+    "description": "Sorularınız için bizimle iletişime geçin. Size en kısa sürede dönüş yapmaya çalışacağız.",
+    "contactUs": "Bizimle İletişime Geçin",
+    "sendEmail": "E-posta Gönder",
+    "emailSubject": "BNG - Yardım Talebi",
+    "emailTemplate": "Merhaba BNG Destek Ekibi,\n\nAşağıdaki konuda yardıma ihtiyacım var:\n\n[Sorununuzu buraya yazınız]\n\nCihaz Bilgileri:\n- Platform: {platform}\n- Uygulama Versiyonu: 1.0.0\n\nTeşekkürler,",
+    "supportEmail": "brcryhngl254@gmail.com",
+    "emailSuccess": "E-posta uygulamanız açıldı",
+    "emailError": "E-posta gönderilemedi. Lütfen manuel olarak {email} adresine yazın.",
+    "faq": "Sık Sorulan Sorular",
+    "commonIssues": "Yaygın Sorunlar",
+    "howToUse": "Nasıl Kullanılır",
+    "reportBug": "Hata Bildir",
+    "requestFeature": "Özellik Öner",
+    "appVersion": "Uygulama Versiyonu: 1.0.0",
+    "contactDirect": "Doğrudan İletişim",
+    "contactDirectDesc": "Aşağıdaki e-posta adresine doğrudan yazabilirsiniz:",
+    "emailCopied": "E-posta adresi kopyalandı",
+    "faqContent": {
+      "q1": "Uygulama nasıl çalışır?",
+      "a1": "BNG, kıyafetlerinizin fotoğraflarını alarak dijital dolabınızı oluşturur. Hava durumu verilerini kullanarak size uygun kombinler önerir.",
+      "q2": "Kıyafet nasıl eklenir?",
+      "a2": "Ana sayfada '+' butonuna tıklayın, kıyafet fotoğrafı çekin veya galeriden seçin. Renkleri otomatik algılanacak, siz de tip, mevsim gibi bilgileri ekleyin.",
+      "q3": "Kombin önerileri nasıl çalışır?",
+      "a3": "Yapay zeka, kıyafetlerinizin renklerini, tiplerini ve hava durumunu analiz ederek size uygun kombinler önerir. Stil tercihlerinizi de göz önünde bulundurur.",
+      "q4": "Hava durumu bilgileri doğru mu?",
+      "a4": "OpenWeatherMap servisinden güncel hava durumu verilerini alıyoruz. Lokasyon izni vermeniz halinde bulunduğunuz yerin hava durumunu gösterir.",
+      "q5": "Verilerim güvenli mi?",
+      "a5": "Evet! Tüm verileriniz Firebase'de şifreli olarak saklanır. Kişisel bilgileriniz üçüncü taraflarla paylaşılmaz.",
+      "q6": "Offline kullanabilir miyim?",
+      "a6": "Temel özellikler offline çalışır, ancak hava durumu ve yeni kombin önerileri için internet bağlantısı gerekir.",
+      "q7": "Hesabımı nasıl silerim?",
+      "a7": "Ayarlar > Gizlilik Politikası bölümünden bizimle iletişime geçerek hesap silme talebinde bulunabilirsiniz.",
+      "q8": "Uygulama hangi platformlarda çalışır?",
+      "a8": "Android cihazlarda çalışır. Minimum Android 6.0 gerekir."
+    },
+    "howToUseContent": {
+      "title": "Uygulama Kullanım Rehberi",
+      "step1": "1. Hesap Oluşturma",
+      "step1Desc": "E-posta ile kayıt olun veya Google hesabınızla giriş yapın.",
+      "step2": "2. Stil Tercihlerinizi Belirleyin",
+      "step2Desc": "Profil bölümünden stil tercihlerinizi seçin (casual, formal, sporty vb.).",
+      "step3": "3. Kıyafet Ekleme",
+      "step3Desc": "Ana sayfada '+' butonu ile kıyafetlerinizi fotoğraflayın ve dolabınızı oluşturun.",
+      "step4": "4. Konum İzni",
+      "step4Desc": "Hava durumu için konum izni verin veya manuel şehir seçin.",
+      "step5": "5. Kombin Önerilerini İnceleyin",
+      "step5Desc": "Ana sayfada günlük kombin önerilerinizi görün ve beğendiklerinizi seçin.",
+      "step6": "6. Dolabınızı Yönetin",
+      "step6Desc": "Dolaplarım bölümünden kıyafetlerinizi görüntüleyin, düzenleyin ve silin.",
+      "tips": "İpuçları:",
+      "tip1": "• Daha iyi öneriler için farklı mevsimlik kıyafetler ekleyin",
+      "tip2": "• Renk algılaması için kıyafetleri iyi ışıkta fotoğraflayın",
+      "tip3": "• Stil tercihlerinizi güncelleyerek farklı öneriler alın",
+      "tip4": "• Özel durumlar için farklı kombinler deneyebilirsiniz"
+    }
   },
   
   "settings": {

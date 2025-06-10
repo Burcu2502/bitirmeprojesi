@@ -1,5 +1,5 @@
 {
-  "appTitle": "Closet Weather",
+  "appTitle": "BNG",
   
   "navigation": {
     "home": "Home",
@@ -398,5 +398,64 @@
     "featureNotAvailable": "This feature is not available yet",
     "loginRequired": "You need to login to use this feature",
     "tryAgain": "Try Again"
+  },
+  
+  "helpAndSupport": {
+    "title": "Help & Support",
+    "description": "Contact us for your questions. We will try to get back to you as soon as possible.",
+    "contactUs": "Contact Us",
+    "sendEmail": "Send Email",
+    "emailSubject": "BNG - Support Request",
+    "emailTemplate": "Hello BNG Support Team,\n\nI need help with the following:\n\n[Please describe your issue here]\n\nDevice Information:\n- Platform: {platform}\n- App Version: 1.0.0\n\nThank you,",
+    "supportEmail": "brcryhngl254@gmail.com",
+    "emailSuccess": "Email app opened",
+    "emailError": "Could not send email. Please manually write to {email}.",
+    "faq": "Frequently Asked Questions",
+    "commonIssues": "Common Issues",
+    "howToUse": "How to Use",
+    "reportBug": "Report Bug",
+    "requestFeature": "Request Feature",
+    "appVersion": "App Version: 1.0.0",
+    "contactDirect": "Direct Contact",
+    "contactDirectDesc": "You can write directly to the following email address:",
+    "emailCopied": "Email address copied",
+    "faqContent": {
+      "q1": "How does the app work?",
+      "a1": "BNG creates your digital wardrobe by taking photos of your clothes. It suggests suitable outfits using weather data.",
+      "q2": "How do I add clothes?",
+      "a2": "Tap the '+' button on the home page, take a photo or select from gallery. Colors are automatically detected, then add type, season and other details.",
+      "q3": "How do outfit recommendations work?",
+      "a3": "AI analyzes colors, types of your clothes and weather conditions to suggest suitable outfits. It also considers your style preferences.",
+      "q4": "Are weather information accurate?",
+      "a4": "We get current weather data from OpenWeatherMap service. If you give location permission, it shows weather for your location.",
+      "q5": "Is my data safe?",
+      "a5": "Yes! All your data is stored encrypted in Firebase. Personal information is not shared with third parties.",
+      "q6": "Can I use it offline?",
+      "a6": "Basic features work offline, but internet connection is required for weather updates and new outfit suggestions.",
+      "q7": "How do I delete my account?",
+      "a7": "You can contact us through Settings > Privacy Policy section to request account deletion.",
+      "q8": "Which platforms does the app work on?",
+      "a8": "It works on Android devices. Minimum Android 6.0 required."
+    },
+    "howToUseContent": {
+      "title": "App Usage Guide",
+      "step1": "1. Create Account",
+      "step1Desc": "Register with email or sign in with your Google account.",
+      "step2": "2. Set Style Preferences",
+      "step2Desc": "Select your style preferences from the profile section (casual, formal, sporty, etc.).",
+      "step3": "3. Add Clothes",
+      "step3Desc": "Use the '+' button on home page to photograph your clothes and build your wardrobe.",
+      "step4": "4. Location Permission",
+      "step4Desc": "Grant location permission for weather or manually select your city.",
+      "step5": "5. Review Outfit Suggestions",
+      "step5Desc": "See your daily outfit recommendations on the home page and select the ones you like.",
+      "step6": "6. Manage Your Wardrobe",
+      "step6Desc": "View, edit and delete your clothes from the My Closets section.",
+      "tips": "Tips:",
+      "tip1": "• Add different seasonal clothes for better suggestions",
+      "tip2": "• Photograph clothes in good lighting for color detection",
+      "tip3": "• Update style preferences to get different suggestions",
+      "tip4": "• Try different combinations for special occasions"
+    }
   }
 } 
