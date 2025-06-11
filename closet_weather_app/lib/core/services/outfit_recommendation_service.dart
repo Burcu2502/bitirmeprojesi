@@ -41,6 +41,55 @@ class OutfitRecommendationService {
     debugPrint("🌍 Hava durumuna uygun mevsimler: $suitableSeasons");
     
     try {
+      // Önce elbise kontrolü yap - elbise varsa sadece onu kullan
+      var dresses = availableItems.where((item) => 
+        item.type == ClothingType.dress
+      ).toList();
+      
+      // Elbise varsa, hava durumuna uygun olanı seç
+      if (dresses.isNotEmpty) {
+        // Elbiseleri mevsime göre sırala
+        dresses.sort((a, b) {
+          bool aHasMatchingSeason = a.seasons.any((s) => suitableSeasons.contains(s));
+          bool bHasMatchingSeason = b.seasons.any((s) => suitableSeasons.contains(s));
+          
+          if (aHasMatchingSeason && !bHasMatchingSeason) return -1;
+          if (!aHasMatchingSeason && bHasMatchingSeason) return 1;
+          
+          return 0;
+        });
+        
+        List<ClothingItemModel> recommendation = [];
+        
+        // Elbise ekle
+        recommendation.add(dresses.first);
+        debugPrint("👗 Elbise eklendi: ${dresses.first.name} (${dresses.first.id})");
+        
+        // Ayakkabı ekle
+        var shoes = availableItems.where((item) => 
+          (item.type == ClothingType.shoes || item.type == ClothingType.boots)
+        ).toList();
+        
+        if (shoes.isNotEmpty) {
+          recommendation.add(shoes.first);
+          debugPrint("👞 Ayakkabı eklendi: ${shoes.first.name} (${shoes.first.id})");
+        }
+        
+        // Hava durumuna göre dış giyim ekle
+        var outwear = availableItems.where((item) => 
+          _isOuterwear(item.type)
+        ).toList();
+        
+        if (outwear.isNotEmpty && _needsOuterwear(weather)) {
+          recommendation.add(outwear.first);
+          debugPrint("🧥 Dış giyim eklendi: ${outwear.first.name} (${outwear.first.id})");
+        }
+        
+        debugPrint("✅ Elbise bazlı kombin tamamlandı, ${recommendation.length} parça");
+        return recommendation;
+      }
+      
+      // Elbise yoksa normal kombin oluştur (üst + alt giyim)
       // Uygun üst giyim kıyafetlerini filtrele
       var uppers = availableItems.where((item) => 
         _isUpperClothing(item.type)

@@ -992,6 +992,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     
     try {
       // Kullanıcının kıyafetlerini kategorilere ayır
+      final dresses = clothingItems.where((item) => item.type == ClothingType.dress).toList();
       final uppers = clothingItems.where((item) => _isUpperClothing(item.type)).toList();
       final lowers = clothingItems.where((item) => _isLowerClothing(item.type)).toList();
       final shoes = clothingItems.where((item) => 
@@ -1008,22 +1009,22 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
           case 0: // Hava durumu odaklı
             title = 'AI Hava Durumu Önerisi';
             description = 'Bugünkü hava durumuna özel AI önerisi';
-            outfit.addAll(_createWeatherBasedOutfit(uppers, lowers, shoes, outerwear, weather));
+            outfit.addAll(_createWeatherBasedOutfit(dresses, uppers, lowers, shoes, outerwear, weather));
             break;
           case 1: // Renk uyumu odaklı
             title = 'AI Renk Uyumu Önerisi';
             description = 'Renk teorisi ile uyumlu AI kombinasyonu';
-            outfit.addAll(_createColorHarmonyOutfit(uppers, lowers, shoes, outerwear));
+            outfit.addAll(_createColorHarmonyOutfit(dresses, uppers, lowers, shoes, outerwear));
             break;
           case 2: // Stil odaklı
             title = 'AI Stil Önerisi';
             description = 'Stil analizi ile oluşturulan AI önerisi';
-            outfit.addAll(_createStyleBasedOutfit(uppers, lowers, shoes, outerwear, i));
+            outfit.addAll(_createStyleBasedOutfit(dresses, uppers, lowers, shoes, outerwear, i));
             break;
           case 3: // Yaratıcı/rastgele
             title = 'AI Yaratıcı Önerisi';
             description = 'Yaratıcı AI algoritması ile özel kombin';
-            outfit.addAll(_createCreativeOutfit(uppers, lowers, shoes, outerwear));
+            outfit.addAll(_createCreativeOutfit(dresses, uppers, lowers, shoes, outerwear));
             break;
         }
         
@@ -1045,6 +1046,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
 
   // Hava durumu odaklı kombin oluştur
   List<ClothingItemModel> _createWeatherBasedOutfit(
+    List<ClothingItemModel> dresses,
     List<ClothingItemModel> uppers,
     List<ClothingItemModel> lowers, 
     List<ClothingItemModel> shoes,
@@ -1054,6 +1056,25 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
     final outfit = <ClothingItemModel>[];
     final temp = weather.temperature;
     
+    // Önce elbise kontrolü yap - elbise varsa sadece onu kullan
+    if (dresses.isNotEmpty) {
+      // Hava durumuna uygun elbise seç
+      outfit.add(_selectBestForWeather(dresses, temp));
+      
+      // Ayakkabı ekle
+      if (shoes.isNotEmpty) {
+        outfit.add(_selectBestForWeather(shoes, temp));
+      }
+      
+      // Soğuk havada dış giyim ekle
+      if (temp < 15 && outerwear.isNotEmpty) {
+        outfit.add(_selectBestForWeather(outerwear, temp));
+      }
+      
+      return outfit;
+    }
+    
+    // Elbise yoksa normal kombin yap (üst + alt giyim)
     // Sıcaklığa göre üst giyim seç - EN UYGUN OLANI SEÇ
     if (uppers.isNotEmpty) {
       if (temp > 25) {
@@ -1098,6 +1119,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
 
   // Renk uyumu odaklı kombin oluştur
   List<ClothingItemModel> _createColorHarmonyOutfit(
+    List<ClothingItemModel> dresses,
     List<ClothingItemModel> uppers,
     List<ClothingItemModel> lowers, 
     List<ClothingItemModel> shoes,
@@ -1105,6 +1127,36 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   ) {
     final outfit = <ClothingItemModel>[];
     
+    // Önce elbise kontrolü yap - elbise varsa sadece onu kullan
+    if (dresses.isNotEmpty) {
+      // Renkli bir elbise seç (nötr olmayan)
+      final colorfulDresses = dresses.where((item) => 
+        item.colors.isNotEmpty && !_isNeutralColor(item.colors.first)).toList();
+      final baseItem = colorfulDresses.isNotEmpty ? 
+        _selectRandomFromList(colorfulDresses) : _selectRandomFromList(dresses);
+      outfit.add(baseItem);
+      
+      // Uyumlu ayakkabı ekle
+      if (shoes.isNotEmpty) {
+        final compatibleShoes = shoes.where((shoe) => 
+          _areColorsCompatible(baseItem.colors, shoe.colors)).toList();
+        outfit.add(compatibleShoes.isNotEmpty ? 
+          _selectRandomFromList(compatibleShoes) : _selectRandomFromList(shoes));
+      }
+      
+      // Nötr renk dış giyim ekle (isteğe bağlı)
+      if (outerwear.isNotEmpty) {
+        final neutralOuterwear = outerwear.where((item) => 
+          item.colors.any((color) => _isNeutralColor(color))).toList();
+        if (neutralOuterwear.isNotEmpty) {
+          outfit.add(_selectRandomFromList(neutralOuterwear));
+        }
+      }
+      
+      return outfit;
+    }
+    
+    // Elbise yoksa normal kombin yap (üst + alt giyim)
     if (uppers.isNotEmpty && lowers.isNotEmpty) {
       // Renkli bir üst giyim seç (nötr olmayan)
       final colorfulUppers = uppers.where((item) => 
@@ -1141,6 +1193,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
 
   // Stil odaklı kombin oluştur
   List<ClothingItemModel> _createStyleBasedOutfit(
+    List<ClothingItemModel> dresses,
     List<ClothingItemModel> uppers,
     List<ClothingItemModel> lowers, 
     List<ClothingItemModel> shoes,
@@ -1149,6 +1202,25 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   ) {
     final outfit = <ClothingItemModel>[];
     
+    // Önce elbise kontrolü yap - elbise varsa sadece onu kullan
+    if (dresses.isNotEmpty) {
+      // Stile uygun elbise seç
+      outfit.add(_selectRandomFromList(dresses));
+      
+      // Ayakkabı ekle
+      if (shoes.isNotEmpty) {
+        outfit.add(_selectRandomFromList(shoes));
+      }
+      
+      // Gerekirse dış giyim ekle
+      if (outerwear.isNotEmpty && styleIndex % 2 == 0) {
+        outfit.add(_selectRandomFromList(outerwear));
+      }
+      
+      return outfit;
+    }
+    
+    // Elbise yoksa stil bazlı normal kombin yap
     switch (styleIndex % 3) {
       case 0: // Casual stil
         if (uppers.isNotEmpty) {
@@ -1202,6 +1274,7 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
 
   // Yaratıcı kombin oluştur
   List<ClothingItemModel> _createCreativeOutfit(
+    List<ClothingItemModel> dresses,
     List<ClothingItemModel> uppers,
     List<ClothingItemModel> lowers, 
     List<ClothingItemModel> shoes,
@@ -1209,6 +1282,25 @@ class _OutfitSuggestionViewState extends ConsumerState<OutfitSuggestionView> {
   ) {
     final outfit = <ClothingItemModel>[];
     
+    // Önce elbise kontrolü yap - elbise varsa sadece onu kullan
+    if (dresses.isNotEmpty) {
+      // Rastgele elbise seç
+      outfit.add(dresses[DateTime.now().millisecond % dresses.length]);
+      
+      // Ayakkabı ekle
+      if (shoes.isNotEmpty) {
+        outfit.add(shoes[DateTime.now().second % shoes.length]);
+      }
+      
+      // Bazen dış giyim ekle
+      if (outerwear.isNotEmpty && DateTime.now().millisecond % 2 == 0) {
+        outfit.add(outerwear.first);
+      }
+      
+      return outfit;
+    }
+    
+    // Elbise yoksa yaratıcı normal kombin yap
     // Rastgele seçim yap ama mantıklı kombinler oluştur
     if (uppers.isNotEmpty) {
       outfit.add(uppers[DateTime.now().millisecond % uppers.length]);

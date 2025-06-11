@@ -563,7 +563,7 @@ class OutfitRecommender:
             
             return outfit
         
-        # Elbise yoksa normal kombin yap
+        # Elbise yoksa normal kombin yap (üst + alt giyim)
         # Kategorilere ayır
         tops = [item for item in suitable_items if self._is_upper_clothing(item)]
         bottoms = [item for item in suitable_items if self._is_lower_clothing(item)]
@@ -580,9 +580,9 @@ class OutfitRecommender:
             outfit.append(upper)
             print(f"👚 Seçilen üst giyim: {upper['name']}")
         
-        # Alt giyim ekle
-        if bottoms:
-            if outfit and strategy != 'random':  # Üst giyimle uyumlu alt giyim seç (random hariç)
+        # Alt giyim ekle (sadece üst giyim seçildiyse)
+        if bottoms and outfit:  # Üst giyim seçildiyse alt giyim ekle
+            if strategy != 'random':  # Üst giyimle uyumlu alt giyim seç (random hariç)
                 bottom = self._select_matching_item(outfit[0], bottoms)
             else:
                 bottom = self._select_best_item(bottoms, weather, strategy)
