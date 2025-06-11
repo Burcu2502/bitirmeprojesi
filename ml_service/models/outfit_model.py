@@ -66,6 +66,33 @@ class OutfitRecommender:
         
         if not suitable_items:
             suitable_items = user_items
+        
+        # Tek başına giyilebilen kıyafetleri öncelikle kontrol et
+        standalone_items = [item for item in suitable_items if self._is_standalone_clothing(item)]
+        
+        if standalone_items:
+            # Elbise varsa, onu hava durumuna göre seç
+            dress = self._select_best_item(standalone_items, weather, 'best')
+            outfit = [dress]
+            print(f"👗 Hava durumuna uygun elbise seçildi: {dress['name']}")
+            
+            # Sadece ayakkabı ve gerekirse dış giyim ekle
+            shoes = [item for item in suitable_items if self._is_footwear(item)]
+            outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+            
+            # Dış giyim ekle (hava durumuna göre)
+            if self._needs_outerwear(weather) and outerwears:
+                outerwear = self._select_best_item(outerwears, weather, 'best')
+                outfit.append(outerwear)
+                print(f"🧥 Seçilen dış giyim: {outerwear['name']}")
+                
+            # Ayakkabı ekle
+            if shoes:
+                shoe = self._select_best_item(shoes, weather, 'best')
+                outfit.append(shoe)
+                print(f"👞 Seçilen ayakkabı: {shoe['name']}")
+            
+            return outfit
             
         return self._build_basic_outfit(suitable_items, weather, strategy='best')
     
@@ -77,7 +104,44 @@ class OutfitRecommender:
         suitable_items = self._filter_by_weather(user_items, weather)
         if not suitable_items:
             suitable_items = user_items
+        
+        # Tek başına giyilebilen kıyafetleri öncelikle kontrol et
+        standalone_items = [item for item in suitable_items if self._is_standalone_clothing(item)]
+        
+        if standalone_items:
+            # Elbise varsa, onu renk analizine al
+            colorful_dresses = [item for item in standalone_items if len(item['colors']) > 0]
+            if colorful_dresses:
+                base_dress = random.choice(colorful_dresses)
+            else:
+                base_dress = random.choice(standalone_items)
             
+            outfit = [base_dress]
+            print(f"👗 Ana renk bazı (elbise): {base_dress['name']} - {base_dress['colors']}")
+            
+            # Sadece ayakkabı ve dış giyim ekle
+            shoes = [item for item in suitable_items if self._is_footwear(item)]
+            outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+            
+            # Uyumlu ayakkabı ekle
+            if shoes:
+                matching_shoe = self._find_color_matching_item(base_dress, shoes, diversity_mode=True)
+                outfit.append(matching_shoe)
+            
+            # Gerekirse dış giyim ekle
+            if self._needs_outerwear(weather) and outerwears:
+                # Nötr renk dış giyim tercih et
+                neutral_outerwears = [item for item in outerwears 
+                                    if any(color.lower() in ['#000000', '#ffffff', '#808080'] 
+                                          for color in item['colors'])]
+                if neutral_outerwears:
+                    outfit.append(random.choice(neutral_outerwears))
+                else:
+                    outfit.append(random.choice(outerwears))
+            
+            return outfit
+            
+        # Elbise yoksa normal kombin yap
         # Kategorilere ayır
         tops = [item for item in suitable_items if self._is_upper_clothing(item)]
         bottoms = [item for item in suitable_items if self._is_lower_clothing(item)]
@@ -108,7 +172,7 @@ class OutfitRecommender:
                 outfit.append(matching_shoe)
             
             # Gerekirse dış giyim ekle
-        if self._needs_outerwear(weather) and outerwears:
+            if self._needs_outerwear(weather) and outerwears:
                 # Nötr renk dış giyim tercih et
                 neutral_outerwears = [item for item in outerwears 
                                     if any(color.lower() in ['#000000', '#ffffff', '#808080'] 
@@ -133,6 +197,35 @@ class OutfitRecommender:
         suitable_items = self._filter_by_weather(user_items, weather)
         if not suitable_items:
             suitable_items = user_items
+        
+        # Tek başına giyilebilen kıyafetleri öncelikle kontrol et
+        standalone_items = [item for item in suitable_items if self._is_standalone_clothing(item)]
+        
+        if standalone_items:
+            # Elbise varsa ve stile uygunsa tercih et
+            style_dresses = self._filter_by_style(standalone_items, target_style)
+            if style_dresses or target_style == 'formal':  # Formal stil için her elbise uygun
+                dress = random.choice(style_dresses if style_dresses else standalone_items)
+                outfit = [dress]
+                print(f"👗 {target_style} stilinde elbise seçildi: {dress['name']}")
+                
+                # Sadece ayakkabı ve gerekirse dış giyim ekle
+                shoes = [item for item in suitable_items if self._is_footwear(item)]
+                outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+                
+                # Dış giyim ekle (hava durumuna göre)
+                if self._needs_outerwear(weather) and outerwears:
+                    outerwear = random.choice(outerwears)
+                    outfit.append(outerwear)
+                    print(f"🧥 Seçilen dış giyim: {outerwear['name']}")
+                    
+                # Ayakkabı ekle
+                if shoes:
+                    shoe = random.choice(shoes)
+                    outfit.append(shoe)
+                    print(f"👞 Seçilen ayakkabı: {shoe['name']}")
+                
+                return outfit
             
         # Stile uygun kıyafetleri seç
         style_items = self._filter_by_style(suitable_items, target_style)
@@ -149,6 +242,33 @@ class OutfitRecommender:
         suitable_items = self._filter_by_weather(user_items, weather)
         if not suitable_items:
             suitable_items = user_items
+            
+        # %30 şansla elbise önceliği ver
+        standalone_items = [item for item in suitable_items if self._is_standalone_clothing(item)]
+        
+        if standalone_items and random.random() < 0.3:
+            # Rastgele elbise seç
+            dress = random.choice(standalone_items)
+            outfit = [dress]
+            print(f"🎲 Yaratıcı rastgele elbise seçildi: {dress['name']}")
+            
+            # Sadece ayakkabı ve gerekirse dış giyim ekle
+            shoes = [item for item in suitable_items if self._is_footwear(item)]
+            outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+            
+            # Dış giyim ekle (hava durumuna göre)
+            if self._needs_outerwear(weather) and outerwears:
+                outerwear = random.choice(outerwears)
+                outfit.append(outerwear)
+                print(f"🧥 Seçilen dış giyim: {outerwear['name']}")
+                
+            # Ayakkabı ekle
+            if shoes:
+                shoe = random.choice(shoes)
+                outfit.append(shoe)
+                print(f"👞 Seçilen ayakkabı: {shoe['name']}")
+            
+            return outfit
             
         # Tamamen rastgele seçim stratejisi kullan
         return self._build_basic_outfit(suitable_items, weather, strategy='random')
@@ -384,7 +504,7 @@ class OutfitRecommender:
         return item['type'] in upper_types
     
     def _is_lower_clothing(self, item):
-        lower_types = ['jeans', 'pants', 'shorts', 'skirt', 'dress']
+        lower_types = ['jeans', 'pants', 'shorts', 'skirt']
         return item['type'] in lower_types
     
     def _is_footwear(self, item):
@@ -403,8 +523,47 @@ class OutfitRecommender:
         # Soğuk hava veya yağmurlu/karlı hava
         return temperature < 15 or any(c in condition.lower() for c in ['rain', 'snow', 'yağmur', 'kar']) 
     
+    def _is_standalone_clothing(self, item):
+        """Tek başına giyilebilen kıyafetler (elbise gibi)"""
+        standalone_types = ['dress']
+        return item['type'] in standalone_types
+    
     def _build_basic_outfit(self, suitable_items, weather, strategy='best'):
         """Temel kombin oluşturma algoritması"""
+        # Önce tek başına giyilebilen kıyafetleri kontrol et (elbise gibi)
+        standalone_items = [item for item in suitable_items if self._is_standalone_clothing(item)]
+        
+        if standalone_items:
+            # Elbise varsa, onu merkeze al
+            dress = self._select_best_item(standalone_items, weather, strategy)
+            outfit = [dress]
+            print(f"👗 Tek parça seçildi (elbise): {dress['name']}")
+            
+            # Sadece ayakkabı ve gerekirse dış giyim ekle
+            shoes = [item for item in suitable_items if self._is_footwear(item)]
+            outerwears = [item for item in suitable_items if self._is_outerwear(item)]
+            
+            # Dış giyim ekle (hava durumuna göre)
+            if self._needs_outerwear(weather) and outerwears:
+                if strategy == 'random':
+                    outerwear = random.choice(outerwears)
+                else:
+                    outerwear = self._select_matching_item_for_outfit(outfit, outerwears)
+                outfit.append(outerwear)
+                print(f"🧥 Seçilen dış giyim: {outerwear['name']}")
+                
+            # Ayakkabı ekle
+            if shoes:
+                if strategy == 'random':
+                    shoe = random.choice(shoes)
+                else:
+                    shoe = self._select_matching_item_for_outfit(outfit, shoes)
+                outfit.append(shoe)
+                print(f"👞 Seçilen ayakkabı: {shoe['name']}")
+            
+            return outfit
+        
+        # Elbise yoksa normal kombin yap
         # Kategorilere ayır
         tops = [item for item in suitable_items if self._is_upper_clothing(item)]
         bottoms = [item for item in suitable_items if self._is_lower_clothing(item)]

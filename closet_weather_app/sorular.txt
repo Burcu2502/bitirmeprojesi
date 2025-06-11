@@ -1,0 +1,298 @@
+BİTİRME PROJESİ SUNUM SORULARI - BNG UYGULAMASI (SÖZEL CEVAPLAR)
+===================================================================
+
+1. NEDEN FLUTTER SEÇTİN?
+------------------------
+SORU: "Neden Flutter kullandın? React Native, Xamarin değil de neden Flutter?"
+
+CEVAP: "Flutter Google'ın. Cross-platform ama native performans. Hot reload çok hızlı. Dart öğrenmek kolay. Widget tree mantığı güzel. Tek kod Android/iOS için. Community desteği güçlü."
+
+---
+
+2. NEDEN FİREBASE SEÇTİN?
+-------------------------
+SORU: "Neden Firebase? Backend yazabilirdin, neden hazır çözüm?"
+
+CEVAP: "Backend yazmaya zaman yok. Firebase real-time database. Auth sistemi hazır. Cloud storage dahil. Offline sync otomatik. Google desteği var. Scaling otomatik. Ücretsiz quota yeterli."
+
+---
+
+3. NEDEN NOSQL VERİTABANI?
+--------------------------
+SORU: "Neden NoSQL? SQL database neden kullanmadın?"
+
+CEVAP: "Firestore NoSQL. Flexible schema. JSON benzeri veri. Nested objects kolay. Scaling daha iyi. Real-time updates. Mobile uygulamalar için ideal. SQL'e göre daha basit."
+
+---
+
+4. RENK ANALİZİ NASIL YAPIYORSUN?
+----------------------------------
+SORU: "Kıyafetlerdeki renkleri nasıl tanıyorsun?"
+
+CEVAP: "Flutter'da image paketi kullanıyorum. Fotoğraftaki pixelleri tarayıp RGB değerlerini alıyorum. K-means clustering ile baskın 3-5 rengi buluyorum. Hex kodları olarak Firestore'a kaydediyorum."
+
+---
+
+5. VERİTABANI NASIL KURULDU?
+----------------------------
+SORU: "Database'i nasıl tasarladın?"
+
+CEVAP: "Firebase Firestore kullandım. NoSQL database. Users, clothing_items, user_preferences koleksiyonları var. Real-time sync için StreamBuilder kullanıyorum. Offline çalışıyor."
+
+---
+
+6. NEDEN RİVERPOD?
+------------------
+SORU: "State management nedir, niye Riverpod? Provider yetmez miydi?"
+
+CEVAP: "Uygulamada veri durumunu yönetiyor. Riverpod Provider'ın gelişmiş versiyonu. Null safety var, memory leak yapmıyor, testing kolay. Auth, wardrobe, weather için ayrı provider'lar yaptım."
+
+---
+
+7. GİRİŞ SİSTEMİ NASIL?
+-----------------------
+SORU: "Kullanıcı girişi nasıl çalışıyor?"
+
+CEVAP: "Firebase Auth kullandım. Email/şifre ve Google girişi var. JWT token sistemi. Otomatik yönlendirme yapıyor. Hata mesajlarını Türkçe/İngilizce gösteriyor."
+
+---
+
+8. HAVA DURUMU NERDEN GELİYOR?
+------------------------------
+SORU: "Hava durumu nasıl alıyorsun?"
+
+CEVAP: "OpenWeatherMap API kullanıyorum. GPS konum alıyorum ya da manuel şehir seçiyorum. 5 günlük tahmin. Sıcaklığa göre kombin öneriyor: 25°C+ yaz, 15-25°C geçiş, 15°C- kış kıyafetleri."
+
+---
+
+9. KOMBİN ÖNERİSİ ALGORİTMASI?
+------------------------------
+SORU: "Kombin önerisi nasıl çalışıyor?"
+
+CEVAP: "Üç sistem birlikte: 1) Kural tabanlı - mevsim, renk uyumu 2) Kullanıcı tercihi öğrenme 3) Hava durumu adaptasyonu. Üst-alt-dış giyim kombinasyonu yapıyor."
+
+---
+
+10. COSINE SİMİLARİTY NEREDE?
+-----------------------------
+SORU: "Cosine similarity nerede kullanıyorsun?"
+
+CEVAP: "Renk benzerliği hesaplamada kullanıyorum. İki kıyafetin RGB vektörleri arasındaki açıyı hesaplıyor. 0.8+ benzerlik varsa komplementer renk olarak öneriyor. Stil benzerliği için de kullanıyorum."
+
+---
+
+11. ENSEMBLE LEARNING NEDİR?
+---------------------------
+SORU: "Ensemble learning nasıl uyguladın?"
+
+CEVAP: "Birden fazla algoritmayı birleştiriyorum. Renk algoritması %40, mevsim uyumu %30, kullanıcı tercihi %30 ağırlıkla birleştiriyorum. Böylece daha doğru öneriler çıkıyor."
+
+---
+
+12. SERENDİPİTY ML NEDİR?
+------------------------
+SORU: "Serendipity nedir, nerede kullanıyorsun?"
+
+CEVAP: "Beklenmedik ama güzel kombinler önermek. Kullanıcının hep aynı stilleri seçmemesi için %20 oranında farklı stil kombinleri ekliyorum. Çeşitlilik sağlıyor."
+
+---
+
+13. NEDEN DART DİLİ?
+--------------------
+SORU: "Neden Dart? Java, Kotlin biliyorsun, neden yeni dil öğrendin?"
+
+CEVAP: "Flutter Dart kullanıyor. Object-oriented ve functional programming destekliyor. Null safety var. Syntax kolay, Java'ya benziyor. Google destekliyor. Hot reload için optimize edilmiş."
+
+---
+
+14. NEDEN OPENWEATHERMAP?
+-------------------------
+SORU: "Hava durumu için neden OpenWeatherMap? Başka API yok mu?"
+
+CEVAP: "Ücretsiz 1000 call/gün. Dokümantasyon iyi. JSON response. 5 günlük forecast. Dünya çapında veri. Alternatif AccuWeather vardı ama daha pahalı."
+
+---
+
+15. FOTOĞRAF İŞLEME NASIL?
+--------------------------
+SORU: "Fotoğraf yükleme nasıl çalışıyor?"
+
+CEVAP: "image_picker ile kamera/galeri. Sıkıştırıp Firebase Storage'a yüklüyorum. URL'yi Firestore'da saklıyorum. Renk analizini real-time yapıyorum."
+
+---
+
+16. NEDEN K-MEANS CLUSTERİNG?
+-----------------------------
+SORU: "Renk analizi için neden K-means? Başka algoritma kullanabilir miydin?"
+
+CEVAP: "K-means unsupervised learning. Renk gruplarını otomatik buluyor. Pixel'ları benzer renklere göre grupluyor. Alternatif DBSCAN vardı ama K-means daha hızlı."
+
+---
+
+17. PERFORMANS OPTİMİZASYONU?
+-----------------------------
+SORU: "Performansı nasıl artırdın?"
+
+CEVAP: "ListView.builder lazy loading, image cache, StreamBuilder, widget rebuild'leri minimizasyonu. Fotoğraf sıkıştırma, offline cache. 60fps çalışıyor."
+
+---
+
+18. NEDEN EASY_LOCALİZATİON?
+----------------------------
+SORU: "Çoklu dil için neden easy_localization? Flutter'ın kendi sistemi yok mu?"
+
+CEVAP: "Flutter intl paketi çok kompleks. easy_localization basit JSON kullanıyor. Runtime dil değişimi kolay. Community desteği iyi. 400+ çeviri anahtarı yönetilebilir."
+
+---
+
+19. GÜVENLİK ÖNLEMLERİ?
+-----------------------
+SORU: "Güvenlik nasıl sağladın?"
+
+CEVAP: "Firebase Security Rules. Kullanıcı sadece kendi verisine erişiyor. HTTPS şifreleme. Authentication zorunlu. Privacy policy var."
+
+---
+
+20. TEST NASIL YAPTIN?
+----------------------
+SORU: "Uygulamayı nasıl test ettin?"
+
+CEVAP: "Manual test yapıyorum. Farklı Android cihazlarda. Unit test, widget test planlanıyor. Firebase emulator kullanacağım."
+
+---
+
+21. DEPLOYMENT NASIL?
+---------------------
+SORU: "Uygulamayı nasıl yayınladın?"
+
+CEVAP: "flutter build apk --release komutu. Firebase setup. Google Play Store'a hazır. Git ile versiyon kontrol."
+
+---
+
+22. NEDEN MATERİAL DESİGN?
+-------------------------
+SORU: "UI tasarımında neden Material Design? Kendi tasarımın yok mu?"
+
+CEVAP: "Google'ın tasarım dili. Android native görünüm. Hazır component'ler. Tutarlı UX. Dark/light tema otomatik. Accessibility built-in."
+
+---
+
+23. PROJE YÖNETİMİ?
+-------------------
+SORU: "Projeyi nasıl planladın?"
+
+CEVAP: "14 hafta sürdü. Haftalık planlar: Firebase setup, auth, wardrobe, weather, kombin algoritması, UI polish. MVP önce."
+
+---
+
+24. EN ZORLU KISIM?
+-------------------
+SORU: "En zor kısım neydi?"
+
+CEVAP: "Renk analizi algoritması. İlk %60 doğruluktu. K-means clustering ekleyince %85+ oldu. Firebase Auth Pigeon hatalarını çözmek zordu."
+
+---
+
+25. GELECEKTEKİ PLANLAR?
+-----------------------
+SORU: "Geliştirmeye devam edecek misin?"
+
+CEVAP: "Evet. AI önerileri, sosyal özellikler, barkod okuma, AR deneme, shopping entegrasyonu ekleyeceğim. Premium versiyon düşünüyorum."
+
+---
+
+26. TİCARİ DEĞER?
+-----------------
+SORU: "Bu uygulamanın ticari değeri nedir?"
+
+CEVAP: "Freemium model. Temel özellikler bedava, premium AI önerileri ücretli. Marka ortaklıkları. Aylık 2.99$ hedefliyorum. 18-35 yaş hedef kitle."
+
+---
+
+27. ARKITEKTÜR NASIL?
+---------------------
+SORU: "Kod yapısı nasıl?"
+
+CEVAP: "Feature-based klasör yapısı. Auth, wardrobe, weather, profile ayrı. Core services var. SOLID prensipleri. Clean kod."
+
+---
+
+28. HATA YÖNETİMİ?
+------------------
+SORU: "Hataları nasıl yönetiyorsun?"
+
+CEVAP: "Try-catch blokları. FirebaseException handling. Türkçe hata mesajları. Retry mekanizmaları. Graceful degradation."
+
+---
+
+29. MOBİL PERFORMANS?
+---------------------
+SORU: "Batarya tüketimi nasıl?"
+
+CEVAP: "GPS kullanımını minimize ettim. Image lazy loading. Cache management. Background process optimization. 60fps UI."
+
+---
+
+30. NEDEN STREAMBUILDER?
+-----------------------
+SORU: "Neden StreamBuilder kullandın? FutureBuilder yetmez miydi?"
+
+CEVAP: "Firestore real-time database. Data değişince otomatik güncelleniyor. FutureBuilder sadece bir kez çalışır. StreamBuilder sürekli dinler."
+
+---
+
+31. API YÖNETİMİ?
+-----------------
+SORU: "API'leri nasıl yönetiyorsun?"
+
+CEVAP: "HTTP paketi. API key gizli tutuluyor. Rate limiting biliyorum. Cache mekanizması. Timeout handling. Error parsing."
+
+---
+
+32. VERİ MODELİ?
+----------------
+SORU: "Veri modeliniz nasıl?"
+
+CEVAP: "ClothingItem: id, name, type, colors, seasons. User: uid, name, email. JSON serialization. fromJson/toJson metodları."
+
+---
+
+33. DOSYA YÖNETİMİ?
+-------------------
+SORU: "Fotoğraf storage nasıl?"
+
+CEVAP: "Firebase Storage kullanıyorum. users/{userId}/clothing/{itemId}.jpg yapısı. 5MB limit. JPG/PNG destekliyorum. Compression yapıyorum."
+
+---
+
+34. LOKALIZASYON ZORLUKLARI?
+---------------------------
+SORU: "Çoklu dil zorluğu?"
+
+CEVAP: "Türkçe metinler İngilizce'den uzun. UI layout ayarladım. Nested JSON yapısı kullandım. Dynamic content çevirisi zor."
+
+---
+
+35. MACHINE LEARNING DETAYı?
+----------------------------
+SORU: "ML algoritman tam olarak nasıl?"
+
+CEVAP: "Cosine similarity renk benzerliği için. Ensemble learning birden fazla skoru birleştiriyor. Serendipity %20 farklı öneriler. K-means clustering renk grupları. Weight-based scoring sistemi."
+
+---
+
+36. NEDEN ANDROID ONLY?
+-----------------------
+SORU: "Neden sadece Android? iOS neden yok?"
+
+CEVAP: "Bitirme projesi için zaman sınırlı. Android test cihazım var. iOS developer account pahalı. Flutter cross-platform, ileride iOS ekleyebilirim."
+
+---
+
+37. VERSİYON KONTROL?
+--------------------
+SORU: "Git nasıl kullandın?"
+
+CEVAP: "GitHub repository. Feature branch'ler. Commit mesajları açık. Version tag'leri. README dokümantasyonu. .gitignore dosyası."
+
+Şimdi her "neden" sorusuna hazırsın kanka! 🎯 
