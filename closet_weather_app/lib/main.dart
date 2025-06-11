@@ -63,6 +63,7 @@ class ClosetWeatherApp extends ConsumerStatefulWidget {
 
 class _ClosetWeatherAppState extends ConsumerState<ClosetWeatherApp> {
   final ConnectivityService _connectivityService = ConnectivityService();
+  bool _connectivityInitialized = false;
 
   @override
   void initState() {
@@ -110,11 +111,16 @@ class _ClosetWeatherAppState extends ConsumerState<ClosetWeatherApp> {
       
         home: Builder(
           builder: (context) {
-            // ConnectivityService'i burada başlat
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (!mounted) return;
-              _connectivityService.initialize(context);
-            });
+            // ConnectivityService'i sadece bir kez başlat
+            if (!_connectivityInitialized) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  // showMessages: false - sürekli mesaj çıkmasını engellemek için
+                  _connectivityService.initialize(context, showMessages: false);
+                  _connectivityInitialized = true;
+                }
+              });
+            }
             return const SplashScreen();
           },
         ),
