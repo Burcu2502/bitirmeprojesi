@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/models/clothing_item_model.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../providers/wardrobe_provider.dart';
+import 'edit_clothing_item_screen.dart';
+import 'outfit_selection_screen.dart';
 
 class ClothingItemDetailScreen extends ConsumerWidget {
   final ClothingItemModel item;
@@ -21,11 +23,17 @@ class ClothingItemDetailScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
-              // TODO: Edit functionality
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Düzenleme özelliği yakında eklenecek')),
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditClothingItemScreen(item: item),
+                ),
               );
+              if (result == true) {
+                // Güncelleme başarılı, önceki ekrana dön
+                Navigator.of(context).pop();
+              }
             },
           ),
         ],
@@ -204,9 +212,11 @@ class ClothingItemDetailScreen extends ConsumerWidget {
                       label: 'Outfit Ekle',
                       icon: Icons.style,
                       onPressed: () {
-                        // TODO: Add to outfit functionality
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Outfit ekleme özelliği yakında eklenecek')),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OutfitSelectionScreen(clothingItem: item),
+                          ),
                         );
                       },
                     ),
