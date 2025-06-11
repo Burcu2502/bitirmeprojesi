@@ -130,43 +130,56 @@ class ClothingItemsNotifier extends StateNotifier<AsyncValue<List<ClothingItemMo
   }
   
   Future<void> loadItems() async {
+    if (!mounted) return; // Dispose kontrolü
+    
     try {
       state = const AsyncValue.loading();
       if (_userId == null) {
+        if (!mounted) return;
         state = const AsyncValue.data([]);
         return;
       }
       
       final items = await _firestoreService.getUserClothingItems(_userId!);
+      if (!mounted) return; // Async işlem sonrası kontrol
       state = AsyncValue.data(items);
     } catch (e, stackTrace) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stackTrace);
     }
   }
   
   Future<void> addItem(ClothingItemModel item) async {
+    if (!mounted) return;
+    
     try {
       // Yükleme durumunu güncelleyelim
       final currentItems = state.valueOrNull ?? [];
       
       // Geçici olarak optimistik bir güncellemede bulunuyoruz
+      if (!mounted) return;
       state = AsyncValue.data([...currentItems, item]);
       
       // Firestore'a kıyafeti ekliyoruz
       final itemId = await _firestoreService.addClothingItem(item);
       
       // Firebase'den güncel listeyi alalım
+      if (!mounted) return;
       await loadItems();
     } catch (e, stackTrace) {
       // Hata durumunda state'i error'a çeviriyoruz
+      if (!mounted) return;
       state = AsyncValue.error(e, stackTrace);
       rethrow;
     }
   }
   
   Future<void> updateItem(ClothingItemModel item) async {
+    if (!mounted) return;
+    
     try {
       await _firestoreService.updateClothingItem(item);
+      if (!mounted) return;
       loadItems(); // Listeyi yeniden yükle
     } catch (e) {
       rethrow;
@@ -174,8 +187,11 @@ class ClothingItemsNotifier extends StateNotifier<AsyncValue<List<ClothingItemMo
   }
   
   Future<void> deleteItem(String id) async {
+    if (!mounted) return;
+    
     try {
       await _firestoreService.deleteClothingItem(_userId!, id);
+      if (!mounted) return;
       loadItems(); // Listeyi yeniden yükle
     } catch (e) {
       rethrow;
@@ -202,25 +218,32 @@ class OutfitsNotifier extends StateNotifier<List<OutfitModel>> {
   }
 
   Future<void> loadOutfits() async {
+    if (!mounted) return;
+    
     if (_userId == null) {
+      if (!mounted) return;
       state = [];
       return;
     }
     
     try {
       final outfits = await _firestoreService.getUserOutfits(_userId!);
+      if (!mounted) return;
       state = outfits;
     } catch (e) {
       debugPrint("❌ Kombin yükleme hatası: $e");
+      if (!mounted) return;
       state = [];
     }
   }
 
   Future<void> addOutfit(OutfitModel outfit) async {
+    if (!mounted) return;
     if (_userId == null) return;
     
     try {
       await _firestoreService.addOutfit(outfit);
+      if (!mounted) return;
       loadOutfits(); // Listeyi yeniden yükle
     } catch (e) {
       debugPrint("❌ Kombin ekleme hatası: $e");
@@ -229,10 +252,12 @@ class OutfitsNotifier extends StateNotifier<List<OutfitModel>> {
   }
 
   Future<void> updateOutfit(OutfitModel outfit) async {
+    if (!mounted) return;
     if (_userId == null) return;
     
     try {
       await _firestoreService.updateOutfit(outfit);
+      if (!mounted) return;
       loadOutfits(); // Listeyi yeniden yükle
     } catch (e) {
       debugPrint("❌ Kombin güncelleme hatası: $e");
@@ -241,10 +266,12 @@ class OutfitsNotifier extends StateNotifier<List<OutfitModel>> {
   }
 
   Future<void> deleteOutfit(String id) async {
+    if (!mounted) return;
     if (_userId == null) return;
     
     try {
       await _firestoreService.deleteOutfit(_userId!, id);
+      if (!mounted) return;
       loadOutfits(); // Listeyi yeniden yükle
     } catch (e) {
       debugPrint("❌ Kombin silme hatası: $e");

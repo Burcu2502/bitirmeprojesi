@@ -230,52 +230,49 @@ class OutfitRecommender:
             return self._select_weather_appropriate(items, weather)
     
     def _select_accessories(self, accessories, weather, strategy_type, style, outfit):
-        """Aksesuar seçimi - birden fazla olabilir"""
+        """Aksesuar seçimi - Aksesuar varsa mutlaka ekle!"""
         if not accessories:
+            print("⚠️ Hiç aksesuar yok!")
             return []
+        
+        print(f"🔍 Aksesuar seçimi: {len(accessories)} aksesuar mevcut")
+        for acc in accessories:
+            print(f"   - {acc['name']} ({acc['type']})")
         
         selected = []
         temperature = weather['temperature']
+        condition = weather['condition'].lower()
         
-        # Hava durumuna göre zorunlu aksesuarlar
+        print(f"🌡️ Sıcaklık: {temperature}°C, Durum: {condition}, Stil: {style}")
+        
+        # TEMEL KURAL: Her durumda en az 1 aksesuar ekle!
+        print("✨ Temel aksesuar ekleniyor...")
+        selected.append(random.choice(accessories))
+        print(f"✅ Temel aksesuar: {selected[-1]['name']} eklendi")
+        
+        # BONUS: Hava durumuna göre ek aksesuarlar
         if temperature < 10:
             # Soğukta şapka/bere/atkı
-            warm_accessories = [item for item in accessories if item['type'] in ['hat', 'scarf']]
+            warm_accessories = [item for item in accessories if item['type'] in ['hat', 'scarf'] and item not in selected]
             if warm_accessories:
                 selected.append(random.choice(warm_accessories))
+                print(f"🧣 Soğuk hava bonus: {selected[-1]['name']} eklendi")
         
-        # Yağmurlu havada şapka
-        if 'rain' in weather['condition'].lower():
-            hats = [item for item in accessories if item['type'] == 'hat']
-            if hats and not any(acc['type'] == 'hat' for acc in selected):
+        # BONUS: Yağmurlu havada şapka
+        if 'rain' in condition:
+            hats = [item for item in accessories if item['type'] == 'hat' and item not in selected]
+            if hats:
                 selected.append(random.choice(hats))
+                print(f"☔ Yağmur bonus: {selected[-1]['name']} eklendi")
         
-        # Stil bazlı aksesuar
-        if style == 'formal':
-            formal_acc = [item for item in accessories if item['type'] == 'accessory']
-            if formal_acc and not selected:
-                selected.append(random.choice(formal_acc))
+        # BONUS: Yaratıcı modda 2. aksesuar
+        if strategy_type == 'creative' and len(accessories) > 1 and random.random() < 0.6:
+            remaining = [acc for acc in accessories if acc not in selected]
+            if remaining:
+                selected.append(random.choice(remaining))
+                print(f"🎨 Yaratıcı bonus: {selected[-1]['name']} eklendi")
         
-        # Genel aksesuar ekleme
-        if not selected and random.random() < 0.7:  # %70 şans
-            if strategy_type == 'creative' and len(accessories) > 1:
-                # Yaratıcı modda 2 aksesuar olabilir
-                available = [acc for acc in accessories if acc not in selected]
-                selected.append(random.choice(available))
-                if random.random() < 0.3 and len(available) > 1:
-                    remaining = [acc for acc in available if acc['type'] != selected[-1]['type']]
-                    if remaining:
-                        selected.append(random.choice(remaining))
-            else:
-                # Normal modda 1 aksesuar
-                available = [acc for acc in accessories if acc not in selected]
-                if available:
-                    if strategy_type == 'color' and outfit:
-                        acc = self._find_color_matching_item(outfit[0], available)
-                        selected.append(acc)
-                    else:
-                        selected.append(random.choice(available))
-        
+        print(f"✅ Toplam {len(selected)} aksesuar seçildi")
         return selected
     
     def _find_color_matching_item(self, reference_item, candidates):
